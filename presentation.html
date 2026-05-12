@@ -2325,6 +2325,213 @@ body.edit-active [contenteditable="true"]:focus {
   background: rgba(212,165,116,0.06);
 }
 
+/* ===========================================
+   INTERACTION LAYER · A/B/C-tier polish
+   Pure CSS hover + SVG draw-in + cover ambience
+   =========================================== */
+
+/* ---------- A1 · why-card / tri-card top accent stripe ---------- */
+.why-card, .tri-card { overflow: hidden; }
+.why-card::after, .tri-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 2px;
+  width: 28%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  transition: width 0.55s var(--ease);
+  pointer-events: none;
+  z-index: 2;
+}
+.why-card:hover::after, .tri-card:hover::after { width: 100%; }
+
+/* ---------- A2 · vpanel hover lift + badge glow ---------- */
+.vpanel { transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+.vpanel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+.vpanel.ok:hover { border-color: var(--teal); box-shadow: 0 6px 20px rgba(91,206,174,0.18); }
+.vpanel.bad:hover { border-color: var(--red-warn); box-shadow: 0 6px 20px rgba(201,112,100,0.18); }
+.vpanel .badge-icon { transition: transform 0.4s var(--ease-spring); }
+.vpanel:hover .badge-icon { transform: scale(1.15) rotate(-6deg); }
+
+/* ---------- A3 · me-trait number scale + row shift ---------- */
+.me-trait {
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+  position: relative;
+}
+.me-trait::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -1px;
+  height: 1px;
+  width: 0;
+  background: var(--gold);
+  transition: width 0.55s var(--ease);
+}
+.me-trait:hover {
+  transform: translateX(6px);
+}
+.me-trait:hover::after { width: 60%; }
+.me-trait .mt-num { transition: transform 0.4s var(--ease-spring), color 0.4s var(--ease); }
+.me-trait:hover .mt-num { transform: scale(1.12); color: var(--gold-bright); }
+
+/* ---------- A4 · toc-item arrow indicator ---------- */
+.toc-item { position: relative; }
+.toc-item::after {
+  content: '→';
+  position: absolute;
+  right: clamp(1rem, 2vw, 2rem);
+  top: 50%;
+  transform: translate(-12px, -50%);
+  opacity: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  color: var(--gold);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  pointer-events: none;
+}
+.toc-item:hover::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* ---------- A5 · vs-col scale + border ---------- */
+.vs-col { transition: transform 0.4s var(--ease); }
+.vs-col:hover { transform: scale(1.015); }
+.vs-col.qianwen { position: relative; }
+.vs-col.qianwen::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.5s var(--ease);
+}
+.vs-col.qianwen:hover::before { border-color: var(--gold-line); }
+
+/* ---------- A6 · gaode-stage / live-list bar thickens ---------- */
+.gaode-stage { transition: border-left-color 0.3s var(--ease), border-left-width 0.3s var(--ease), padding-left 0.3s var(--ease); }
+.gaode-stage:hover {
+  border-left-color: var(--gold);
+  padding-left: calc(clamp(0.6rem, 1.3vw, 1rem) + 2px);
+}
+.live-list li { transition: transform 0.3s var(--ease); }
+.live-list li:hover { transform: translateX(4px); }
+.live-list li:hover::before { background: var(--gold-bright); }
+.live-list li::before { transition: background 0.3s var(--ease); }
+
+/* ---------- B7 · Radar polygon draw-in ---------- */
+.radar-svg polygon[fill^="rgba(212"] {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  fill-opacity: 0;
+  transition: stroke-dashoffset 1.4s var(--ease) 0.4s, fill-opacity 0.8s ease-out 1.2s;
+}
+.radar-svg circle[fill="#D4A574"] {
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+.slide.visible .radar-svg polygon[fill^="rgba(212"] {
+  stroke-dashoffset: 0;
+  fill-opacity: 1;
+}
+.slide.visible .radar-svg circle[fill="#D4A574"] {
+  opacity: 1;
+}
+.slide.visible .radar-svg circle[fill="#D4A574"]:nth-of-type(1) { transition-delay: 1.4s; }
+.slide.visible .radar-svg circle[fill="#D4A574"]:nth-of-type(2) { transition-delay: 1.55s; }
+.slide.visible .radar-svg circle[fill="#D4A574"]:nth-of-type(3) { transition-delay: 1.7s; }
+.slide.visible .radar-svg circle[fill="#D4A574"]:nth-of-type(4) { transition-delay: 1.85s; }
+.slide.visible .radar-svg circle[fill="#D4A574"]:nth-of-type(5) { transition-delay: 2s; }
+
+/* ---------- B8 · Pipeline node sequential glow ---------- */
+.pipeline-node.done .pn-circle {
+  transition: background 0.4s var(--ease), box-shadow 0.5s var(--ease), transform 0.5s var(--ease-spring);
+  transform: scale(0.85);
+  opacity: 0.4;
+}
+.slide.visible .pipeline-node.done .pn-circle {
+  transform: scale(1);
+  opacity: 1;
+  box-shadow: 0 0 16px rgba(91, 206, 174, 0.45);
+}
+.slide.visible .pipeline-node:nth-of-type(1) .pn-circle { transition-delay: 0.3s; }
+.slide.visible .pipeline-node:nth-of-type(2) .pn-circle { transition-delay: 0.55s; }
+.slide.visible .pipeline-node:nth-of-type(3) .pn-circle { transition-delay: 0.8s; }
+.slide.visible .pipeline-node:nth-of-type(4) .pn-circle { transition-delay: 1.05s; }
+.slide.visible .pipeline-node:nth-of-type(5) .pn-circle { transition-delay: 1.3s; }
+.pipeline-check {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.5s var(--ease) 1.6s, transform 0.5s var(--ease-spring) 1.6s;
+}
+.slide.visible .pipeline-check { opacity: 1; transform: scale(1); }
+
+/* ---------- B9 · Decay chart line draw ---------- */
+.decay-chart path, .decay-chart polyline {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 2s var(--ease) 0.5s;
+}
+.slide.visible .decay-chart path,
+.slide.visible .decay-chart polyline {
+  stroke-dashoffset: 0;
+}
+
+/* ---------- B10 · Super profile connection lines draw ---------- */
+.viz-lines line {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  transition: stroke-dashoffset 1.2s var(--ease);
+}
+.slide.visible .viz-lines line:nth-of-type(1) { transition-delay: 0.6s; stroke-dashoffset: 0; }
+.slide.visible .viz-lines line:nth-of-type(2) { transition-delay: 0.8s; stroke-dashoffset: 0; }
+.slide.visible .viz-lines line:nth-of-type(3) { transition-delay: 1s;   stroke-dashoffset: 0; }
+.slide.visible .viz-lines line:nth-of-type(4) { transition-delay: 1.2s; stroke-dashoffset: 0; }
+.viz-app {
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.slide.visible .viz-app.tb  { transition-delay: 0.7s; opacity: 1; }
+.slide.visible .viz-app.elm { transition-delay: 0.9s; opacity: 1; }
+.slide.visible .viz-app.gd  { transition-delay: 1.1s; opacity: 1; }
+.slide.visible .viz-app.fz  { transition-delay: 1.3s; opacity: 1; }
+
+/* ---------- C11 · Chapter cover background number breathing ---------- */
+@keyframes ch-breathe {
+  0%, 100% { opacity: 0.045; transform: translateY(-50%) scale(1); }
+  50%      { opacity: 0.075; transform: translateY(-50%) scale(1.03); }
+}
+.chcover-bg-num {
+  animation: ch-breathe 7s ease-in-out infinite;
+}
+
+/* ---------- C12 · Chapter cover pill hover ---------- */
+.chcover-pills span {
+  transition: border-color 0.4s var(--ease), color 0.4s var(--ease), background 0.4s var(--ease), transform 0.3s var(--ease);
+  cursor: default;
+}
+.chcover-pills span:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+/* ---------- Respect reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .radar-svg polygon[fill^="rgba(212"],
+  .radar-svg circle[fill="#D4A574"],
+  .pipeline-node.done .pn-circle,
+  .pipeline-check,
+  .decay-chart path, .decay-chart polyline,
+  .viz-lines line,
+  .viz-app,
+  .chcover-bg-num { transition: none !important; animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; transform: none !important; }
+}
+
 </style>
 </head>
 <body>
