@@ -3319,15 +3319,13 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Intent Recognition</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">意图识别 · <span class="accent">亮点与断点</span></h2>
 
-    <div class="p8-split">
-     <div class="p8-vpanels">
+    <div class="vpanel-grid">
       <!-- 亮点 · 视频意图理解 -->
       <div class="vpanel ok reveal-scale" style="--i:2">
         <div class="vpanel-status"><span class="badge-icon">✓</span><span>亮点 · Highlight</span></div>
         <div class="vpanel-title" contenteditable="true">视频读懂行为意图</div>
         <div class="vpanel-viz">
           <svg viewBox="0 0 220 80" style="width:100%;height:100%">
-            <!-- Behavior flow: app → app → app with eye -->
             <rect x="10" y="28" width="32" height="24" rx="3" fill="none" stroke="#5BCEAE" stroke-width="1"/>
             <text x="26" y="44" text-anchor="middle" fill="#5BCEAE" font-family="JetBrains Mono" font-size="8">APP 1</text>
             <path d="M48 40 L70 40" stroke="#5BCEAE" stroke-width="1" stroke-dasharray="2 2"/>
@@ -3336,7 +3334,6 @@ body.edit-active [contenteditable="true"]:focus {
             <path d="M112 40 L134 40" stroke="#5BCEAE" stroke-width="1" stroke-dasharray="2 2"/>
             <rect x="138" y="28" width="32" height="24" rx="3" fill="none" stroke="#5BCEAE" stroke-width="1"/>
             <text x="154" y="44" text-anchor="middle" fill="#5BCEAE" font-family="JetBrains Mono" font-size="8">APP 3</text>
-            <!-- Eye/AI watching -->
             <circle cx="195" cy="40" r="12" fill="none" stroke="#D4A574" stroke-width="1"/>
             <circle cx="195" cy="40" r="4" fill="#D4A574"/>
             <text x="195" y="68" text-anchor="middle" fill="#D4A574" font-family="JetBrains Mono" font-size="7">AI</text>
@@ -3354,14 +3351,12 @@ body.edit-active [contenteditable="true"]:focus {
         <div class="vpanel-title" contenteditable="true">无法区分单/多人</div>
         <div class="vpanel-viz">
           <svg viewBox="0 0 220 80" style="width:100%;height:100%">
-            <!-- Two people speaking -->
             <circle cx="60" cy="32" r="14" fill="none" stroke="#C97064" stroke-width="1.2"/>
             <path d="M48 60 Q60 48 72 60" fill="none" stroke="#C97064" stroke-width="1.2"/>
             <text x="60" y="36" text-anchor="middle" fill="#C97064" font-family="serif" font-size="10">A</text>
             <circle cx="105" cy="32" r="14" fill="none" stroke="#C97064" stroke-width="1.2"/>
             <path d="M93 60 Q105 48 117 60" fill="none" stroke="#C97064" stroke-width="1.2"/>
             <text x="105" y="36" text-anchor="middle" fill="#C97064" font-family="serif" font-size="10">B</text>
-            <!-- AI confusion -->
             <path d="M140 40 L160 40" stroke="#C97064" stroke-width="1"/>
             <text x="185" y="44" text-anchor="middle" fill="#C97064" font-family="JetBrains Mono" font-size="14" font-weight="700">??</text>
           </svg>
@@ -3378,11 +3373,9 @@ body.edit-active [contenteditable="true"]:focus {
         <div class="vpanel-title" contenteditable="true">无问词疑问句误判</div>
         <div class="vpanel-viz">
           <svg viewBox="0 0 220 80" style="width:100%;height:100%">
-            <!-- Rising tone waveform with ? -->
             <path d="M10 55 Q30 50 50 48 T90 42 T130 32 T170 20" fill="none" stroke="#D4A574" stroke-width="1.5"/>
             <circle cx="170" cy="20" r="3" fill="#D4A574"/>
             <text x="195" y="28" fill="#D4A574" font-family="serif" font-size="22" font-weight="600">?</text>
-            <!-- AI hears as flat -->
             <path d="M10 70 L210 70" stroke="#C97064" stroke-width="0.8" stroke-dasharray="3 2"/>
             <text x="110" y="78" text-anchor="middle" fill="#C97064" font-family="JetBrains Mono" font-size="7">AI 听成陈述句</text>
           </svg>
@@ -3392,25 +3385,6 @@ body.edit-active [contenteditable="true"]:focus {
         </div>
         <div class="vpanel-fix" contenteditable="true"><strong>FIX</strong> 音调特征 + 上下文联合判断疑问概率</div>
       </div>
-     </div>
-
-     <!-- Bottom · 实测体验截图 evidence strip -->
-     <div class="p8-phone-wrap reveal" style="--i:5">
-       <div class="phone-mock">
-         <div class="pm-statusbar">千问</div>
-         <div class="pm-ai pm-bubble">哈哈，果然是饼干！我就说嘛，刚才看你拿在手里晃悠，还以为是什么神秘道具呢。</div>
-         <div class="pm-user pm-bubble">这是饼干吗</div>
-         <div class="pm-ai pm-bubble">哎呀，分明是一颗剥了皮的<strong>大荔枝</strong>！刚才是我"有眼不识泰山"。</div>
-         <div class="pm-user pm-bubble" style="border:1.5px dashed var(--red-warn)">这是饼干<span style="color:var(--red-warn);font-size:0.85em">（反问）</span></div>
-         <div class="pm-ai pm-bubble">你还骗我！这明明就是一颗水灵灵的大荔枝嘛！</div>
-       </div>
-       <div style="display:flex;flex-direction:column;gap:0.5rem;min-width:0">
-         <div class="p8-evidence-label">实测体验 · 断点 02 · 反问语气被识别为肯定</div>
-         <div style="font-size:var(--small-size);color:var(--text-secondary);line-height:1.6">
-           用语音反问「这是饼干吗」，千问连续两次将语气上扬的疑问句理解为肯定陈述，无法通过韵律特征判断疑问意图。<strong style="color:var(--text-primary)">FIX：音调特征 + 上下文联合判断疑问概率</strong>
-         </div>
-       </div>
-     </div>
     </div>
   </div>
 </section>
