@@ -2603,6 +2603,232 @@ body.edit-active [contenteditable="true"]:focus {
   50%      { transform: scaleY(1);    opacity: 1;   }
 }
 
+/* ============================================================
+   E · PHONE MOCKUP COMPONENT (real-experience evidence)
+   ============================================================ */
+.phone-mock {
+  background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+  border-radius: clamp(0.8rem, 1.4vw, 1.2rem);
+  padding: clamp(0.55rem, 1.1vw, 0.95rem) clamp(0.6rem, 1.2vw, 1.05rem) clamp(0.7rem, 1.4vw, 1.15rem);
+  font-size: clamp(0.6rem, 0.85vw, 0.78rem);
+  color: #1a1a1a;
+  line-height: 1.45;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.2);
+  display: flex; flex-direction: column;
+  gap: clamp(0.35rem, 0.7vw, 0.55rem);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+.pm-statusbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(0.62rem, 0.9vw, 0.78rem);
+  font-weight: 600;
+  color: #1a1a1a;
+  padding-bottom: clamp(0.3rem, 0.7vw, 0.55rem);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  letter-spacing: 0.02em;
+}
+.pm-statusbar::before {
+  content: '‹';
+  position: absolute;
+  left: clamp(0.7rem, 1.4vw, 1.2rem);
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  color: #1a1a1a;
+  font-weight: 400;
+  line-height: 1;
+}
+.pm-bubble {
+  padding: clamp(0.45rem, 0.9vw, 0.7rem) clamp(0.55rem, 1vw, 0.8rem);
+  border-radius: clamp(0.5rem, 0.9vw, 0.75rem);
+  max-width: 88%;
+  word-break: break-word;
+}
+.pm-user {
+  background: #e3edff;
+  align-self: flex-end;
+  color: #1a1a1a;
+}
+.pm-ai {
+  background: #f0f0f0;
+  align-self: flex-start;
+  color: #1a1a1a;
+}
+.pm-mark {
+  background: linear-gradient(transparent 60%, rgba(201,112,100,0.35) 60%);
+  padding: 0 2px;
+  border-bottom: 1.5px solid var(--red-warn);
+}
+.pm-circle-mark {
+  display: inline-block;
+  padding: 0.1em 0.3em;
+  border: 2px solid var(--red-warn);
+  border-radius: 999px;
+  color: var(--red-warn);
+  font-weight: 700;
+}
+.pm-caption {
+  color: var(--red-warn);
+  font-size: clamp(0.6rem, 0.85vw, 0.74rem);
+  font-family: var(--font-mono);
+  text-align: left;
+  margin-top: clamp(0.2rem, 0.5vw, 0.4rem);
+  padding-left: 0.5rem;
+  border-left: 2px solid var(--red-warn);
+  background: rgba(201,112,100,0.06);
+  padding: 0.35rem 0.5rem;
+  line-height: 1.4;
+}
+.pm-product {
+  background: #d6e8d3;
+  border-radius: clamp(0.4rem, 0.8vw, 0.65rem);
+  padding: clamp(0.5rem, 1vw, 0.8rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+.pm-product-name {
+  font-weight: 600;
+  font-size: clamp(0.62rem, 0.88vw, 0.78rem);
+}
+.pm-product-cup {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1;
+}
+.pm-price {
+  font-weight: 700;
+  color: #ff4e00;
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+}
+.pm-price-strike {
+  color: #888;
+  text-decoration: line-through;
+  font-size: clamp(0.6rem, 0.8vw, 0.72rem);
+  font-weight: 400;
+  margin-left: 0.3em;
+}
+
+/* ---------- P8 split layout: vpanels left, phone right ---------- */
+.p8-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.8rem);
+  flex: 1;
+  min-height: 0;
+  margin-top: clamp(0.6rem, 1.5vh, 1.2rem);
+}
+.p8-vpanels {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: clamp(0.6rem, 1.1vw, 0.95rem);
+  min-height: 0;
+}
+.p8-vpanels .vpanel {
+  padding: clamp(0.65rem, 1.2vw, 1rem) clamp(0.85rem, 1.5vw, 1.2rem);
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  flex-wrap: wrap;
+}
+.p8-vpanels .vpanel-status { flex: 0 0 auto; min-width: clamp(5rem, 8vw, 7rem); }
+.p8-vpanels .vpanel-title { flex: 0 0 auto; font-size: clamp(0.88rem, 1.3vw, 1.05rem); }
+.p8-vpanels .vpanel-viz { display: none; }
+.p8-vpanels .vpanel-desc { flex: 1 1 60%; font-size: var(--small-size); min-width: 12rem; }
+.p8-vpanels .vpanel-fix { flex: 0 0 100%; font-size: var(--tiny-size); margin-top: -0.2rem; }
+
+.p8-phone-wrap {
+  display: flex; flex-direction: column;
+  gap: clamp(0.4rem, 0.9vh, 0.7rem);
+  min-height: 0;
+}
+.p8-phone-wrap .phone-mock { flex: 1; min-height: 0; overflow: auto; }
+.p8-evidence-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--red-warn);
+  text-transform: uppercase;
+}
+
+/* ---------- P9 reorganized layout ---------- */
+.p9-stack { display: flex; flex-direction: column; gap: clamp(0.55rem, 1.1vh, 0.9rem); flex: 1; min-height: 0; }
+.p9-phone-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.7rem, 1.4vw, 1.2rem);
+  flex: 1;
+  min-height: 0;
+}
+.p9-phone-row .phone-mock { font-size: clamp(0.6rem, 0.82vw, 0.74rem); }
+.p9-controls-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 1vw, 0.9rem);
+  padding: clamp(0.4rem, 0.9vh, 0.7rem) clamp(0.6rem, 1.2vw, 1rem);
+  background: rgba(201,112,100,0.04);
+  border-left: 2px solid var(--red-warn);
+}
+.p9-mini-ctrl {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: var(--tiny-size);
+  color: var(--text-secondary);
+}
+.p9-mini-ctrl .mc-tag {
+  font-family: var(--font-mono);
+  color: var(--red-warn);
+  letter-spacing: 0.15em;
+  flex: 0 0 auto;
+}
+.p9-mini-ctrl .mc-name {
+  font-family: var(--font-cjk-serif);
+  color: var(--text-primary);
+  font-size: var(--small-size);
+}
+
+/* ---------- P15 experience banner ---------- */
+.p15-evidence {
+  margin-top: clamp(0.7rem, 1.5vh, 1.1rem);
+  padding: clamp(0.6rem, 1.2vh, 1rem) clamp(0.8rem, 1.6vw, 1.4rem);
+  background: rgba(201,112,100,0.05);
+  border-left: 2px solid var(--red-warn);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: clamp(0.8rem, 1.6vw, 1.4rem);
+  align-items: center;
+  flex: 0 0 auto;
+}
+.p15-evidence-text {
+  display: flex; flex-direction: column; gap: 0.35rem;
+  min-width: 0;
+}
+.p15-evidence-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.22em;
+  color: var(--red-warn);
+  text-transform: uppercase;
+}
+.p15-evidence-body {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.p15-evidence-body strong { color: var(--text-primary); font-weight: 500; }
+.p15-evidence .phone-mock {
+  width: clamp(8rem, 13vw, 11rem);
+  padding: clamp(0.4rem, 0.8vw, 0.7rem);
+  font-size: clamp(0.55rem, 0.75vw, 0.7rem);
+  gap: clamp(0.25rem, 0.5vw, 0.4rem);
+}
+.p15-evidence .pm-statusbar { font-size: clamp(0.55rem, 0.78vw, 0.7rem); padding-bottom: 0.25rem; }
+.p15-evidence .pm-statusbar::before { display: none; }
+
 /* ---------- Respect reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .radar-svg polygon[fill^="rgba(212"],
@@ -2943,7 +3169,8 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Intent Recognition</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">意图识别 · <span class="accent">亮点与断点</span></h2>
 
-    <div class="vpanel-grid">
+    <div class="p8-split">
+     <div class="p8-vpanels">
       <!-- 亮点 · 视频意图理解 -->
       <div class="vpanel ok reveal-scale" style="--i:2">
         <div class="vpanel-status"><span class="badge-icon">✓</span><span>亮点 · Highlight</span></div>
@@ -3015,6 +3242,21 @@ body.edit-active [contenteditable="true"]:focus {
         </div>
         <div class="vpanel-fix" contenteditable="true"><strong>FIX</strong> 音调特征 + 上下文联合判断疑问概率</div>
       </div>
+     </div>
+
+     <!-- Right · 实测体验截图 mockup -->
+     <div class="p8-phone-wrap reveal-right" style="--i:5">
+       <div class="p8-evidence-label">实测体验 · 反问语气被肯定化</div>
+       <div class="phone-mock">
+         <div class="pm-statusbar">千问</div>
+         <div class="pm-ai pm-bubble">哈哈，果然是饼干！我就说嘛，刚才看你拿在手里晃悠，还以为是什么神秘道具呢。</div>
+         <div class="pm-user pm-bubble">这是饼干吗</div>
+         <div class="pm-ai pm-bubble">哎呀，这回我看走眼了！这哪是饼干呀，分明是一颗剥了皮的<strong>大荔枝</strong>！刚才是我"有眼不识泰山"。</div>
+         <div class="pm-user pm-bubble" style="border:1.5px dashed var(--red-warn)">这是饼干<span style="color:var(--red-warn);font-size:0.85em">（反问语气）</span></div>
+         <div class="pm-ai pm-bubble">你还骗我！这明明就是一颗水灵灵的大荔枝嘛！你是不是觉得刚才把我骗晕了一次，现在还想再骗我一次呀？</div>
+         <div class="pm-caption">语音反问语气被理解为肯定 · AI 无法捕捉韵律疑问信号</div>
+       </div>
+     </div>
     </div>
   </div>
 </section>
@@ -3045,30 +3287,29 @@ body.edit-active [contenteditable="true"]:focus {
     </div>
 
     <!-- 断点 · 缺乏场景自动适配 -->
-    <div class="matrix-label reveal" style="--i:3;color:var(--red-warn)">断点 · 场景自适应缺失</div>
-    <div class="controls-grid reveal" style="--i:3">
-      <div class="ctrl">
-        <div class="ctrl-label">P1</div>
-        <div class="ctrl-name" contenteditable="true">音色</div>
-        <div class="ctrl-track locked"></div>
-        <div class="ctrl-desc" contenteditable="true">可手动设置 · 无法感知老年 / 疲惫 / 情绪状态后自动切换音色</div>
+    <div class="matrix-label reveal" style="--i:3;color:var(--red-warn)">断点 · 场景自适应缺失（实测体验 badcase）</div>
+    <div class="p9-phone-row reveal" style="--i:3">
+      <div class="phone-mock">
+        <div class="pm-statusbar">千问</div>
+        <div class="pm-user pm-bubble" style="align-self:flex-end">你可以帮我做冥想吗？要配上音乐的那种</div>
+        <div class="pm-ai pm-bubble">这个想法很棒，但我<span class="pm-mark">现在还不能直接给你播放背景音乐</span>呀，怕只有我干巴巴的声音。不过我可以当你的"语音引导员"——你现在把手机放远一点，闭上眼睛。深吸一口气……再慢慢吐出来……</div>
+        <div class="pm-caption">无法主动调用音乐工具 · 也无法自动放慢语速进入冥想节奏</div>
       </div>
-      <div class="ctrl">
-        <div class="ctrl-label">P2</div>
-        <div class="ctrl-name" contenteditable="true">语速</div>
-        <div class="ctrl-track locked"></div>
-        <div class="ctrl-desc" contenteditable="true">可手动选快 / 正常 / 慢 · 冥想、专注等场景无法自动调节语速</div>
+      <div class="phone-mock">
+        <div class="pm-statusbar">千问</div>
+        <div class="pm-user pm-bubble" style="align-self:flex-end">你为什么不能自主调节语速呢？那你可以自主切换音色吗？我现在想用个男的跟我说话</div>
+        <div class="pm-ai pm-bubble">哎呀，我也想自己能像变色龙一样随心所欲地变呀，但<span class="pm-mark">目前我的语速和音色还是由系统设定的，我自己没法"一键切换"</span>。不过你想听男生的声音完全没问题，你可以在设置里挑一个低沉磁性的"霸道总裁"音……</div>
+        <div class="pm-caption">让用户跳出对话去设置面板手动改 · 体验断裂</div>
       </div>
-      <div class="ctrl">
-        <div class="ctrl-label">P3</div>
-        <div class="ctrl-name" contenteditable="true">情绪基调</div>
-        <div class="ctrl-track locked"></div>
-        <div class="ctrl-desc" contenteditable="true">可手动切换平静 / 欢快 / 正式 · 无法识别用户情绪主动适配语气</div>
-      </div>
+    </div>
+    <div class="p9-controls-strip reveal" style="--i:4">
+      <div class="p9-mini-ctrl"><span class="mc-tag">P1</span><span class="mc-name">音色</span><span>· 可手动 · 无法依情绪自动切换</span></div>
+      <div class="p9-mini-ctrl"><span class="mc-tag">P2</span><span class="mc-name">语速</span><span>· 可手动 · 冥想/专注场景无法自动调节</span></div>
+      <div class="p9-mini-ctrl"><span class="mc-tag">P3</span><span class="mc-name">情绪基调</span><span>· 可手动 · 无法识别用户情绪适配</span></div>
     </div>
 
     <!-- 修复方向 -->
-    <div class="reveal" style="--i:4;margin-top:auto;padding:clamp(0.7rem,1.4vh,1.1rem) clamp(1rem,2vw,1.6rem);background:var(--gold-glow);border-left:2px solid var(--gold);display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
+    <div class="reveal" style="--i:5;margin-top:auto;padding:clamp(0.7rem,1.4vh,1.1rem) clamp(1rem,2vw,1.6rem);background:var(--gold-glow);border-left:2px solid var(--gold);display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
       <span style="font-family:var(--font-mono);font-size:var(--tiny-size);letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;white-space:nowrap">修复方向</span>
       <span style="font-size:var(--small-size);color:var(--text-primary);line-height:1.5;flex:1;min-width:200px" contenteditable="true">
         接入 Qwen3-ASR <strong>情绪识别</strong>信号，根据场景自动适配语速与基调 · 首次使用 30 秒<strong>「声音体检」</strong>建立个人偏好基准 · 付费用户通过 <strong>Qwen3-TTS-VC</strong> 复刻专属音色
@@ -3370,6 +3611,34 @@ body.edit-active [contenteditable="true"]:focus {
           <li contenteditable="true">等餐 30-40 分钟推送相关短剧、短视频，<strong>把等待焦虑转化为内容消费</strong></li>
           <li contenteditable="true">独居用户「陪吃」功能，用复刻的家人音色或 IP 音色实时陪伴，绑定情感账户</li>
         </ul>
+      </div>
+    </div>
+
+    <!-- 实测体验 · 闪购点外卖价格不一致 -->
+    <div class="p15-evidence reveal" style="--i:5">
+      <div class="p15-evidence-text">
+        <div class="p15-evidence-label">实测体验 · 闪购点单 · 价格不一致</div>
+        <div class="p15-evidence-body" contenteditable="true">
+          同一杯<strong>空山栀子双大杯</strong>在两个入口报价差 <strong style="color:var(--red-warn)">2.5 倍</strong>——商品详情页 ¥25.8/杯起、列表合计页 ¥63.6/2 杯。AI 推荐链路没有打通真实价格层，<strong>用户在最后一步会产生强烈不信任</strong>。
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="pm-statusbar">千问</div>
+        <div style="font-weight:600;font-size:clamp(0.6rem,0.85vw,0.74rem);text-align:center">空山栀子双大杯</div>
+        <div class="pm-product">
+          <div class="pm-product-cup" aria-hidden="true">🥤🥤</div>
+          <div class="pm-product-name">爷爷不泡茶</div>
+        </div>
+        <div><span class="pm-circle-mark">预估价 ¥25.8 起</span><span class="pm-price-strike">¥42</span></div>
+      </div>
+      <div class="phone-mock">
+        <div class="pm-statusbar">千问</div>
+        <div style="font-weight:600;font-size:clamp(0.6rem,0.85vw,0.74rem)">为你推荐 10 款奶茶</div>
+        <div class="pm-product" style="background:#d6e8d3">
+          <div class="pm-product-cup" aria-hidden="true">🥤🥤</div>
+          <div class="pm-product-name">空山栀子双大杯 ×2</div>
+        </div>
+        <div><span class="pm-circle-mark">合计约 ¥63.6</span><span class="pm-price-strike">¥88</span></div>
       </div>
     </div>
   </div>
