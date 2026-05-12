@@ -4265,13 +4265,13 @@ class InlineEditor {
       data[el.dataset.editIdx] = el.innerHTML;
     });
     try {
-      localStorage.setItem('qianwen-pitch-deck-v5', JSON.stringify(data));
+      localStorage.setItem('qianwen-pitch-deck-v6', JSON.stringify(data));
     } catch (e) { /* storage full or disabled */ }
   }
 
   loadSavedContent() {
     try {
-      const raw = localStorage.getItem('qianwen-pitch-deck-v5');
+      const raw = localStorage.getItem('qianwen-pitch-deck-v6');
       if (!raw) return;
       const data = JSON.parse(raw);
       document.querySelectorAll(this.editableSelector).forEach((el, idx) => {
