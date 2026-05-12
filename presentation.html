@@ -2806,36 +2806,47 @@ body.edit-active [contenteditable="true"]:focus {
 }
 
 /* ---------- P8 split layout: vpanels left, phone right ---------- */
+/* P8 — 3 cards horizontal + evidence strip below */
 .p8-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
-  gap: clamp(1rem, 2vw, 1.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.2vh, 1rem);
   flex: 1;
   min-height: 0;
-  margin-top: clamp(0.6rem, 1.5vh, 1.2rem);
+  margin-top: clamp(0.6rem, 1.2vh, 1rem);
 }
 .p8-vpanels {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: clamp(0.5rem, 0.9vw, 0.75rem);
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.8rem, 1.5vw, 1.3rem);
+  flex: 1;
   min-height: 0;
 }
 .p8-vpanels .vpanel {
-  padding: clamp(0.55rem, 1vw, 0.85rem) clamp(0.7rem, 1.3vw, 1.1rem);
-  gap: clamp(0.3rem, 0.7vh, 0.5rem);
+  padding: clamp(0.7rem, 1.3vw, 1.1rem) clamp(0.8rem, 1.5vw, 1.2rem);
+  gap: clamp(0.4rem, 0.8vh, 0.6rem);
 }
 .p8-vpanels .vpanel-title { font-size: clamp(0.9rem, 1.35vw, 1.05rem); }
-.p8-vpanels .vpanel-viz { height: clamp(3rem, 5.5vh, 4.5rem); }
+.p8-vpanels .vpanel-viz { height: clamp(3.5rem, 6vh, 5rem); }
 .p8-vpanels .vpanel-desc { font-size: var(--small-size); }
 .p8-vpanels .vpanel-fix { font-size: var(--tiny-size); }
 
+/* P8 bottom evidence strip */
 .p8-phone-wrap {
-  display: flex; flex-direction: column;
-  gap: clamp(0.4rem, 0.9vh, 0.7rem);
-  min-height: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  gap: clamp(0.8rem, 1.6vw, 1.4rem);
+  align-items: center;
+  padding: clamp(0.5rem, 1vh, 0.8rem) clamp(0.8rem, 1.6vw, 1.4rem);
+  background: rgba(201,112,100,0.05);
+  border-left: 2px solid var(--red-warn);
+  flex: 0 0 auto;
 }
-.p8-phone-wrap .phone-mock { flex: 1; min-height: 0; overflow: auto; }
+.p8-phone-wrap .phone-mock {
+  width: clamp(8rem, 13vw, 11rem);
+  font-size: clamp(0.6rem, 0.82vw, 0.74rem);
+  gap: clamp(0.25rem, 0.5vw, 0.4rem);
+}
 .p8-evidence-label {
   font-family: var(--font-mono);
   font-size: var(--tiny-size);
@@ -3383,17 +3394,21 @@ body.edit-active [contenteditable="true"]:focus {
       </div>
      </div>
 
-     <!-- Right · 实测体验截图 mockup -->
-     <div class="p8-phone-wrap reveal-right" style="--i:5">
-       <div class="p8-evidence-label">实测体验 · 反问语气被肯定化</div>
+     <!-- Bottom · 实测体验截图 evidence strip -->
+     <div class="p8-phone-wrap reveal" style="--i:5">
        <div class="phone-mock">
          <div class="pm-statusbar">千问</div>
          <div class="pm-ai pm-bubble">哈哈，果然是饼干！我就说嘛，刚才看你拿在手里晃悠，还以为是什么神秘道具呢。</div>
          <div class="pm-user pm-bubble">这是饼干吗</div>
-         <div class="pm-ai pm-bubble">哎呀，这回我看走眼了！这哪是饼干呀，分明是一颗剥了皮的<strong>大荔枝</strong>！刚才是我"有眼不识泰山"。</div>
-         <div class="pm-user pm-bubble" style="border:1.5px dashed var(--red-warn)">这是饼干<span style="color:var(--red-warn);font-size:0.85em">（反问语气）</span></div>
-         <div class="pm-ai pm-bubble">你还骗我！这明明就是一颗水灵灵的大荔枝嘛！你是不是觉得刚才把我骗晕了一次，现在还想再骗我一次呀？</div>
-         <div class="pm-caption">语音反问语气被理解为肯定 · AI 无法捕捉韵律疑问信号</div>
+         <div class="pm-ai pm-bubble">哎呀，分明是一颗剥了皮的<strong>大荔枝</strong>！刚才是我"有眼不识泰山"。</div>
+         <div class="pm-user pm-bubble" style="border:1.5px dashed var(--red-warn)">这是饼干<span style="color:var(--red-warn);font-size:0.85em">（反问）</span></div>
+         <div class="pm-ai pm-bubble">你还骗我！这明明就是一颗水灵灵的大荔枝嘛！</div>
+       </div>
+       <div style="display:flex;flex-direction:column;gap:0.5rem;min-width:0">
+         <div class="p8-evidence-label">实测体验 · 断点 02 · 反问语气被识别为肯定</div>
+         <div style="font-size:var(--small-size);color:var(--text-secondary);line-height:1.6">
+           用语音反问「这是饼干吗」，千问连续两次将语气上扬的疑问句理解为肯定陈述，无法通过韵律特征判断疑问意图。<strong style="color:var(--text-primary)">FIX：音调特征 + 上下文联合判断疑问概率</strong>
+         </div>
        </div>
      </div>
     </div>
