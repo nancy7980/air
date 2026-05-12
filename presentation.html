@@ -2501,6 +2501,108 @@ body.edit-active [contenteditable="true"]:focus {
   transform: translateY(-2px);
 }
 
+/* ============================================================
+   D · INTERACTION & ANIMATION INTENSIFY LAYER
+   ============================================================ */
+
+/* ---------- A1 · Slide title scramble cursor ---------- */
+.slide-title, .chcover-title, .cover-title {
+  position: relative;
+}
+.slide-title.scrambling, .chcover-title.scrambling, .cover-title.scrambling {
+  color: var(--gold) !important;
+  text-shadow: 0 0 18px rgba(212,165,116,0.4);
+}
+.scramble-glyph {
+  display: inline-block;
+  font-family: var(--font-mono);
+  color: var(--gold);
+  opacity: 0.85;
+}
+
+/* ---------- A2 · Stat number pulse rings ---------- */
+.stat-num {
+  position: relative;
+}
+.stat-num::before,
+.stat-num::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 1.2em; height: 1.2em;
+  border-radius: 50%;
+  border: 2px solid rgba(212,165,116,0.6);
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+.slide.visible .stat-num::before { animation: statPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s 2; }
+.slide.visible .stat-num::after  { animation: statPulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) 1.4s 2; }
+@keyframes statPulse {
+  0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0.7; border-width: 2px; }
+  60%  { opacity: 0.35; border-width: 1px; }
+  100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; border-width: 0.5px; }
+}
+
+/* ---------- A3 · Bouncy reveal (override easing for spring feel) ---------- */
+.reveal, .reveal-left, .reveal-right, .reveal-scale {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition-duration: 0.75s !important;
+}
+
+/* ---------- B1 · Chapter big-number ticker (CSS prep, JS counts) ---------- */
+.chcover-bg-num {
+  font-variant-numeric: tabular-nums;
+}
+.chcover-bg-num.counting {
+  opacity: 0.10 !important;
+}
+
+/* ---------- B2 · Chapter pills bounce-in stagger ---------- */
+.chcover-pills span {
+  opacity: 0;
+  transform: scale(0.4) translateY(20px);
+  transition: opacity 0.5s var(--ease-spring),
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.4s var(--ease),
+              color 0.4s var(--ease),
+              background 0.4s var(--ease);
+}
+.slide.visible .chcover-pills span {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.slide.visible .chcover-pills span:nth-child(1) { transition-delay: 0.55s, 0.55s, 0s, 0s, 0s; }
+.slide.visible .chcover-pills span:nth-child(2) { transition-delay: 0.68s, 0.68s, 0s, 0s, 0s; }
+.slide.visible .chcover-pills span:nth-child(3) { transition-delay: 0.81s, 0.81s, 0s, 0s, 0s; }
+.slide.visible .chcover-pills span:nth-child(4) { transition-delay: 0.94s, 0.94s, 0s, 0s, 0s; }
+.slide.visible .chcover-pills span:nth-child(5) { transition-delay: 1.07s, 1.07s, 0s, 0s, 0s; }
+.chcover-pills span:hover {
+  transform: translateY(-3px) scale(1.04) !important;
+}
+
+/* ---------- C1 · Cover soundwave SVG (animated bars) ---------- */
+.cover-wave-svg {
+  position: absolute;
+  bottom: clamp(2rem, 6vh, 5rem);
+  left: clamp(2rem, 5vw, 4rem);
+  width: clamp(14rem, 22vw, 22rem);
+  height: clamp(3rem, 5vh, 4rem);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.8s;
+}
+.slide.visible .cover-wave-svg { opacity: 0.6; }
+.cover-wave-svg rect {
+  fill: var(--gold);
+  transform-origin: center;
+  animation: waveBar 1.6s ease-in-out infinite;
+}
+@keyframes waveBar {
+  0%, 100% { transform: scaleY(0.25); opacity: 0.4; }
+  50%      { transform: scaleY(1);    opacity: 1;   }
+}
+
 /* ---------- Respect reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .radar-svg polygon[fill^="rgba(212"],
@@ -2510,7 +2612,11 @@ body.edit-active [contenteditable="true"]:focus {
   .decay-chart path, .decay-chart polyline,
   .viz-lines line,
   .viz-app,
-  .chcover-bg-num { transition: none !important; animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; transform: none !important; }
+  .chcover-bg-num,
+  .stat-num::before, .stat-num::after,
+  .chcover-pills span,
+  .cover-wave-svg rect { transition: none !important; animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; transform: none !important; }
+  .chcover-pills span { opacity: 1 !important; transform: none !important; }
 }
 
 </style>
@@ -2550,6 +2656,30 @@ body.edit-active [contenteditable="true"]:focus {
      ============================================================ -->
 <section class="slide cover" data-title="封面">
   <div class="cover-soundwave decorative-only"></div>
+  <svg class="cover-wave-svg" viewBox="0 0 220 40" preserveAspectRatio="none" aria-hidden="true">
+    <rect x="0"   y="14" width="4" height="12" style="animation-delay:0s"></rect>
+    <rect x="10"  y="10" width="4" height="20" style="animation-delay:0.08s"></rect>
+    <rect x="20"  y="6"  width="4" height="28" style="animation-delay:0.16s"></rect>
+    <rect x="30"  y="12" width="4" height="16" style="animation-delay:0.24s"></rect>
+    <rect x="40"  y="4"  width="4" height="32" style="animation-delay:0.32s"></rect>
+    <rect x="50"  y="14" width="4" height="12" style="animation-delay:0.40s"></rect>
+    <rect x="60"  y="8"  width="4" height="24" style="animation-delay:0.48s"></rect>
+    <rect x="70"  y="2"  width="4" height="36" style="animation-delay:0.56s"></rect>
+    <rect x="80"  y="10" width="4" height="20" style="animation-delay:0.64s"></rect>
+    <rect x="90"  y="14" width="4" height="12" style="animation-delay:0.72s"></rect>
+    <rect x="100" y="6"  width="4" height="28" style="animation-delay:0.80s"></rect>
+    <rect x="110" y="12" width="4" height="16" style="animation-delay:0.88s"></rect>
+    <rect x="120" y="4"  width="4" height="32" style="animation-delay:0.96s"></rect>
+    <rect x="130" y="10" width="4" height="20" style="animation-delay:1.04s"></rect>
+    <rect x="140" y="14" width="4" height="12" style="animation-delay:1.12s"></rect>
+    <rect x="150" y="8"  width="4" height="24" style="animation-delay:1.20s"></rect>
+    <rect x="160" y="12" width="4" height="16" style="animation-delay:1.28s"></rect>
+    <rect x="170" y="6"  width="4" height="28" style="animation-delay:1.36s"></rect>
+    <rect x="180" y="10" width="4" height="20" style="animation-delay:1.44s"></rect>
+    <rect x="190" y="14" width="4" height="12" style="animation-delay:1.52s"></rect>
+    <rect x="200" y="4"  width="4" height="32" style="animation-delay:1.60s"></rect>
+    <rect x="210" y="12" width="4" height="16" style="animation-delay:1.68s"></rect>
+  </svg>
   <div class="slide-content">
     <div class="cover-label reveal" style="--i:0" contenteditable="false">千问 AI 产品经理 · 产品思考</div>
     <div class="draw-line"></div>
@@ -3457,6 +3587,8 @@ class SlidePresentation {
           this.updateNavDots();
           this.updateChapterAnchor();
           this.runCountersForSlide(entry.target);
+          this.scrambleTitleForSlide(entry.target);
+          this.countChapterNumForSlide(entry.target);
         }
       });
     }, opts);
@@ -3573,6 +3705,79 @@ class SlidePresentation {
       };
       requestAnimationFrame(animate);
     });
+  }
+
+  scrambleTitleForSlide(slide) {
+    const titles = slide.querySelectorAll('.slide-title, .chcover-title, .cover-title');
+    const glyphs = '01アイウエオカキクケコサシスセソ#$%&@!?ABCDEF';
+    titles.forEach((title) => {
+      if (title.dataset.scrambled === '1') return;
+      title.dataset.scrambled = '1';
+      // Walk text nodes only; preserve child elements (.accent, .en, etc.)
+      const textNodes = [];
+      const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT, null);
+      let n;
+      while ((n = walker.nextNode())) {
+        if (n.nodeValue && n.nodeValue.trim()) textNodes.push(n);
+      }
+      const states = textNodes.map((node) => ({
+        node,
+        original: node.nodeValue,
+        chars: Array.from(node.nodeValue)
+      }));
+      const totalLen = states.reduce((s, x) => s + x.chars.length, 0);
+      if (totalLen === 0) return;
+      title.classList.add('scrambling');
+      const duration = 650;
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const revealed = Math.floor(t * totalLen);
+        let cursor = 0;
+        states.forEach((s) => {
+          let out = '';
+          for (let i = 0; i < s.chars.length; i++) {
+            const globalIdx = cursor + i;
+            if (globalIdx < revealed || s.chars[i] === ' ' || s.chars[i] === ' ') {
+              out += s.chars[i];
+            } else {
+              out += glyphs[Math.floor(Math.random() * glyphs.length)];
+            }
+          }
+          s.node.nodeValue = out;
+          cursor += s.chars.length;
+        });
+        if (t < 1) requestAnimationFrame(tick);
+        else {
+          states.forEach((s) => { s.node.nodeValue = s.original; });
+          title.classList.remove('scrambling');
+        }
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  countChapterNumForSlide(slide) {
+    const numEl = slide.querySelector('.chcover-bg-num');
+    if (!numEl || numEl.dataset.counted === '1') return;
+    numEl.dataset.counted = '1';
+    const target = parseInt(numEl.textContent.trim(), 10);
+    if (isNaN(target)) return;
+    numEl.classList.add('counting');
+    const start = performance.now();
+    const duration = 900;
+    const tick = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = Math.round(target * eased);
+      numEl.textContent = v.toString().padStart(2, '0');
+      if (t < 1) requestAnimationFrame(tick);
+      else {
+        numEl.textContent = target.toString().padStart(2, '0');
+        numEl.classList.remove('counting');
+      }
+    };
+    requestAnimationFrame(tick);
   }
 
   setupLiveCounter() {
