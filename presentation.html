@@ -1770,37 +1770,37 @@ img, .image-container {
   line-height: 1.55;
 }
 
-/* New ABOUT ME layout · 4 traits + radar */
+/* New ABOUT ME layout · 5 traits + radar */
 .me-grid {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  gap: clamp(1.5rem, 3vw, 2.8rem);
+  gap: clamp(1.2rem, 2.5vw, 2.2rem);
   flex: 1;
-  margin-top: clamp(1rem, 2vh, 1.6rem);
+  margin-top: clamp(0.6rem, 1.2vh, 1rem);
   align-items: center;
 }
 .me-traits {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.8rem, 1.6vh, 1.2rem);
+  gap: clamp(0.25rem, 0.6vh, 0.5rem);
 }
 .me-trait {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: clamp(0.8rem, 1.6vw, 1.2rem);
+  gap: clamp(0.6rem, 1.2vw, 1rem);
   align-items: start;
-  padding: clamp(0.6rem, 1.2vh, 0.9rem) 0;
+  padding: clamp(0.4rem, 0.8vh, 0.65rem) 0;
   border-bottom: 1px solid var(--line-soft);
 }
 .me-trait:last-child { border-bottom: none; }
 .me-trait .mt-num {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
   font-weight: 500;
   color: var(--gold);
   line-height: 1;
-  min-width: 2.4rem;
+  min-width: 2rem;
 }
 .me-trait .mt-content {
   display: flex;
@@ -1810,13 +1810,13 @@ img, .image-container {
 .me-trait .mt-name {
   font-family: var(--font-cjk-serif);
   font-weight: 600;
-  font-size: clamp(0.95rem, 1.55vw, 1.18rem);
+  font-size: clamp(0.88rem, 1.4vw, 1.08rem);
   color: var(--text-primary);
 }
 .me-trait .mt-body {
-  font-size: var(--small-size);
+  font-size: clamp(0.74rem, 1.05vw, 0.88rem);
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 .me-radar {
   display: flex;
@@ -3904,7 +3904,14 @@ body.edit-active [contenteditable="true"]:focus {
           <div class="mt-num">04</div>
           <div class="mt-content">
             <div class="mt-name" contenteditable="true">10 项 AI 专利</div>
-            <div class="mt-body" contenteditable="true">覆盖语音交互、AI 个性化推荐、实时生成方向，技术深度可直接转化为产品判断力</div>
+            <div class="mt-body" contenteditable="true">覆盖语音交互、AI 个性化推荐、实时生成方向，技术积累可直接转化为产品判断力</div>
+          </div>
+        </div>
+        <div class="me-trait">
+          <div class="mt-num">05</div>
+          <div class="mt-content">
+            <div class="mt-name" contenteditable="true">AI 应用能力</div>
+            <div class="mt-body" contenteditable="true">独立 vibe coding 4 个项目：Model Time Keeper 插件、PM coach、自动盯播监控系统、竞品监控群机器人</div>
           </div>
         </div>
       </div>
@@ -3929,7 +3936,7 @@ body.edit-active [contenteditable="true"]:focus {
             <line x1="160" y1="160" x2="46" y2="122"/>
           </g>
           <!-- Capability polygon (values out of 100):
-               AI语音调优 95, 语言学 90, 执行推动 92, 技术深度 88, 跨界整合 85 -->
+               AI语音调优 95, 语言学 90, 执行推动 92, AI学习能力 92, 创新能力 88 -->
           <polygon points="160,46 268,126 218,250 99,251 63,127"
                    fill="rgba(212,165,116,0.18)"
                    stroke="#D4A574"
@@ -3947,7 +3954,7 @@ body.edit-active [contenteditable="true"]:focus {
             <text x="160" y="24">AI 语音调优</text>
             <text x="296" y="118">语言学基础</text>
             <text x="248" y="282">执行推动力</text>
-            <text x="72" y="282">技术深度</text>
+            <text x="72" y="282">AI 学习能力</text>
             <text x="22" y="118">创新能力</text>
           </g>
         </svg>
