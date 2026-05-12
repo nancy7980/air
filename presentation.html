@@ -1,0 +1,2829 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>千问语音助手 · 产品思考 · 候选人自荐</title>
+
+<!-- Fonts: Cormorant (English serif display) + Noto Serif SC (Chinese serif) + Noto Sans SC (body) + JetBrains Mono (data/code) -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   THEME · Style A · Celestial
+   Deep navy + warm gold + soft cyan accent
+   =========================================== */
+:root {
+  /* Colors */
+  --bg-primary: #0A0E1A;
+  --bg-secondary: #11162A;
+  --bg-tertiary: #161B30;
+  --gold: #D4A574;
+  --gold-bright: #E5BB87;
+  --gold-soft: rgba(212, 165, 116, 0.15);
+  --gold-glow: rgba(212, 165, 116, 0.08);
+  --gold-line: rgba(212, 165, 116, 0.25);
+  --teal: #5BCEAE;
+  --teal-soft: rgba(91, 206, 174, 0.15);
+  --red-warn: #C97064;
+  --text-primary: #EAE6E0;
+  --text-secondary: rgba(234, 230, 224, 0.6);
+  --text-dim: rgba(234, 230, 224, 0.38);
+  --text-faint: rgba(234, 230, 224, 0.2);
+  --line-soft: rgba(234, 230, 224, 0.08);
+
+  /* Fonts */
+  --font-serif: 'Cormorant', 'Noto Serif SC', serif;
+  --font-sans: 'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-cjk-serif: 'Noto Serif SC', serif;
+
+  /* Sizes (clamp) */
+  --title-size: clamp(1.8rem, 4.5vw, 3.6rem);
+  --h2-size: clamp(1.2rem, 2.6vw, 2rem);
+  --h3-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  --body-size: clamp(0.72rem, 1.1vw, 0.95rem);
+  --small-size: clamp(0.6rem, 0.85vw, 0.78rem);
+  --tiny-size: clamp(0.55rem, 0.7vw, 0.7rem);
+
+  /* Spacing */
+  --slide-padding: clamp(2rem, 5vw, 5rem);
+  --content-gap: clamp(0.75rem, 1.8vw, 1.5rem);
+  --element-gap: clamp(0.4rem, 1vw, 0.85rem);
+
+  /* Animation */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --d-fast: 0.4s;
+  --d-normal: 0.7s;
+  --d-slow: 1s;
+}
+
+/* ===========================================
+   RESET & BASE
+   =========================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   VIEWPORT FITTING · MANDATORY BASE
+   =========================================== */
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--body-size);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: hidden;
+  padding: var(--slide-padding);
+  position: relative;
+  z-index: 10;
+}
+
+img, .image-container {
+  max-width: 100%;
+  max-height: min(50vh, 400px);
+  object-fit: contain;
+}
+
+@media (max-height: 700px) {
+  :root {
+    --slide-padding: clamp(1.25rem, 3.5vw, 2.5rem);
+    --content-gap: clamp(0.5rem, 1.2vw, 1rem);
+    --title-size: clamp(1.4rem, 4vw, 2.6rem);
+  }
+}
+@media (max-height: 600px) {
+  :root {
+    --slide-padding: clamp(0.75rem, 2.5vw, 1.5rem);
+    --content-gap: clamp(0.3rem, 0.8vw, 0.6rem);
+    --title-size: clamp(1.2rem, 3.5vw, 2rem);
+    --body-size: clamp(0.65rem, 0.9vw, 0.8rem);
+  }
+  .decorative-only { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.2s !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ===========================================
+   GLOBAL AMBIENT BACKGROUND
+   Drifting golden orbs + thin grid
+   =========================================== */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.ambient .grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212, 165, 116, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 165, 116, 0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.ambient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.ambient .orb-1 {
+  width: 45vw; height: 45vw;
+  background: radial-gradient(circle, rgba(212,165,116,0.12) 0%, transparent 70%);
+  top: -15vw; right: -10vw;
+  animation: drift1 22s ease-in-out infinite;
+}
+.ambient .orb-2 {
+  width: 32vw; height: 32vw;
+  background: radial-gradient(circle, rgba(91,206,174,0.06) 0%, transparent 70%);
+  bottom: -8vw; left: 0vw;
+  animation: drift2 28s ease-in-out infinite;
+}
+.ambient .orb-3 {
+  width: 22vw; height: 22vw;
+  background: radial-gradient(circle, rgba(212,165,116,0.08) 0%, transparent 70%);
+  top: 45%; left: 30%;
+  animation: drift3 34s ease-in-out infinite;
+}
+@keyframes drift1 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-3vw,4vw) scale(1.08);} }
+@keyframes drift2 { 0%,100%{transform:translate(0,0);} 33%{transform:translate(3vw,-3vw);} 66%{transform:translate(-2vw,2vw);} }
+@keyframes drift3 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(2vw,-2vw) scale(1.06);} }
+
+/* ===========================================
+   GLOBAL UI · Progress bar + Nav dots + Chapter anchor
+   =========================================== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 100%);
+  z-index: 1000;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px var(--gold-soft);
+}
+
+.nav-dots {
+  position: fixed;
+  right: clamp(0.8rem, 2vw, 1.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(234, 230, 224, 0.15);
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  position: relative;
+}
+.nav-dot:hover {
+  background: var(--gold-soft);
+  transform: scale(1.4);
+}
+.nav-dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold-soft);
+  transform: scale(1.3);
+}
+.nav-dot::after {
+  content: attr(data-title);
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--gold-line);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s var(--ease);
+  border-radius: 1px;
+}
+.nav-dot:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.chapter-anchor {
+  position: fixed;
+  left: clamp(1rem, 2.5vw, 2rem);
+  bottom: clamp(1.5rem, 3vh, 2.5rem);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+.chapter-anchor a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.25s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chapter-anchor a::before {
+  content: '';
+  width: 12px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.25s ease;
+}
+.chapter-anchor a:hover, .chapter-anchor a.current {
+  color: var(--gold);
+}
+.chapter-anchor a.current::before {
+  width: 24px;
+}
+
+.slide-meta {
+  position: absolute;
+  top: clamp(1.2rem, 2.5vw, 2rem);
+  right: clamp(3rem, 6vw, 5rem);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  z-index: 50;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.slide-meta .meta-num {
+  color: var(--gold);
+}
+
+/* ===========================================
+   COMMON SLIDE PRIMITIVES
+   =========================================== */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: clamp(1rem, 2.5vh, 2rem);
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.slide-title {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: var(--title-size);
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin-bottom: clamp(1rem, 2.5vh, 2rem);
+}
+.slide-title .accent {
+  color: var(--gold);
+}
+.slide-title .en {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.45em;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  margin-top: 0.4em;
+}
+
+.tagline {
+  font-family: var(--font-cjk-serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: 1rem;
+  border-left: 2px solid var(--gold);
+}
+
+/* ===========================================
+   REVEAL ANIMATION SYSTEM
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity var(--d-normal) var(--ease), transform var(--d-normal) var(--ease); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+
+.reveal-blur { opacity: 0; filter: blur(8px); transition: opacity 0.9s var(--ease), filter 0.9s var(--ease); }
+.slide.visible .reveal-blur { opacity: 1; filter: blur(0); }
+
+.reveal-left { opacity: 0; transform: translateX(-30px); transition: opacity var(--d-normal) var(--ease), transform var(--d-normal) var(--ease); }
+.slide.visible .reveal-left { opacity: 1; transform: translateX(0); }
+
+.reveal-right { opacity: 0; transform: translateX(30px); transition: opacity var(--d-normal) var(--ease), transform var(--d-normal) var(--ease); }
+.slide.visible .reveal-right { opacity: 1; transform: translateX(0); }
+
+.reveal-scale { opacity: 0; transform: scale(0.94); transition: opacity var(--d-normal) var(--ease), transform var(--d-normal) var(--ease-spring); }
+.slide.visible .reveal-scale { opacity: 1; transform: scale(1); }
+
+/* Stagger via custom property --i */
+.slide.visible .reveal,
+.slide.visible .reveal-blur,
+.slide.visible .reveal-left,
+.slide.visible .reveal-right,
+.slide.visible .reveal-scale {
+  transition-delay: calc(var(--i, 0) * 80ms + 100ms);
+}
+
+/* Draw-in line */
+.draw-line {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transition: width 1s var(--ease) 0.4s;
+}
+.slide.visible .draw-line { width: clamp(80px, 12vw, 180px); }
+
+/* ===========================================
+   P1 · COVER
+   =========================================== */
+.cover { justify-content: center; align-items: flex-start; }
+.cover .slide-content {
+  justify-content: center;
+  padding-left: clamp(3rem, 8vw, 9rem);
+  padding-right: clamp(3rem, 8vw, 9rem);
+}
+.cover-label {
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: clamp(1.5rem, 3vh, 3rem);
+}
+.cover-title {
+  font-family: var(--font-cjk-serif);
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.cover-title .en {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.4em;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin-top: 0.5em;
+}
+.cover-subtitle {
+  margin-top: clamp(2rem, 3vh, 3rem);
+  font-size: clamp(0.78rem, 1.2vw, 1rem);
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  line-height: 2;
+}
+.cover-subtitle span {
+  color: var(--gold);
+  margin: 0 0.5em;
+  opacity: 0.7;
+}
+.cover-bottom {
+  position: absolute;
+  bottom: clamp(2rem, 4vh, 4rem);
+  left: clamp(3rem, 8vw, 9rem);
+  right: clamp(3rem, 8vw, 9rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.cover-name {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.cover-meta {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-align: right;
+  line-height: 1.8;
+}
+.cover-pulse {
+  position: absolute;
+  bottom: clamp(2.5rem, 4.5vh, 4.5rem);
+  right: clamp(3.5rem, 8.5vw, 9.5rem);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: dotPulse 3s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,165,116,0.4); }
+  50% { box-shadow: 0 0 0 10px transparent; }
+}
+.cover-soundwave {
+  position: absolute;
+  top: 50%; right: 8vw;
+  transform: translateY(-50%);
+  width: 50vw; height: 50vw;
+  border: 1px solid rgba(212,165,116,0.06);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.cover-soundwave::before, .cover-soundwave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(212,165,116,0.06);
+  border-radius: 50%;
+  animation: pulse-ring 5s ease-out infinite;
+}
+.cover-soundwave::after { animation-delay: 2.5s; }
+@keyframes pulse-ring {
+  0% { transform: scale(0.7); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+/* ===========================================
+   P2 · TOC
+   =========================================== */
+.toc { justify-content: center; }
+.toc-list { display: flex; flex-direction: column; gap: clamp(1rem, 2.5vh, 2rem); margin-top: clamp(1.5rem, 3vh, 2.5rem); }
+.toc-item {
+  display: grid;
+  grid-template-columns: clamp(3.5rem, 7vw, 6rem) auto 1fr;
+  align-items: baseline;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  padding: clamp(0.6rem, 1.2vh, 1rem) 0;
+  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  transition: all 0.4s var(--ease);
+  text-decoration: none;
+  color: inherit;
+}
+.toc-item:hover {
+  padding-left: 1rem;
+  border-bottom-color: var(--gold-line);
+}
+.toc-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  color: var(--gold);
+  line-height: 1;
+}
+.toc-name {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+  color: var(--text-primary);
+  transition: transform 0.4s var(--ease);
+}
+.toc-item:hover .toc-name { transform: translateX(8px); }
+.toc-desc {
+  font-size: var(--body-size);
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  text-align: right;
+  justify-self: end;
+}
+.toc-item:hover .toc-desc { color: var(--text-secondary); }
+
+/* ===========================================
+   P3 · MARKET DATA
+   =========================================== */
+.market-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  flex: 1;
+  align-items: center;
+  margin-top: 1rem;
+}
+.stat-stack { display: flex; flex-direction: column; gap: clamp(1rem, 2vh, 1.8rem); }
+.stat-item { border-left: 1px solid var(--gold-line); padding-left: clamp(0.8rem, 1.5vw, 1.4rem); }
+.stat-num {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  color: var(--gold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+.stat-num .unit {
+  font-family: var(--font-cjk-serif);
+  font-size: 0.4em;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+.stat-label {
+  margin-top: 0.4em;
+  font-size: var(--body-size);
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+.stat-label .annot {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-left: 0.5em;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--body-size);
+}
+.data-table th {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--gold-line);
+  text-transform: uppercase;
+}
+.data-table td {
+  padding: clamp(0.5rem, 1vh, 0.85rem) 0.8rem;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+.data-table tr.v3-row td {
+  color: var(--text-primary);
+  background: linear-gradient(90deg, var(--gold-glow), transparent);
+}
+.data-table tr.v3-row td:first-child {
+  color: var(--gold);
+  font-weight: 600;
+}
+.data-table .badge {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--gold-line);
+  font-family: var(--font-mono);
+  font-size: 0.65em;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+/* ===========================================
+   P4 · QIANWEN VS DOUBAO
+   =========================================== */
+.vs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  flex: 1;
+  margin-top: 1rem;
+}
+.vs-col { display: flex; flex-direction: column; gap: clamp(0.8rem, 1.8vh, 1.5rem); }
+.vs-divider { background: linear-gradient(to bottom, transparent, var(--gold-line) 20%, var(--gold-line) 80%, transparent); }
+.vs-name {
+  font-family: var(--font-cjk-serif);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.8vw, 2.2rem);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+.vs-col.doubao .vs-name { color: #7BAFD4; }
+.vs-col.qianwen .vs-name { color: var(--gold); }
+.vs-name .label-mini {
+  font-family: var(--font-mono);
+  font-size: 0.45em;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+}
+.vs-section-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+.vs-section-label.adv { color: var(--teal); }
+.vs-section-label.dis { color: var(--red-warn); }
+.vs-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+.vs-list li {
+  font-size: var(--body-size);
+  color: var(--text-secondary);
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.5;
+}
+.vs-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.7em;
+  width: 6px; height: 1px;
+  background: var(--text-dim);
+}
+.vs-list li.key { color: var(--text-primary); }
+.vs-list li.key::before { background: var(--gold); width: 8px; }
+
+.vs-bottom {
+  margin-top: clamp(1rem, 2.5vh, 2rem);
+  padding-top: clamp(0.8rem, 2vh, 1.5rem);
+  border-top: 1px solid var(--gold-line);
+  font-family: var(--font-cjk-serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
+}
+.vs-bottom strong {
+  color: var(--gold);
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* ===========================================
+   P5 · WHY NOW
+   =========================================== */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 1.8rem);
+  flex: 1;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+.why-card {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(17,22,42,0.4) 100%);
+  border: 1px solid var(--line-soft);
+  border-left: 2px solid var(--gold);
+  padding: clamp(1.2rem, 2.5vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  transition: all 0.4s var(--ease);
+}
+.why-card:hover {
+  border-left-color: var(--gold-bright);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--gold-line);
+}
+.why-card .card-num {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+.why-card .card-title {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+.why-card .card-title .en {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.55em;
+  color: var(--gold);
+  margin-top: 0.3em;
+  letter-spacing: 0.04em;
+}
+.why-card .card-body {
+  font-size: var(--body-size);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.why-card .card-body em {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* ===========================================
+   P6 · INTENT RECOGNITION
+   =========================================== */
+.two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  flex: 1;
+  margin-top: 1rem;
+}
+.bad-cases { display: flex; flex-direction: column; gap: clamp(0.8rem, 1.8vh, 1.4rem); }
+.bad-case-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--red-warn);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: clamp(0.5rem, 1vh, 0.8rem);
+}
+.dialog-bubble {
+  font-size: var(--body-size);
+  padding: 0.6em 0.9em;
+  border-radius: 14px;
+  max-width: 85%;
+  line-height: 1.5;
+  position: relative;
+}
+.dialog-bubble.user {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.dialog-bubble.ai {
+  background: rgba(212,165,116,0.1);
+  border: 1px solid var(--red-warn);
+  color: var(--text-primary);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.dialog-bubble.ai::after {
+  content: '✕ ' attr(data-issue);
+  position: absolute;
+  bottom: calc(100% + 4px);
+  right: 0;
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  color: var(--red-warn);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.matrix-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--small-size);
+}
+.matrix-table th {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  padding: 0.5em 0.7em;
+  text-align: left;
+  border-bottom: 1px solid var(--gold-line);
+  text-transform: uppercase;
+}
+.matrix-table td {
+  padding: clamp(0.45rem, 0.9vh, 0.75rem) 0.7rem;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.45;
+}
+.matrix-table td:first-child {
+  color: var(--text-primary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cap {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  padding: 0.1em 0.5em;
+  border-radius: 2px;
+}
+.cap.strong { color: var(--teal); border: 1px solid var(--teal-soft); background: var(--teal-soft); }
+.cap.mid { color: var(--gold); border: 1px solid var(--gold-line); background: var(--gold-glow); }
+.cap.weak { color: var(--red-warn); border: 1px solid rgba(201,112,100,0.3); }
+
+/* ===========================================
+   P7 · TOOL CALLING
+   =========================================== */
+.problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1vh, 0.7rem);
+  margin-bottom: clamp(1.2rem, 2.5vh, 2rem);
+}
+.problem-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.8rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--line-soft);
+  font-size: var(--body-size);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.problem-item .pid {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--red-warn);
+  letter-spacing: 0.1em;
+}
+.problem-item strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.fix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.8rem, 1.5vw, 1.4rem);
+  flex: 1;
+  min-height: 0;
+}
+.fix-card {
+  background: linear-gradient(180deg, var(--bg-secondary), rgba(17,22,42,0.5));
+  border: 1px solid var(--line-soft);
+  border-top: 2px solid var(--gold);
+  padding: clamp(0.9rem, 1.8vw, 1.4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.fix-card .fix-num {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+.fix-card .fix-title {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  color: var(--text-primary);
+}
+.fix-card .fix-body {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.fix-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+}
+.fix-level {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+}
+.fix-level .lvl {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--gold-line);
+  color: var(--gold);
+}
+
+/* ===========================================
+   P8 · MEMORY
+   =========================================== */
+.memory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--small-size);
+}
+.memory-table th, .memory-table td {
+  padding: clamp(0.45rem, 0.9vh, 0.75rem) 0.7rem;
+  text-align: left;
+}
+.memory-table th {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  border-bottom: 1px solid var(--gold-line);
+  text-transform: uppercase;
+}
+.memory-table td {
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.45;
+}
+.memory-table td:first-child {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.memory-mechanism {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(0.8rem, 1.8vh, 1.4rem);
+}
+.gauge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+.gauge-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: space-between;
+}
+.gauge-label .pct { color: var(--gold); }
+.gauge-bar {
+  height: 4px;
+  background: rgba(234,230,224,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.gauge-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.2s var(--ease) 0.6s;
+}
+.slide.visible .gauge-fill.f70 { transform: scaleX(0.7); }
+.slide.visible .gauge-fill.f85 { transform: scaleX(0.85); }
+.gauge-desc {
+  font-size: var(--tiny-size);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.memory-quote {
+  margin-top: auto;
+  padding-top: clamp(1rem, 2vh, 1.6rem);
+  border-top: 1px solid var(--gold-line);
+  font-family: var(--font-cjk-serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.5;
+}
+.memory-quote strong {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* ===========================================
+   P9 · ECOSYSTEM
+   =========================================== */
+.eco-flow {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.8rem, 1.8vh, 1.4rem);
+  margin-top: 1rem;
+  flex: 1;
+  position: relative;
+}
+.eco-flow::before {
+  content: '';
+  position: absolute;
+  left: clamp(2rem, 3vw, 3rem);
+  top: 1rem; bottom: 1rem;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold) 0%, var(--gold-line) 50%, transparent);
+}
+.eco-stage {
+  display: grid;
+  grid-template-columns: clamp(4rem, 6vw, 6rem) 1fr;
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: start;
+  padding: clamp(0.5rem, 1vh, 0.9rem) 0;
+}
+.eco-stage-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  color: var(--gold);
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  background: var(--bg-primary);
+  padding-right: 0.5rem;
+}
+.eco-stage-content { display: flex; flex-direction: column; gap: 0.4rem; }
+.eco-stage-title {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  color: var(--text-primary);
+}
+.eco-stage-body {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.eco-stage-body strong { color: var(--gold); font-weight: 500; }
+.eco-value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  margin-top: 0.6rem;
+}
+.eco-value-grid > div {
+  padding: 0.7rem 0.8rem;
+  border-left: 1px solid var(--gold-line);
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.eco-value-grid > div strong {
+  display: block;
+  color: var(--gold);
+  font-size: 0.85em;
+  font-weight: 500;
+  margin-bottom: 0.2em;
+  letter-spacing: 0.05em;
+}
+
+/* ===========================================
+   P10 · TAOBAO  &  P12 · SHANGOU  (three-column)
+   =========================================== */
+.tri-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 1.8rem);
+  flex: 1;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+.tri-card {
+  background: linear-gradient(180deg, var(--bg-secondary), rgba(17,22,42,0.4));
+  border: 1px solid var(--line-soft);
+  padding: clamp(1rem, 2vw, 1.6rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  position: relative;
+  transition: all 0.4s var(--ease);
+}
+.tri-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 30%;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.4s var(--ease);
+}
+.tri-card:hover::before { width: 100%; }
+.tri-card .tc-num {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+.tri-card .tc-title {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  color: var(--text-primary);
+}
+.tri-card .tc-title small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.55em;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  font-weight: 400;
+  margin-top: 0.3em;
+}
+.tri-card .tc-body {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.tri-card .tc-body strong { color: var(--text-primary); font-weight: 500; }
+
+/* ===========================================
+   P11 · TAOBAO LIVE
+   =========================================== */
+.live-top {
+  background: linear-gradient(90deg, var(--bg-secondary), rgba(17,22,42,0.3));
+  border-left: 2px solid var(--gold);
+  padding: clamp(0.8rem, 1.8vw, 1.4rem);
+  font-size: var(--body-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: clamp(1rem, 2vh, 1.5rem);
+  position: relative;
+}
+.live-counter {
+  position: absolute;
+  top: clamp(0.6rem, 1.5vw, 1rem);
+  right: clamp(0.8rem, 2vw, 1.4rem);
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+.live-counter::before {
+  content: '● ';
+  color: var(--red-warn);
+  animation: blink 1.5s infinite;
+}
+@keyframes blink { 50% { opacity: 0.4; } }
+
+.live-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  flex: 1;
+  min-height: 0;
+}
+.live-col h3 {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  color: var(--gold);
+  margin-bottom: clamp(0.6rem, 1.2vh, 1rem);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--gold-line);
+}
+.live-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.2vh, 0.9rem);
+}
+.live-list li {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.55;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.live-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 8px; height: 1px;
+  background: var(--gold);
+}
+.live-list li strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.live-list li .funnel-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65em;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-right: 0.5em;
+}
+.live-note {
+  margin-top: auto;
+  padding-top: clamp(0.8rem, 1.5vh, 1.2rem);
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  text-align: right;
+  font-style: italic;
+}
+.live-note::before {
+  content: '◆ ';
+  color: var(--gold);
+  margin-right: 0.3em;
+}
+
+/* ===========================================
+   P13 · GAODE
+   =========================================== */
+.gaode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  flex: 1;
+  margin-top: 1rem;
+}
+.gaode-col h3 {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  color: var(--gold);
+  margin-bottom: clamp(0.6rem, 1.2vh, 1rem);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--gold-line);
+}
+.gaode-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1vh, 0.7rem);
+}
+.gaode-list li {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 1rem;
+  position: relative;
+}
+.gaode-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 6px; height: 1px;
+  background: var(--gold);
+}
+.gaode-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.4vh, 1.1rem);
+}
+.gaode-stage {
+  padding: clamp(0.6rem, 1.3vw, 1rem);
+  border-left: 1px solid var(--gold-line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.gaode-stage .stage-name {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.gaode-stage .stage-body {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.gaode-stage .stage-body strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ===========================================
+   P14 · SUPER PROFILE
+   =========================================== */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  flex: 1;
+  margin-top: 1rem;
+  align-items: center;
+}
+.profile-viz {
+  position: relative;
+  aspect-ratio: 1;
+  max-width: min(40vh, 100%);
+  margin: 0 auto;
+}
+.viz-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+.viz-center::before {
+  content: '';
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 24px var(--gold-soft);
+}
+.viz-center span {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+  color: var(--bg-primary);
+  z-index: 10;
+  position: relative;
+}
+.viz-app {
+  position: absolute;
+  width: 20%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--gold-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-cjk-serif);
+  font-weight: 500;
+  font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+  color: var(--text-primary);
+  z-index: 6;
+  transition: all 0.3s var(--ease);
+}
+.viz-app:hover {
+  border-color: var(--gold);
+  background: var(--bg-tertiary);
+  transform: scale(1.1);
+}
+.viz-app.tb { top: 2%; left: 50%; transform: translateX(-50%); }
+.viz-app.tb:hover { transform: translateX(-50%) scale(1.1); }
+.viz-app.elm { top: 50%; right: 2%; transform: translateY(-50%); }
+.viz-app.elm:hover { transform: translateY(-50%) scale(1.1); }
+.viz-app.gd { bottom: 2%; left: 50%; transform: translateX(-50%); }
+.viz-app.gd:hover { transform: translateX(-50%) scale(1.1); }
+.viz-app.fz { top: 50%; left: 2%; transform: translateY(-50%); }
+.viz-app.fz:hover { transform: translateY(-50%) scale(1.1); }
+.viz-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.profile-example {
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+.profile-example .ex-step {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.profile-example .ex-trigger {
+  color: var(--text-primary);
+  border-left: 2px solid var(--gold);
+  padding-left: 0.8rem;
+  margin-bottom: 1rem;
+}
+.profile-example .ex-arrow {
+  color: var(--gold);
+  margin: 0.4rem 0;
+}
+.profile-example .ex-action {
+  color: var(--text-secondary);
+  padding-left: 1.5rem;
+  position: relative;
+}
+.profile-example .ex-action::before {
+  content: '·';
+  position: absolute;
+  left: 0.6rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+.profile-conclusion {
+  margin-top: clamp(0.8rem, 1.8vh, 1.4rem);
+  padding-top: clamp(0.6rem, 1.4vh, 1rem);
+  border-top: 1px solid var(--gold-line);
+  font-family: var(--font-cjk-serif);
+  font-style: italic;
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.profile-conclusion strong { color: var(--gold); font-style: normal; }
+
+/* ===========================================
+   P15 · EXPERIENCE + TRAITS
+   =========================================== */
+.exp-top { display: grid; grid-template-columns: auto 1fr; gap: clamp(1.2rem, 2.5vw, 2rem); margin-top: 0.5rem; }
+.exp-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+  min-width: clamp(11rem, 18vw, 14rem);
+}
+.exp-node {
+  background: var(--bg-secondary);
+  border: 1px solid var(--gold-line);
+  padding: 0.55rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  text-align: center;
+  position: relative;
+}
+.exp-node.start { background: var(--gold); color: var(--bg-primary); border-color: var(--gold); font-weight: 600; }
+.exp-node.end { border-color: var(--teal); color: var(--teal); }
+.exp-arrow {
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.exp-arrow::before {
+  content: '';
+  width: 1px;
+  height: 100%;
+  background: var(--gold);
+}
+.exp-arrow::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid var(--gold);
+}
+.exp-arrow .arrow-label {
+  position: absolute;
+  left: 100%;
+  margin-left: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.exp-details { display: flex; flex-direction: column; gap: clamp(0.5rem, 1vh, 0.8rem); }
+.exp-detail {
+  background: rgba(17,22,42,0.5);
+  border: 1px solid var(--line-soft);
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.exp-detail .key {
+  color: var(--gold);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  margin-right: 0.5em;
+}
+.exp-mapping {
+  margin-top: clamp(0.5rem, 1vh, 0.8rem);
+  padding: 0.6rem 0.8rem;
+  border-left: 2px solid var(--teal);
+  background: var(--teal-soft);
+  font-size: var(--small-size);
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+.exp-mapping strong { color: var(--teal); font-weight: 500; }
+
+.traits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.8rem, 1.5vw, 1.4rem);
+  margin-top: clamp(1rem, 2.2vh, 1.8rem);
+  padding-top: clamp(1rem, 2vh, 1.5rem);
+  border-top: 1px dashed var(--gold-line);
+}
+.trait {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.trait .trait-num {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+.trait .trait-name {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+  color: var(--text-primary);
+}
+.trait .trait-body {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ===========================================
+   P16 · PLANNING
+   =========================================== */
+.timeline-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.timeline {
+  position: relative;
+  margin: clamp(1.5rem, 3vh, 2.5rem) 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-line), var(--gold), var(--red-warn));
+}
+.timeline-node {
+  position: absolute;
+  top: 50%;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 4px var(--bg-primary), 0 0 12px var(--gold-soft);
+}
+.timeline-node.n1 { left: 8%; }
+.timeline-node.n2 { left: 50%; background: var(--gold-bright); }
+.timeline-node.n3 { left: 92%; background: var(--red-warn); box-shadow: 0 0 0 4px var(--bg-primary), 0 0 12px rgba(201,112,100,0.3); }
+.timeline-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-top: -0.5rem;
+}
+.tl-label {
+  text-align: center;
+}
+.tl-label .tl-period {
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+.tl-label .tl-name {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  color: var(--text-primary);
+}
+
+.plan-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 1.8rem);
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.plan-detail {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.65;
+  padding-left: 1rem;
+  border-left: 1px solid var(--gold-line);
+}
+.plan-detail strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.closing {
+  margin-top: auto;
+  padding-top: clamp(1rem, 2vh, 1.6rem);
+  border-top: 1px solid var(--gold-line);
+  font-family: var(--font-cjk-serif);
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+  color: var(--text-primary);
+  line-height: 1.65;
+  text-align: center;
+}
+
+.closing-pulse {
+  position: absolute;
+  bottom: clamp(2.5rem, 4.5vh, 4.5rem);
+  right: clamp(3.5rem, 8.5vw, 9.5rem);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: dotPulse 3s ease-in-out infinite;
+}
+
+/* ===========================================
+   EDIT MODE
+   =========================================== */
+.edit-hotzone {
+  position: fixed;
+  top: 0; left: 0;
+  width: 80px; height: 80px;
+  z-index: 10000;
+  cursor: pointer;
+}
+.edit-toggle {
+  position: fixed;
+  top: 1rem; left: 1rem;
+  z-index: 10001;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.edit-toggle.show,
+.edit-toggle.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.edit-toggle.active {
+  background: var(--gold);
+  color: var(--bg-primary);
+}
+.edit-banner {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--gold);
+  padding: 0.7rem 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.edit-banner.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+body.edit-active [contenteditable="true"] {
+  outline: 1px dashed rgba(212,165,116,0.4);
+  outline-offset: 4px;
+  cursor: text;
+}
+body.edit-active [contenteditable="true"]:hover {
+  outline-color: var(--gold);
+  background: rgba(212,165,116,0.04);
+}
+body.edit-active [contenteditable="true"]:focus {
+  outline: 1px solid var(--gold);
+  background: rgba(212,165,116,0.06);
+}
+
+</style>
+</head>
+<body>
+
+<!-- Global ambient layer -->
+<div class="ambient">
+  <div class="grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Progress bar -->
+<div class="progress-bar"></div>
+
+<!-- Nav dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- Chapter anchor -->
+<div class="chapter-anchor" id="chapterAnchor">
+  <a data-jump="3"><span>市场</span></a>
+  <a data-jump="6"><span>体验</span></a>
+  <a data-jump="9"><span>生态</span></a>
+  <a data-jump="15"><span>自荐</span></a>
+</div>
+
+<!-- Edit hotzone & toggle -->
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">✎</button>
+<div class="edit-banner" id="editBanner">编辑模式开启 · 点击任意文字编辑 · Ctrl+S 导出</div>
+
+
+<!-- ============================================================
+     P1 · COVER
+     ============================================================ -->
+<section class="slide cover" data-title="封面">
+  <div class="cover-soundwave decorative-only"></div>
+  <div class="slide-content">
+    <div class="cover-label reveal" style="--i:0" contenteditable="false">千问 AI 产品经理 · 候选人自荐</div>
+    <div class="draw-line"></div>
+    <h1 class="cover-title reveal" style="--i:2" contenteditable="false">
+      千问语音助手的产品思考
+      <span class="en">Market &middot; Experience &middot; Ecosystem &middot; Candidate</span>
+    </h1>
+    <p class="cover-subtitle reveal" style="--i:4" contenteditable="false">
+      <span>·</span>市场判断<span>·</span>体验报告<span>·</span>生态机会<span>·</span>候选人自荐<span>·</span>
+    </p>
+    <div class="cover-bottom">
+      <div class="cover-name reveal" style="--i:6" contenteditable="true">候选人姓名</div>
+      <div class="cover-meta reveal" style="--i:6" contenteditable="true">
+        应聘 千问 AI 产品经理<br>2026 年 5 月
+      </div>
+    </div>
+  </div>
+  <div class="cover-pulse decorative-only"></div>
+</section>
+
+
+<!-- ============================================================
+     P2 · TOC
+     ============================================================ -->
+<section class="slide toc" data-title="目录">
+  <div class="slide-meta">
+    <span class="meta-num">02</span> / 16
+  </div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0" contenteditable="false">Table of Contents</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">本次分享的四个部分</h2>
+    <div class="toc-list">
+      <a class="toc-item reveal" style="--i:2" data-jump="3">
+        <span class="toc-num">01</span>
+        <span class="toc-name" contenteditable="true">市场</span>
+        <span class="toc-desc" contenteditable="true">千问语音助手所在的赛道</span>
+      </a>
+      <a class="toc-item reveal" style="--i:3" data-jump="6">
+        <span class="toc-num">02</span>
+        <span class="toc-name" contenteditable="true">体验</span>
+        <span class="toc-desc" contenteditable="true">千问当前的三个产品断点</span>
+      </a>
+      <a class="toc-item reveal" style="--i:4" data-jump="9">
+        <span class="toc-num">03</span>
+        <span class="toc-name" contenteditable="true">生态</span>
+        <span class="toc-desc" contenteditable="true">阿里业务场景中的 AI 落点</span>
+      </a>
+      <a class="toc-item reveal" style="--i:5" data-jump="15">
+        <span class="toc-num">04</span>
+        <span class="toc-name" contenteditable="true">自荐</span>
+        <span class="toc-desc" contenteditable="true">候选人的匹配度</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P3 · MARKET · 行业基本盘与代际演进
+     ============================================================ -->
+<section class="slide" data-title="行业基本盘">
+  <div class="slide-meta"><span class="meta-num">03</span> / 16 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Market · Generation Shift</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">AI 语音助手<span class="accent">已进入第三代</span></h2>
+
+    <div class="market-grid">
+      <div class="stat-stack">
+        <div class="stat-item reveal-left" style="--i:2">
+          <div class="stat-num" data-count="4.4"><span class="counter">0</span><span class="unit">亿</span></div>
+          <div class="stat-label" contenteditable="true">国内 AI 原生 App 月活 <span class="annot">2026 Q1</span></div>
+        </div>
+        <div class="stat-item reveal-left" style="--i:3">
+          <div class="stat-num" data-count="7352"><span class="counter">0</span><span class="unit">万</span></div>
+          <div class="stat-label" contenteditable="true">千问公测三个月 DAU <span class="annot">追平豆包三年积累</span></div>
+        </div>
+        <div class="stat-item reveal-left" style="--i:4">
+          <div class="stat-num" data-count="50"><span class="counter">0</span><span class="unit">亿</span></div>
+          <div class="stat-label" contenteditable="true">春节"千问帮我"累计调用次数</div>
+        </div>
+      </div>
+
+      <div class="reveal-right" style="--i:3">
+        <table class="data-table">
+          <thead>
+            <tr><th>代际</th><th>代表产品</th><th>核心能力</th><th>商业价值</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td contenteditable="true">V1 工具型</td>
+              <td contenteditable="true">Siri、小爱、天猫精灵</td>
+              <td contenteditable="true">ASR + 命令执行</td>
+              <td contenteditable="true">弱,硬件附属</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">V2 对话型</td>
+              <td contenteditable="true">豆包、ChatGPT Voice</td>
+              <td contenteditable="true">开放域聊天、情感陪伴</td>
+              <td contenteditable="true">中,时长广告</td>
+            </tr>
+            <tr class="v3-row">
+              <td contenteditable="true">V3 代办型 <span class="badge">CURRENT</span></td>
+              <td contenteditable="true">千问、Qwen-Omni</td>
+              <td contenteditable="true">语音 → 意图 → 工具 → 履约</td>
+              <td contenteditable="true">强,直接挂交易</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="tagline reveal" style="--i:6" contenteditable="true">
+      价值锚点从「陪你聊」转向「替你办」,千问打的是这一代的卡位战。
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P4 · MARKET · 千问 vs 豆包
+     ============================================================ -->
+<section class="slide" data-title="千问 vs 豆包">
+  <div class="slide-meta"><span class="meta-num">04</span> / 16 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Competitive Landscape</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">流量帝国与<span class="accent">商业帝国</span>的结构性差异</h2>
+
+    <div class="vs-grid">
+      <div class="vs-col doubao reveal-left" style="--i:2">
+        <div class="vs-name" contenteditable="true">豆包 <span class="label-mini">DOUBAO · ByteDance</span></div>
+        <div>
+          <div class="vs-section-label adv">优势</div>
+          <ul class="vs-list">
+            <li contenteditable="true">抖音系流量天然,DAU 稳定 1.4 亿</li>
+            <li contenteditable="true">语音情感拟真度国内第一梯队</li>
+            <li contenteditable="true">内容生态联动顺畅(即梦、剪映)</li>
+          </ul>
+        </div>
+        <div>
+          <div class="vs-section-label dis">劣势</div>
+          <ul class="vs-list">
+            <li class="key" contenteditable="true">无交易出口,从聊到办必须跳第三方</li>
+            <li contenteditable="true">缺乏履约能力(支付、骑手、库存)</li>
+            <li contenteditable="true">品牌价值偏娱乐,生产力场景偏弱</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="vs-divider reveal-scale" style="--i:1"></div>
+
+      <div class="vs-col qianwen reveal-right" style="--i:2">
+        <div class="vs-name" contenteditable="true">千问 <span class="label-mini">QIANWEN · Alibaba</span></div>
+        <div>
+          <div class="vs-section-label adv">优势</div>
+          <ul class="vs-list">
+            <li class="key" contenteditable="true">履约闭环唯一(语音说→点单→支付→出码)</li>
+            <li contenteditable="true">Qwen3 系列模型天花板高(MoE 397B / Omni 实时流)</li>
+            <li contenteditable="true">付费出口天然内嵌,B 端基本盘稳</li>
+          </ul>
+        </div>
+        <div>
+          <div class="vs-section-label dis">劣势</div>
+          <ul class="vs-list">
+            <li contenteditable="true">C 端品牌认知起步晚,通义改名仅 2 个月</li>
+            <li contenteditable="true">营销与场景内容生态弱于豆包</li>
+            <li contenteditable="true">闭环深 = 对履约伙伴依赖深</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p class="vs-bottom reveal" style="--i:6" contenteditable="true">
+      胜负不在 DAU,在 <strong>「AI 办事」心智</strong>谁先被用户固化。语音是这层心智落地最关键的交互形态。
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P5 · MARKET · 为什么是现在
+     ============================================================ -->
+<section class="slide" data-title="为什么是现在">
+  <div class="slide-meta"><span class="meta-num">05</span> / 16 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Why Now</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">三个驱动同时成立的<span class="accent">窗口期</span></h2>
+
+    <div class="why-grid">
+      <div class="why-card reveal-scale" style="--i:2">
+        <div class="card-num">01 / DEMAND</div>
+        <div class="card-title" contenteditable="true">需求侧<span class="en">Two Demographics, One Need</span></div>
+        <div class="card-body" contenteditable="true">
+          3 亿以上老年人 + 婚育率下行的年轻人,看似无关的两端,需求其实是同一个:<em>陪伴与办事,而不是问答</em>。春节 156 万老人首次通过千问点外卖,是这层需求的直接兑现。
+        </div>
+      </div>
+
+      <div class="why-card reveal-scale" style="--i:3">
+        <div class="card-num">02 / CAPABILITY</div>
+        <div class="card-title" contenteditable="true">能力侧<span class="en">From Channel to Source</span></div>
+        <div class="card-body" contenteditable="true">
+          语音从输入信道升级为信息源。Qwen3-ASR <em>100ms 识别 50 多种情绪</em>,Qwen3-Omni 同时理解语音与图像流,Qwen3-TTS-VC 支持用户音色复刻。AI 不只听懂说了什么,还听懂以什么状态在说。
+        </div>
+      </div>
+
+      <div class="why-card reveal-scale" style="--i:4">
+        <div class="card-num">03 / TRUST</div>
+        <div class="card-title" contenteditable="true">信任侧<span class="en">Voice as Trust Carrier</span></div>
+        <div class="card-body" contenteditable="true">
+          电商转化漏斗下一站,是基于长期关系的 <em>AI 私人顾问</em>。语音是建立信任效率最高的载体——文字冷、视频累,语音刚好在亲密感与便利性之间。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P6 · EXPERIENCE · 意图识别
+     ============================================================ -->
+<section class="slide" data-title="意图识别">
+  <div class="slide-meta"><span class="meta-num">06</span> / 16 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Experience Report · Intent</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">意图识别的<span class="accent">三层结构</span></h2>
+
+    <div class="two-col-grid">
+      <div class="bad-cases reveal-left" style="--i:2">
+        <div class="bad-case-label">Bad Cases · 真实对话</div>
+        <div class="dialog">
+          <div class="dialog-bubble user" contenteditable="true">今天好累啊,不想做饭。</div>
+          <div class="dialog-bubble ai" data-issue="跳过共情直接执行" contenteditable="true">为您推荐附近餐厅。</div>
+        </div>
+        <div class="dialog" style="margin-top:1.8rem;">
+          <div class="dialog-bubble user" contenteditable="true">上次那家川菜不错。</div>
+          <div class="dialog-bubble ai" data-issue="历史召回失败" contenteditable="true">是哪一家?</div>
+        </div>
+      </div>
+
+      <div class="reveal-right" style="--i:3">
+        <div class="matrix-label">Optimization Matrix · 三层策略</div>
+        <table class="matrix-table">
+          <thead>
+            <tr><th>层级</th><th>当前</th><th>优化方向</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td contenteditable="true">显式意图</td>
+              <td><span class="cap strong">强</span></td>
+              <td contenteditable="true">置信度阈值,低于阈值主动确认</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">隐式意图</td>
+              <td><span class="cap mid">中</span></td>
+              <td contenteditable="true">情绪×上下文 → 候选意图映射库<br><span style="color:var(--text-dim);font-size:0.85em;">疲惫+晚 8 点+工作日 → 外卖 / 看剧 / 闲聊</span></td>
+            </tr>
+            <tr>
+              <td contenteditable="true">预测意图</td>
+              <td><span class="cap weak">弱</span></td>
+              <td contenteditable="true">意图轨迹库 + 相似场景主动唤起</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P7 · EXPERIENCE · 工具调用
+     ============================================================ -->
+<section class="slide" data-title="工具调用">
+  <div class="slide-meta"><span class="meta-num">07</span> / 16 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Experience Report · Tool Calling</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">从「能调用」到<span class="accent">「对结果负责」</span></h2>
+
+    <div class="problem-list">
+      <div class="problem-item reveal-left" style="--i:2">
+        <span class="pid">P1</span>
+        <span contenteditable="true"><strong>语音输出参数不可控</strong> · 用户没法控制音色、语速、情绪表达。老人想慢一点声音大一点,年轻人想活泼一点,当前没有可调偏好层。</span>
+      </div>
+      <div class="problem-item reveal-left" style="--i:3">
+        <span class="pid">P2</span>
+        <span contenteditable="true"><strong>工具调用失败静默</strong> · Function Call 失败时经常默默返回"为您找到以下结果",让用户重新表达,体验断点明显。</span>
+      </div>
+      <div class="problem-item reveal-left" style="--i:4">
+        <span class="pid">P3</span>
+        <span contenteditable="true"><strong>没有开放协议</strong> · 第三方接入仍走业务级 BD 谈判,无法像 MCP 那样让长尾服务低成本接入。</span>
+      </div>
+    </div>
+
+    <div class="fix-grid">
+      <div class="fix-card reveal-scale" style="--i:5">
+        <div class="fix-num">FIX 01</div>
+        <div class="fix-title" contenteditable="true">个性化语音偏好层</div>
+        <div class="fix-body" contenteditable="true">
+          首次使用 30 秒「声音体检」沉淀音色、语速、情绪基调。老年模式自动 0.8 倍语速 + 重音增强;付费用户可上传 30 秒音频通过 Qwen3-TTS-VC 复刻专属音色。
+        </div>
+      </div>
+
+      <div class="fix-card reveal-scale" style="--i:6">
+        <div class="fix-num">FIX 02</div>
+        <div class="fix-title" contenteditable="true">三级失败兜底</div>
+        <div class="fix-levels">
+          <div class="fix-level"><span class="lvl">L1</span> <span contenteditable="true">参数缺失 · 主动追问</span></div>
+          <div class="fix-level"><span class="lvl">L2</span> <span contenteditable="true">接口失败 · 降级次优工具</span></div>
+          <div class="fix-level"><span class="lvl">L3</span> <span contenteditable="true">完全失败 · 明确告知 + 人工通道</span></div>
+        </div>
+        <div class="fix-body" style="margin-top:0.4rem" contenteditable="true">绝不静默失败,这是体验的底线。</div>
+      </div>
+
+      <div class="fix-card reveal-scale" style="--i:7">
+        <div class="fix-num">FIX 03</div>
+        <div class="fix-title" contenteditable="true">开放工具协议</div>
+        <div class="fix-body" contenteditable="true">
+          借鉴 MCP 思路发布<strong style="color:var(--gold)">「千问 Agent Toolkit」</strong>,让第三方按统一协议自助接入。短期接长尾服务,长期构建类 App Store 的 Agent Store 生态。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P8 · EXPERIENCE · 记忆与上下文
+     ============================================================ -->
+<section class="slide" data-title="记忆与上下文">
+  <div class="slide-meta"><span class="meta-num">08</span> / 16 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Experience Report · Memory</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">跨会话记忆是 V3 助手<span class="accent">最大的粘性来源</span></h2>
+
+    <div class="two-col-grid">
+      <div class="reveal-left" style="--i:2">
+        <div class="bad-case-label" style="color:var(--red-warn)">Current Pain · 实测问题</div>
+        <p style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.7;margin-top:0.6rem;" contenteditable="true">
+          连续 20 轮订餐 + 订票测试,第 15 轮时千问已忘记第 3 轮提到的<strong style="color:var(--gold);font-weight:500">「我对花生过敏」</strong>。跨会话偏好不沉淀,每次都需重新告知「我喜欢辣的」。用户无法查看或编辑 AI 记住了什么,控制感缺失。
+        </p>
+
+        <div class="memory-mechanism">
+          <div class="gauge">
+            <div class="gauge-label"><span contenteditable="true">上下文使用率</span><span class="pct">70%</span></div>
+            <div class="gauge-bar"><div class="gauge-fill f70"></div></div>
+            <div class="gauge-desc" contenteditable="true">主动提示拆分会话</div>
+          </div>
+          <div class="gauge">
+            <div class="gauge-label"><span contenteditable="true">上下文使用率</span><span class="pct">85%</span></div>
+            <div class="gauge-bar"><div class="gauge-fill f85"></div></div>
+            <div class="gauge-desc" contenteditable="true">子 Agent 自动压缩归档</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-right" style="--i:3">
+        <div class="matrix-label">Four-Layer Memory · 参考 Claude Code</div>
+        <table class="memory-table">
+          <thead>
+            <tr><th>类型</th><th>内容示例</th><th>持久化</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td contenteditable="true">User Memory</td>
+              <td contenteditable="true">姓名、年龄、过敏源</td>
+              <td contenteditable="true">永久,用户可编辑</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Preference Memory</td>
+              <td contenteditable="true">口味、语速、说话风格</td>
+              <td contenteditable="true">跨会话,按场景调用</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Project Memory</td>
+              <td contenteditable="true">订餐中、订票中</td>
+              <td contenteditable="true">任务结束归档</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Reference Memory</td>
+              <td contenteditable="true">用户喂的文件、链接</td>
+              <td contenteditable="true">长期,可被引用</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="memory-quote reveal" style="--i:6" contenteditable="true">
+      记忆是<strong>豆包结构上做不到的</strong>,这是千问的差异化窗口期。
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P9 · ECOSYSTEM · 整体逻辑
+     ============================================================ -->
+<section class="slide" data-title="生态整体逻辑">
+  <div class="slide-meta"><span class="meta-num">09</span> / 16 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Ecosystem · Positioning</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">千问在阿里生态中的<span class="accent">定位</span></h2>
+
+    <div class="eco-flow">
+      <div class="eco-stage reveal" style="--i:2">
+        <div class="eco-stage-num">01</div>
+        <div class="eco-stage-content">
+          <div class="eco-stage-title" contenteditable="true">现状问题</div>
+          <div class="eco-stage-body" contenteditable="true">
+            阿里的服务网络与消费链路散落在 10 多个 App 里。<strong>C 端</strong>:同一用户在淘宝是购物者、在饿了么是吃货、在高德是乘客,画像不互通。<strong>B 端</strong>:中小商家、骑手、主播找不到工具、看不懂规则。
+          </div>
+        </div>
+      </div>
+
+      <div class="eco-stage reveal" style="--i:3">
+        <div class="eco-stage-num">02</div>
+        <div class="eco-stage-content">
+          <div class="eco-stage-title" contenteditable="true">千问的角色</div>
+          <div class="eco-stage-body" contenteditable="true">
+            把散点串成一个<strong>超级入口</strong>。语音绕过 App 操作门槛的能力,使这件事成为可能——春节 30 亿免单订单中近一半来自县城市场,正是这条逻辑的直接兑现。
+          </div>
+        </div>
+      </div>
+
+      <div class="eco-stage reveal" style="--i:4">
+        <div class="eco-stage-num">03</div>
+        <div class="eco-stage-content">
+          <div class="eco-stage-title" contenteditable="true">三层价值释放</div>
+          <div class="eco-value-grid">
+            <div><strong>L1 · 解放交互门槛</strong><span contenteditable="true">服务老人、儿童、方言用户,撕开下沉市场</span></div>
+            <div><strong>L2 · 沉淀长期关系</strong><span contenteditable="true">一次性交易升级为 AI 私人助理</span></div>
+            <div><strong>L3 · 反哺 B 端</strong><span contenteditable="true">中小商家、骑手、司机零门槛工具</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="tagline reveal" style="--i:6" contenteditable="true">
+      接下来分别展开淘宝、淘宝直播、闪购、高德四个落点。
+    </p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P10 · ECOSYSTEM · 淘宝 × AI
+     ============================================================ -->
+<section class="slide" data-title="淘宝 × AI">
+  <div class="slide-meta"><span class="meta-num">10</span> / 16 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Ecosystem · Taobao</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">从「效率工具」走向<span class="accent">前链路</span></h2>
+
+    <div class="tri-col">
+      <div class="tri-card reveal-scale" style="--i:2">
+        <div class="tc-num">01 / PRE-PURCHASE</div>
+        <div class="tc-title" contenteditable="true">前链路 · 从搜索到咨询</div>
+        <div class="tc-body" contenteditable="true">
+          Qwen-Omni 视频通话做线上色彩测试:开摄像头 → 分析肤色瞳色 → 推荐适配色服饰、口红、发色。或健康问诊式购物:「最近长痘」→ 视频识别痘印 → 推荐医学护肤(天猫医药)+ 严重时提醒挂号(阿里健康)。<strong>本质是把商家展示转向用户体检。</strong>
+        </div>
+      </div>
+
+      <div class="tri-card reveal-scale" style="--i:3">
+        <div class="tc-num">02 / IN-PURCHASE</div>
+        <div class="tc-title" contenteditable="true">中链路 · 导购员替代</div>
+        <div class="tc-body" contenteditable="true">
+          AI 语音助手作为 7×24 一对一导购。差异化<strong>不在答疑,在基于历史画像主动建议</strong>——「这件你之前看过同款其他色,那件你说颜色不喜欢,这次重点推酒红和雾霾蓝」。
+        </div>
+      </div>
+
+      <div class="tri-card reveal-scale" style="--i:4">
+        <div class="tc-num">03 / POST-PURCHASE</div>
+        <div class="tc-title" contenteditable="true">后链路 · 售后情绪管理</div>
+        <div class="tc-body" contenteditable="true">
+          退货、纠纷场景的语音助手沟通<strong>大幅降低客诉成本</strong>,并能在情绪缓冲后做二次推荐。这一类场景的存留率提升是直接命中 GMV 的。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P11 · ECOSYSTEM · 淘宝直播 × AI
+     ============================================================ -->
+<section class="slide" data-title="淘宝直播 × AI">
+  <div class="slide-meta"><span class="meta-num">11</span> / 16 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Ecosystem · Taobao Live</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">一对多个性化的<span class="accent">同构问题</span></h2>
+
+    <div class="live-top reveal" style="--i:2">
+      <span class="live-counter"><span id="liveCounter">23,847</span> 在线</span>
+      <span contenteditable="true">
+        主播同时面对几千个观众,问题来不及回、意图来不及辨、付费能力来不及识。直播间无法实时识别高消费用户和强意图用户。流量集中头部,中小主播没有精细化转化工具。
+      </span>
+    </div>
+
+    <div class="live-grid">
+      <div class="live-col reveal-left" style="--i:3">
+        <h3 contenteditable="true">主播端</h3>
+        <ul class="live-list">
+          <li contenteditable="true"><strong>语音控制运营</strong> · 上下架、改价、抽奖、福袋发放一句话搞定</li>
+          <li contenteditable="true"><strong>AI 副播实时提示</strong> · 「3 号链接卖断货了」「刚进来是老粉,提一下她上次的咨询」</li>
+          <li contenteditable="true"><strong>平台规则讲解 AI</strong> · 用对话方式讲限流、违规边界,帮中小主播留存</li>
+        </ul>
+      </div>
+
+      <div class="live-col reveal-right" style="--i:4">
+        <h3 contenteditable="true">用户端 · 按购物漏斗</h3>
+        <ul class="live-list">
+          <li><span class="funnel-tag">PRE</span><span contenteditable="true"><strong>购前 · 意图 × 付费能力分级</strong> 给出高端 / 中端 / 入门三档推荐 + 配套商品</span></li>
+          <li><span class="funnel-tag">MID</span><span contenteditable="true"><strong>购中 · 实时订单查询</strong> 无需切到客服,直接语音问「我下的单发了吗」</span></li>
+          <li><span class="funnel-tag">POST</span><span contenteditable="true"><strong>购后 · 主播音色个性化留存</strong> 基于 Qwen3-TTS-VC 复刻发个性化语音「谢谢姐妹,下次开播周五晚 8 点」</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="live-note reveal" style="--i:6" contenteditable="true">
+      候选人在快手秀场做过同构的付费能力分级模型与主播音色复刻链路,迁移路径清晰
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P12 · ECOSYSTEM · 闪购 × AI
+     ============================================================ -->
+<section class="slide" data-title="闪购 × AI">
+  <div class="slide-meta"><span class="meta-num">12</span> / 16 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Ecosystem · Shangou</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">高频配送场景的<span class="accent">三端机会</span></h2>
+
+    <div class="tri-col">
+      <div class="tri-card reveal-scale" style="--i:2">
+        <div class="tc-num">01 / MERCHANT</div>
+        <div class="tc-title" contenteditable="true">商家端<small>SMB MERCHANT</small></div>
+        <div class="tc-body" contenteditable="true">
+          <strong>语音上下架</strong>,菜单频繁更新时降低操作门槛;基于地区、季节、社交平台趋势(小红书爆品如固体杨枝甘露、奶皮子糖葫芦)<strong>主动建议上架</strong>;用对话方式解释满减规则、流量分配逻辑。
+        </div>
+      </div>
+
+      <div class="tri-card reveal-scale" style="--i:3">
+        <div class="tc-num">02 / RIDER</div>
+        <div class="tc-title" contenteditable="true">骑手端<small>MOST NEEDED USER</small></div>
+        <div class="tc-body" contenteditable="true">
+          骑车途中语音回复客户消息,AI 生成得体回复;<strong>Qwen3-ASR 方言支持</strong>降低输入门槛;路况与订单组合智能播报——「下一单 800 米外,红灯 30 秒,建议先取餐 B」。
+        </div>
+      </div>
+
+      <div class="tri-card reveal-scale" style="--i:4">
+        <div class="tc-num">03 / CONSUMER</div>
+        <div class="tc-title" contenteditable="true">消费者端<small>WAITING WINDOW</small></div>
+        <div class="tc-body" contenteditable="true">
+          等餐 30-40 分钟推送相关短剧、短视频,<strong>把等待焦虑转化为内容消费</strong>;独居用户「陪吃」功能,用复刻的家人音色或 IP 音色聊天(参考日本「バーチャル飯テロ」现象),直接绑定情感账户。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P13 · ECOSYSTEM · 高德 × AI
+     ============================================================ -->
+<section class="slide" data-title="高德 × AI">
+  <div class="slide-meta"><span class="meta-num">13</span> / 16 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Ecosystem · Gaode</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">出行场景的<span class="accent">两端切入</span></h2>
+
+    <div class="gaode-grid">
+      <div class="gaode-col reveal-left" style="--i:2">
+        <h3 contenteditable="true">司机端</h3>
+        <ul class="gaode-list">
+          <li contenteditable="true">长时间独自驾驶的<strong style="color:var(--text-primary);font-weight:500">情感陪伴</strong>需求强</li>
+          <li contenteditable="true">活动规则讲解 + 收益模拟,司机常因不懂规则错过收益</li>
+          <li contenteditable="true">语音拉黑 / 标记乘客,手不离方向盘的<strong style="color:var(--text-primary);font-weight:500">安全合规</strong></li>
+          <li contenteditable="true">方言转译 + 跨语言场景实时翻译</li>
+        </ul>
+      </div>
+
+      <div class="gaode-col reveal-right" style="--i:3">
+        <h3 contenteditable="true">乘客端 · 按用车漏斗</h3>
+        <div class="gaode-funnel">
+          <div class="gaode-stage">
+            <span class="stage-name">打车前 · 跨 App 协同</span>
+            <span class="stage-body" contenteditable="true">用户说「我去海底捞」→ AI 自动调用支付宝海底捞小程序查队、取号、告知司机预计就餐时间。<strong>这是阿里生态独有的能力,豆包结构上做不到。</strong></span>
+          </div>
+          <div class="gaode-stage">
+            <span class="stage-name">打车中 · 安全监测</span>
+            <span class="stage-body" contenteditable="true">识别司机言语态度与绕路行为,异常时自动记录并提示用户报警。</span>
+          </div>
+          <div class="gaode-stage">
+            <span class="stage-name">打车后 · 下一步预测</span>
+            <span class="stage-body" contenteditable="true">到医院 → 准备医保码挂号信息;到机场 → 调出登机牌;到电影院 → 调出购票信息。把<strong>目的地变成下一段服务的起点</strong>。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P14 · ECOSYSTEM · 跨场景超级画像
+     ============================================================ -->
+<section class="slide" data-title="超级用户画像">
+  <div class="slide-meta"><span class="meta-num">14</span> / 16 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Ecosystem · Super Profile</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">把散落的<span class="accent">四个画像</span>合并成一个完整的人</h2>
+
+    <div class="profile-grid">
+      <div class="profile-viz reveal-scale" style="--i:2">
+        <svg class="viz-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <line x1="50" y1="12" x2="50" y2="40" stroke="rgba(212,165,116,0.4)" stroke-width="0.3"/>
+          <line x1="88" y1="50" x2="60" y2="50" stroke="rgba(212,165,116,0.4)" stroke-width="0.3"/>
+          <line x1="50" y1="88" x2="50" y2="60" stroke="rgba(212,165,116,0.4)" stroke-width="0.3"/>
+          <line x1="12" y1="50" x2="40" y2="50" stroke="rgba(212,165,116,0.4)" stroke-width="0.3"/>
+        </svg>
+        <div class="viz-center"><span>千问</span></div>
+        <div class="viz-app tb" contenteditable="true">淘宝</div>
+        <div class="viz-app elm" contenteditable="true">饿了么</div>
+        <div class="viz-app gd" contenteditable="true">高德</div>
+        <div class="viz-app fz" contenteditable="true">飞猪</div>
+      </div>
+
+      <div class="reveal-right" style="--i:3">
+        <p style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.7;margin-bottom:1.2rem;" contenteditable="true">
+          当前用户在 4 个 App 是 4 个孤立的人。千问是合并成一个完整的人的最佳载体,这是<strong style="color:var(--gold);font-weight:500">豆包、元宝、DeepSeek 结构上做不到的纵深</strong>。
+        </p>
+
+        <div class="profile-example">
+          <span class="ex-trigger" contenteditable="true">用户在高德搜索「协和医院」</span>
+          <span class="ex-arrow">↓ 千问主动提醒</span>
+          <span class="ex-action" contenteditable="true">是否需要查看医保账户余额?</span>
+          <span class="ex-action" contenteditable="true">是否需要叫有医院通行证的车?</span>
+          <span class="ex-action" contenteditable="true">是否需要在阿里健康备点常备药?</span>
+        </div>
+
+        <div class="profile-conclusion" contenteditable="true">
+          AI 助手从「工具」升级为<strong>「管家」</strong>的临界点正在这里。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P15 · CANDIDATE · 业务经验 + 个人特点
+     ============================================================ -->
+<section class="slide" data-title="业务经验与个人特点">
+  <div class="slide-meta"><span class="meta-num">15</span> / 16 &nbsp;·&nbsp; CHAPTER 04 · CANDIDATE</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Candidate · Experience &amp; Traits</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">在快手做过的链路,与千问<span class="accent">在工程结构上同构</span></h2>
+
+    <div class="exp-top">
+      <div class="exp-chain reveal-left" style="--i:2">
+        <div class="exp-node start" contenteditable="true">用户打赏</div>
+        <div class="exp-arrow"><span class="arrow-label">VPR 声纹识别</span></div>
+        <div class="exp-node" contenteditable="true">识别身份与历史</div>
+        <div class="exp-arrow"><span class="arrow-label">LLM 上下文理解</span></div>
+        <div class="exp-node" contenteditable="true">生成个性化文案</div>
+        <div class="exp-arrow"><span class="arrow-label">TTS 主播音色</span></div>
+        <div class="exp-node end" contenteditable="true">实时语音答谢</div>
+      </div>
+
+      <div class="exp-details reveal-right" style="--i:3">
+        <div class="exp-detail"><span class="key">VPR</span><span contenteditable="true">5-10 秒参考音裁剪 / 过滤背景音乐与返听 / 头部多情绪标签库 / 冷启动用历史切片</span></div>
+        <div class="exp-detail"><span class="key">LLM</span><span contenteditable="true">昵称 emoji 预处理 / SSML 重音注入 / LoRA 微调 + DPO 对齐 + 模型蒸馏 / 两层兜底</span></div>
+        <div class="exp-detail"><span class="key">TTS</span><span contenteditable="true">头部主播单独微调 + 中尾部通用复刻 / 响度归一化 / 首尾静音裁剪</span></div>
+
+        <div class="exp-mapping" contenteditable="true">
+          <strong>同构对照</strong> · 千问意图识别 ≈ LLM 上下文 · 千问工具调用 ≈ 实时性与兜底 · 千问个性化语音 ≈ TTS 资产分层
+        </div>
+      </div>
+    </div>
+
+    <div class="traits-grid">
+      <div class="trait reveal" style="--i:5">
+        <div class="trait-num">TRAIT 01</div>
+        <div class="trait-name" contenteditable="true">语言学专业</div>
+        <div class="trait-body" contenteditable="true">音系学与语音学基础,对 ASR/TTS 建模有第一性原理理解</div>
+      </div>
+      <div class="trait reveal" style="--i:6">
+        <div class="trait-num">TRAIT 02</div>
+        <div class="trait-name" contenteditable="true">跨部门协同</div>
+        <div class="trait-body" contenteditable="true">快手独立负责跨事业部项目(直播 × TTS × 风控 × 音视频)</div>
+      </div>
+      <div class="trait reveal" style="--i:7">
+        <div class="trait-num">TRAIT 03</div>
+        <div class="trait-name" contenteditable="true">10 项 AI 专利</div>
+        <div class="trait-body" contenteditable="true">覆盖语音交互、AI 个性化推荐、实时生成方向</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     P16 · CANDIDATE · 2-3年规划
+     ============================================================ -->
+<section class="slide" data-title="2-3年规划">
+  <div class="slide-meta"><span class="meta-num">16</span> / 16 &nbsp;·&nbsp; CHAPTER 04 · CANDIDATE</div>
+  <div class="slide-content">
+    <div class="eyebrow reveal" style="--i:0">Candidate · Roadmap</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">短、中、长期的<span class="accent">清晰路径</span></h2>
+
+    <div class="timeline-wrap">
+      <div class="timeline reveal-scale" style="--i:2">
+        <div class="timeline-node n1"></div>
+        <div class="timeline-node n2"></div>
+        <div class="timeline-node n3"></div>
+      </div>
+      <div class="timeline-labels">
+        <div class="tl-label reveal" style="--i:3">
+          <div class="tl-period">0 — 12 MONTHS</div>
+          <div class="tl-name" contenteditable="true">个性化与记忆层</div>
+        </div>
+        <div class="tl-label reveal" style="--i:4">
+          <div class="tl-period">1 — 2 YEARS</div>
+          <div class="tl-name" contenteditable="true">Omni 进生活服务</div>
+        </div>
+        <div class="tl-label reveal" style="--i:5">
+          <div class="tl-period">2 — 3 YEARS</div>
+          <div class="tl-name" contenteditable="true">AI 硬件形态</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="plan-details">
+      <div class="plan-detail reveal" style="--i:6">
+        <strong>短期</strong>
+        <span contenteditable="true">复用 VPR 数据清洗、TTS 资产分层、SSML 重音注入经验,落地语音个性化层;推动分层记忆(User / Preference / Project / Reference),结合阿里跨业务画像做出豆包结构上做不到的差异化。</span>
+      </div>
+      <div class="plan-detail reveal" style="--i:7">
+        <strong>中期</strong>
+        <span contenteditable="true">把 Qwen-Omni 多模态实时能力做进生活服务。重点关注老年用户、方言用户的可访问性方向——156 万老人靠千问第一次点外卖这件事值得被认真对待。</span>
+      </div>
+      <div class="plan-detail reveal" style="--i:8">
+        <strong>长期</strong>
+        <span contenteditable="true">参与千问 AI 硬件形态(眼镜、指环、耳机)的产品定义。语音在硬件场景下从功能升级为主要交互形态,延迟、副语言理解、跨应用调度的要求高一个数量级。</span>
+      </div>
+    </div>
+
+    <p class="closing reveal" style="--i:10" contenteditable="true">
+      过去在秀场做 VPR-LLM-TTS,是相信语音是 AI 时代的下一代交互。<br>
+      到千问,做的还是同一件事——从直播间扩到生活服务全场景。
+    </p>
+  </div>
+  <div class="closing-pulse decorative-only"></div>
+</section>
+
+
+<!-- ============================================================
+     SCRIPT · Slide controller + counters + edit mode + nav
+     ============================================================ -->
+<script>
+class SlidePresentation {
+  constructor() {
+    this.slides = Array.from(document.querySelectorAll('.slide'));
+    this.currentSlide = 0;
+    this.progressBar = document.querySelector('.progress-bar');
+    this.navDotsContainer = document.querySelector('#navDots');
+    this.chapterAnchor = document.querySelector('#chapterAnchor');
+
+    this.setupNavDots();
+    this.setupIntersectionObserver();
+    this.setupKeyboardNav();
+    this.setupTouchNav();
+    this.setupProgressBar();
+    this.setupJumpLinks();
+    this.setupLiveCounter();
+  }
+
+  setupIntersectionObserver() {
+    const opts = { root: null, rootMargin: '0px', threshold: 0.4 };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const idx = this.slides.indexOf(entry.target);
+          this.currentSlide = idx;
+          this.updateNavDots();
+          this.updateChapterAnchor();
+          this.runCountersForSlide(entry.target);
+        }
+      });
+    }, opts);
+    this.slides.forEach((s) => io.observe(s));
+  }
+
+  setupKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+      if (e.target.getAttribute('contenteditable') === 'true') return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        this.goTo(Math.min(this.currentSlide + 1, this.slides.length - 1));
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        this.goTo(Math.max(this.currentSlide - 1, 0));
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        this.goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        this.goTo(this.slides.length - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen();
+      }
+    });
+  }
+
+  setupTouchNav() {
+    let touchStartY = 0;
+    document.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      const dy = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(dy) < 50) return;
+      if (dy > 0) this.goTo(Math.min(this.currentSlide + 1, this.slides.length - 1));
+      else this.goTo(Math.max(this.currentSlide - 1, 0));
+    }, { passive: true });
+  }
+
+  setupProgressBar() {
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = (scrollTop / docHeight) * 100;
+      this.progressBar.style.width = pct + '%';
+    }, { passive: true });
+  }
+
+  setupNavDots() {
+    this.navDotsContainer.innerHTML = '';
+    this.slides.forEach((s, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot';
+      dot.setAttribute('data-title', s.dataset.title || ('Slide ' + (i + 1)));
+      dot.addEventListener('click', () => this.goTo(i));
+      this.navDotsContainer.appendChild(dot);
+    });
+  }
+
+  updateNavDots() {
+    const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+    dots.forEach((d, i) => d.classList.toggle('active', i === this.currentSlide));
+  }
+
+  updateChapterAnchor() {
+    // current chapter: 0-1 cover/toc; 2-4 market; 5-7 experience; 8-13 ecosystem; 14-15 candidate
+    const anchors = this.chapterAnchor.querySelectorAll('a');
+    let activeIdx = -1;
+    const idx = this.currentSlide;
+    if (idx >= 2 && idx <= 4) activeIdx = 0;
+    else if (idx >= 5 && idx <= 7) activeIdx = 1;
+    else if (idx >= 8 && idx <= 13) activeIdx = 2;
+    else if (idx >= 14) activeIdx = 3;
+    anchors.forEach((a, i) => a.classList.toggle('current', i === activeIdx));
+  }
+
+  setupJumpLinks() {
+    document.querySelectorAll('[data-jump]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetIdx = parseInt(el.dataset.jump, 10) - 1;
+        this.goTo(Math.max(0, Math.min(targetIdx, this.slides.length - 1)));
+      });
+    });
+  }
+
+  goTo(idx) {
+    this.slides[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  runCountersForSlide(slide) {
+    const counters = slide.querySelectorAll('.stat-num[data-count]');
+    counters.forEach((wrap) => {
+      if (wrap.dataset.done === '1') return;
+      wrap.dataset.done = '1';
+      const target = parseFloat(wrap.dataset.count);
+      const inner = wrap.querySelector('.counter');
+      const duration = 1200;
+      const startTime = performance.now();
+      const isFloat = target % 1 !== 0;
+      const animate = (now) => {
+        const t = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const v = target * eased;
+        if (target >= 1000) {
+          inner.textContent = Math.round(v).toLocaleString();
+        } else if (isFloat) {
+          inner.textContent = v.toFixed(1);
+        } else {
+          inner.textContent = Math.round(v).toString();
+        }
+        if (t < 1) requestAnimationFrame(animate);
+        else inner.textContent = isFloat ? target.toFixed(1) : (target >= 1000 ? target.toLocaleString() : target);
+      };
+      requestAnimationFrame(animate);
+    });
+  }
+
+  setupLiveCounter() {
+    // Simulate live viewer count fluctuation on P11
+    const el = document.getElementById('liveCounter');
+    if (!el) return;
+    const values = [23847, 24102, 23956, 23491, 22887, 23154, 23612, 24001, 24388, 24015];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % values.length;
+      el.textContent = values[i].toLocaleString();
+    }, 2200);
+  }
+}
+
+
+/* ============================================================
+   INLINE EDITOR
+   ============================================================ */
+class InlineEditor {
+  constructor() {
+    this.isActive = false;
+    this.toggle = document.getElementById('editToggle');
+    this.banner = document.getElementById('editBanner');
+    this.hotzone = document.querySelector('.edit-hotzone');
+    this.editableSelector = '[contenteditable="true"]';
+
+    // Load saved content
+    this.loadSavedContent();
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    // Toggle button click
+    this.toggle.addEventListener('click', () => this.toggleEditMode());
+
+    // Hotzone hover with grace period
+    let hideTimeout = null;
+    const showButton = () => {
+      clearTimeout(hideTimeout);
+      this.toggle.classList.add('show');
+    };
+    const hideButton = () => {
+      hideTimeout = setTimeout(() => {
+        if (!this.isActive) this.toggle.classList.remove('show');
+      }, 400);
+    };
+    this.hotzone.addEventListener('mouseenter', showButton);
+    this.hotzone.addEventListener('mouseleave', hideButton);
+    this.toggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    this.toggle.addEventListener('mouseleave', hideButton);
+    this.hotzone.addEventListener('click', () => this.toggleEditMode());
+
+    // Keyboard: E to toggle, Ctrl+S to export
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+        this.toggleEditMode();
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        this.exportFile();
+      }
+    });
+
+    // Auto-save on edit
+    document.querySelectorAll(this.editableSelector).forEach((el, idx) => {
+      el.dataset.editIdx = idx;
+      el.addEventListener('input', () => this.saveContent());
+    });
+  }
+
+  toggleEditMode() {
+    this.isActive = !this.isActive;
+    document.body.classList.toggle('edit-active', this.isActive);
+    this.toggle.classList.toggle('active', this.isActive);
+    this.banner.classList.toggle('active', this.isActive);
+    this.toggle.textContent = this.isActive ? '✓' : '✎';
+  }
+
+  saveContent() {
+    const data = {};
+    document.querySelectorAll(this.editableSelector).forEach((el) => {
+      data[el.dataset.editIdx] = el.innerHTML;
+    });
+    try {
+      localStorage.setItem('qianwen-pitch-deck', JSON.stringify(data));
+    } catch (e) { /* storage full or disabled */ }
+  }
+
+  loadSavedContent() {
+    try {
+      const raw = localStorage.getItem('qianwen-pitch-deck');
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      document.querySelectorAll(this.editableSelector).forEach((el, idx) => {
+        if (data[idx] !== undefined) el.innerHTML = data[idx];
+      });
+    } catch (e) { /* ignore parse errors */ }
+  }
+
+  exportFile() {
+    // Strip edit state before capturing outerHTML
+    const editableEls = Array.from(document.querySelectorAll('[contenteditable="true"]'));
+    editableEls.forEach(el => el.removeAttribute('contenteditable'));
+    document.body.classList.remove('edit-active');
+    this.toggle.classList.remove('active', 'show');
+    this.banner.classList.remove('active');
+
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+    // Restore
+    editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
+    if (this.isActive) {
+      document.body.classList.add('edit-active');
+      this.toggle.classList.add('active');
+      this.banner.classList.add('active');
+    }
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'qianwen-pitch-deck.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+}
+
+// Boot
+window.addEventListener('DOMContentLoaded', () => {
+  new SlidePresentation();
+  new InlineEditor();
+
+  // First slide always visible
+  document.querySelector('.slide').classList.add('visible');
+});
+</script>
+
+</body>
+</html>
