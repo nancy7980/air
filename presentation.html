@@ -42,9 +42,9 @@
   --title-size: clamp(1.8rem, 4.5vw, 3.6rem);
   --h2-size: clamp(1.2rem, 2.6vw, 2rem);
   --h3-size: clamp(0.95rem, 1.6vw, 1.2rem);
-  --body-size: clamp(0.72rem, 1.1vw, 0.95rem);
-  --small-size: clamp(0.6rem, 0.85vw, 0.78rem);
-  --tiny-size: clamp(0.55rem, 0.7vw, 0.7rem);
+  --body-size: clamp(0.82rem, 1.2vw, 1rem);
+  --small-size: clamp(0.74rem, 1vw, 0.9rem);
+  --tiny-size: clamp(0.67rem, 0.88vw, 0.8rem);
 
   /* Spacing */
   --slide-padding: clamp(2rem, 5vw, 5rem);
@@ -1308,6 +1308,31 @@ img, .image-container {
   width: 6px; height: 1px;
   background: var(--gold);
 }
+.driver-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.4rem, 0.9vh, 0.7rem);
+}
+.driver-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--line-soft);
+  border-top: 2px solid var(--gold-line);
+  padding: clamp(0.5rem, 1.2vw, 0.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.driver-card-kw {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(0.82rem, 1.3vw, 0.98rem);
+  color: var(--gold);
+}
+.driver-card-desc {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
 .gaode-funnel {
   display: flex;
   flex-direction: column;
@@ -1548,6 +1573,69 @@ img, .image-container {
   line-height: 1.7;
 }
 .exp-mapping strong { color: var(--teal); font-weight: 500; }
+.exp-compare {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1vh, 0.7rem);
+  justify-content: center;
+}
+.exp-compare-hdr {
+  display: grid;
+  grid-template-columns: 1fr 2rem 1fr;
+  gap: 0.4rem;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+.exp-compare-hdr span {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.exp-compare-hdr span:last-child { color: var(--teal); opacity: 0.7; }
+.exp-cmp-row {
+  display: grid;
+  grid-template-columns: 1fr 2rem 1fr;
+  gap: 0.4rem;
+  align-items: center;
+}
+.exp-cmp-from {
+  background: var(--gold-glow);
+  border: 1px solid var(--gold-line);
+  padding: 0.55rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  color: var(--text-primary);
+}
+.exp-cmp-from strong {
+  display: block;
+  color: var(--gold);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.15rem;
+}
+.exp-cmp-arr {
+  text-align: center;
+  color: var(--gold);
+  font-size: 1rem;
+  opacity: 0.6;
+}
+.exp-cmp-to {
+  background: var(--teal-soft);
+  border: 1px solid rgba(91,206,174,0.2);
+  padding: 0.55rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  color: var(--text-primary);
+}
+.exp-cmp-to strong {
+  display: block;
+  color: var(--teal);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.15rem;
+}
 
 .traits-grid {
   display: grid;
@@ -2749,12 +2837,24 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="gaode-grid">
       <div class="gaode-col reveal-left" style="--i:2">
         <h3 contenteditable="true">司机端</h3>
-        <ul class="gaode-list">
-          <li contenteditable="true">长时间独自驾驶的<strong style="color:var(--text-primary);font-weight:500">情感陪伴</strong>需求强</li>
-          <li contenteditable="true">活动规则讲解 + 收益模拟,司机常因不懂规则错过收益</li>
-          <li contenteditable="true">语音拉黑 / 标记乘客,手不离方向盘的<strong style="color:var(--text-primary);font-weight:500">安全合规</strong></li>
-          <li contenteditable="true">方言转译 + 跨语言场景实时翻译</li>
-        </ul>
+        <div class="driver-cards">
+          <div class="driver-card">
+            <div class="driver-card-kw" contenteditable="true">情感陪伴</div>
+            <div class="driver-card-desc" contenteditable="true">长时驾驶孤独感强，需要实时陪伴与闲聊</div>
+          </div>
+          <div class="driver-card">
+            <div class="driver-card-kw" contenteditable="true">收益讲解</div>
+            <div class="driver-card-desc" contenteditable="true">活动规则复杂，语音模拟收益、解释规则</div>
+          </div>
+          <div class="driver-card">
+            <div class="driver-card-kw" contenteditable="true">安全合规</div>
+            <div class="driver-card-desc" contenteditable="true">语音拉黑 / 标记乘客，手不离方向盘操作</div>
+          </div>
+          <div class="driver-card">
+            <div class="driver-card-kw" contenteditable="true">方言转译</div>
+            <div class="driver-card-desc" contenteditable="true">跨语言场景实时翻译，降低沟通误解</div>
+          </div>
+        </div>
       </div>
 
       <div class="gaode-col reveal-right" style="--i:3">
@@ -2845,12 +2945,26 @@ body.edit-active [contenteditable="true"]:focus {
         <div class="exp-node end" contenteditable="true">实时语音答谢</div>
       </div>
 
-      <div class="exp-details reveal-right" style="--i:3">
-        <div class="exp-detail"><span class="key">VPR</span><span contenteditable="true">5-10 秒参考音裁剪 · 过滤背景音乐与返听 · 头部多情绪标签库 · 冷启动用历史切片</span></div>
-        <div class="exp-detail"><span class="key">LLM</span><span contenteditable="true">昵称 emoji 预处理 · SSML 重音注入 · LoRA 微调 + DPO 对齐 + 模型蒸馏 · 两层兜底</span></div>
-        <div class="exp-detail"><span class="key">TTS</span><span contenteditable="true">头部主播单独微调 + 中尾部通用复刻 · 响度归一化 · 首尾静音裁剪</span></div>
-        <div class="exp-mapping" contenteditable="true">
-          <strong>同构对照</strong> · 千问意图识别 ≈ LLM 上下文 · 千问工具调用 ≈ 实时性与兜底 · 千问个性化语音 ≈ TTS 资产分层
+      <div class="exp-compare reveal-right" style="--i:3">
+        <div class="exp-compare-hdr">
+          <span>快手项目</span>
+          <span></span>
+          <span>千问对应</span>
+        </div>
+        <div class="exp-cmp-row">
+          <div class="exp-cmp-from" contenteditable="true"><strong>VPR</strong>声纹识别用户身份与情绪状态</div>
+          <div class="exp-cmp-arr">→</div>
+          <div class="exp-cmp-to" contenteditable="true"><strong>声纹理解</strong>语音个性化与用户识别</div>
+        </div>
+        <div class="exp-cmp-row">
+          <div class="exp-cmp-from" contenteditable="true"><strong>LLM</strong>上下文理解 + 个性化文案生成</div>
+          <div class="exp-cmp-arr">→</div>
+          <div class="exp-cmp-to" contenteditable="true"><strong>意图理解</strong>多轮对话与个性化回复</div>
+        </div>
+        <div class="exp-cmp-row">
+          <div class="exp-cmp-from" contenteditable="true"><strong>TTS</strong>主播音色复刻与实时语音合成</div>
+          <div class="exp-cmp-arr">→</div>
+          <div class="exp-cmp-to" contenteditable="true"><strong>语音合成</strong>自然表达与音色个性化</div>
         </div>
       </div>
     </div>
@@ -2873,10 +2987,6 @@ body.edit-active [contenteditable="true"]:focus {
       </div>
     </div>
 
-    <p class="closing reveal" style="--i:9" contenteditable="true">
-      我在快手做 VPR-LLM-TTS，是相信语音是 AI 时代的下一代交互。<br>
-      到千问，我想做同一件事——把它从直播间扩到生活服务全场景。
-    </p>
   </div>
   <div class="closing-pulse decorative-only"></div>
 </section>
