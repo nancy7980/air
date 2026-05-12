@@ -498,6 +498,84 @@ img, .image-container {
 }
 
 /* ===========================================
+   CHAPTER COVERS
+   =========================================== */
+.chapter-cover {
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.chcover-bg-num {
+  position: absolute;
+  right: -0.02em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-serif);
+  font-size: clamp(14rem, 26vw, 22rem);
+  font-weight: 600;
+  color: rgba(212, 165, 116, 0.045);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.05em;
+}
+.chcover-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--slide-padding);
+  width: 100%;
+  max-width: 72rem;
+}
+.chcover-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  letter-spacing: 0.32em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: clamp(1.2rem, 2.5vh, 2rem);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.chcover-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.chcover-title {
+  font-family: var(--font-cjk-serif);
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+}
+.chcover-pills {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.chcover-pills span {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  border: 1px solid var(--line-soft);
+  padding: 0.3rem 0.75rem;
+}
+.chcover-divider {
+  position: absolute;
+  bottom: 0;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-line) 0%, transparent 80%);
+}
+
+/* ===========================================
    P2 · TOC
    =========================================== */
 .toc { justify-content: center; }
@@ -2176,10 +2254,10 @@ body.edit-active [contenteditable="true"]:focus {
 
 <!-- Chapter anchor -->
 <div class="chapter-anchor" id="chapterAnchor">
-  <a data-jump="3"><span>市场</span></a>
-  <a data-jump="6"><span>体验</span></a>
-  <a data-jump="9"><span>生态</span></a>
-  <a data-jump="15"><span>关于我</span></a>
+  <a data-jump="4"><span>市场</span></a>
+  <a data-jump="8"><span>体验</span></a>
+  <a data-jump="12"><span>生态</span></a>
+  <a data-jump="18"><span>关于我</span></a>
 </div>
 
 <!-- Edit hotzone & toggle -->
@@ -2219,31 +2297,31 @@ body.edit-active [contenteditable="true"]:focus {
      ============================================================ -->
 <section class="slide toc" data-title="目录">
   <div class="slide-meta">
-    <span class="meta-num">02</span> / 15
+    <span class="meta-num">02</span> / 18
   </div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0" contenteditable="false">Table of Contents</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">本次分享的四个部分</h2>
     <div class="toc-list">
-      <a class="toc-item reveal" style="--i:2" data-jump="3">
+      <a class="toc-item reveal" style="--i:2" data-jump="4">
         <span class="toc-num">01</span>
         <span class="toc-name" contenteditable="true">市场</span>
-        <span class="toc-desc" contenteditable="true">千问语音助手所在的赛道</span>
+        <span class="toc-desc" contenteditable="true">千问所在赛道与竞争格局</span>
       </a>
-      <a class="toc-item reveal" style="--i:3" data-jump="6">
+      <a class="toc-item reveal" style="--i:3" data-jump="8">
         <span class="toc-num">02</span>
         <span class="toc-name" contenteditable="true">体验</span>
-        <span class="toc-desc" contenteditable="true">千问当前的三个产品断点</span>
+        <span class="toc-desc" contenteditable="true">千问语音助手的三个断点</span>
       </a>
-      <a class="toc-item reveal" style="--i:4" data-jump="9">
+      <a class="toc-item reveal" style="--i:4" data-jump="12">
         <span class="toc-num">03</span>
         <span class="toc-name" contenteditable="true">生态</span>
-        <span class="toc-desc" contenteditable="true">阿里业务场景中的 AI 落点</span>
+        <span class="toc-desc" contenteditable="true">千问与阿里系产品的结合空间</span>
       </a>
-      <a class="toc-item reveal" style="--i:5" data-jump="15">
+      <a class="toc-item reveal" style="--i:5" data-jump="18">
         <span class="toc-num">04</span>
         <span class="toc-name" contenteditable="true">关于我</span>
-        <span class="toc-desc" contenteditable="true">经验与千问的结构性匹配</span>
+        <span class="toc-desc" contenteditable="true">快手经验与千问的结构性匹配</span>
       </a>
     </div>
   </div>
@@ -2251,13 +2329,32 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P3 · MARKET · 行业基本盘与代际演进
+     P3 · CHAPTER 1 COVER
      ============================================================ -->
-<section class="slide" data-title="行业基本盘">
-  <div class="slide-meta"><span class="meta-num">03</span> / 15 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+<section class="slide chapter-cover" data-title="第一章">
+  <div class="slide-meta"><span class="meta-num">03</span> / 18 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+  <div class="chcover-bg-num" aria-hidden="true">01</div>
+  <div class="chcover-content">
+    <div class="chcover-eyebrow reveal" style="--i:0">CHAPTER ONE &nbsp;·&nbsp; MARKET</div>
+    <h2 class="chcover-title reveal" style="--i:1">千问所在赛道</h2>
+    <div class="chcover-pills reveal" style="--i:2">
+      <span>阿里生态定位</span>
+      <span>竞品格局</span>
+      <span>语音助手发展</span>
+    </div>
+  </div>
+  <div class="chcover-divider"></div>
+</section>
+
+
+<!-- ============================================================
+     P4 · MARKET · 千问在阿里生态中的定位
+     ============================================================ -->
+<section class="slide" data-title="千问的定位">
+  <div class="slide-meta"><span class="meta-num">04</span> / 18 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
   <div class="slide-content">
-    <div class="eyebrow reveal" style="--i:0">Market · Generation Shift</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">AI 语音助手的<span class="accent">演进</span></h2>
+    <div class="eyebrow reveal" style="--i:0">Market · Alibaba Ecosystem Position</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">千问在阿里<span class="accent">生态的定位</span></h2>
 
     <div class="market-grid">
       <div class="stat-stack">
@@ -2312,10 +2409,10 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P4 · MARKET · 千问 vs 豆包
+     P5 · MARKET · 千问 vs 豆包
      ============================================================ -->
 <section class="slide" data-title="千问 vs 豆包">
-  <div class="slide-meta"><span class="meta-num">04</span> / 15 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+  <div class="slide-meta"><span class="meta-num">05</span> / 18 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Competitive Landscape</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">千问 <span class="accent">vs</span> 豆包</h2>
@@ -2372,13 +2469,13 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P5 · MARKET · 为什么是现在
+     P6 · MARKET · 聚焦语音看发展
      ============================================================ -->
-<section class="slide" data-title="为什么是现在">
-  <div class="slide-meta"><span class="meta-num">05</span> / 15 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
+<section class="slide" data-title="聚焦语音看发展">
+  <div class="slide-meta"><span class="meta-num">06</span> / 18 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
   <div class="slide-content">
-    <div class="eyebrow reveal" style="--i:0">Why Now</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">为什么是<span class="accent">现在</span></h2>
+    <div class="eyebrow reveal" style="--i:0">Why Voice &nbsp;·&nbsp; Why Now</div>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">聚焦语音<span class="accent">看发展</span></h2>
 
     <div class="why-grid">
       <div class="why-card reveal-scale" style="--i:2">
@@ -2410,10 +2507,29 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P6 · EXPERIENCE · 意图识别
+     P7 · CHAPTER 2 COVER
+     ============================================================ -->
+<section class="slide chapter-cover" data-title="第二章">
+  <div class="slide-meta"><span class="meta-num">07</span> / 18 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="chcover-bg-num" aria-hidden="true">02</div>
+  <div class="chcover-content">
+    <div class="chcover-eyebrow reveal" style="--i:0">CHAPTER TWO &nbsp;·&nbsp; EXPERIENCE</div>
+    <h2 class="chcover-title reveal" style="--i:1">千问语音助手<br>体验报告</h2>
+    <div class="chcover-pills reveal" style="--i:2">
+      <span>意图识别</span>
+      <span>工具调用</span>
+      <span>记忆机制</span>
+    </div>
+  </div>
+  <div class="chcover-divider"></div>
+</section>
+
+
+<!-- ============================================================
+     P8 · EXPERIENCE · 意图识别
      ============================================================ -->
 <section class="slide" data-title="意图识别">
-  <div class="slide-meta"><span class="meta-num">06</span> / 15 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="slide-meta"><span class="meta-num">08</span> / 18 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Intent Recognition</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">意图识别 · <span class="accent">亮点与断点</span></h2>
@@ -2496,10 +2612,10 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P7 · EXPERIENCE · 工具调用
+     P9 · EXPERIENCE · 工具调用
      ============================================================ -->
 <section class="slide" data-title="工具调用">
-  <div class="slide-meta"><span class="meta-num">07</span> / 15 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="slide-meta"><span class="meta-num">09</span> / 18 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Tool Calling</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">工具调用 · <span class="accent">闭环与控制</span></h2>
@@ -2519,26 +2635,26 @@ body.edit-active [contenteditable="true"]:focus {
       <div class="pipeline-check">闭环 ✓</div>
     </div>
 
-    <!-- 断点 · 三个不可控参数 -->
-    <div class="matrix-label reveal" style="--i:3;color:var(--red-warn)">断点 · 用户控制层缺失</div>
+    <!-- 断点 · 缺乏场景自动适配 -->
+    <div class="matrix-label reveal" style="--i:3;color:var(--red-warn)">断点 · 场景自适应缺失</div>
     <div class="controls-grid reveal" style="--i:3">
       <div class="ctrl">
         <div class="ctrl-label">P1</div>
         <div class="ctrl-name" contenteditable="true">音色</div>
         <div class="ctrl-track locked"></div>
-        <div class="ctrl-desc" contenteditable="true">无法切换 · 老人想慢速大声 / 年轻人想活泼</div>
+        <div class="ctrl-desc" contenteditable="true">可手动设置 · 无法感知老年 / 疲惫 / 情绪状态后自动切换音色</div>
       </div>
       <div class="ctrl">
         <div class="ctrl-label">P2</div>
         <div class="ctrl-name" contenteditable="true">语速</div>
         <div class="ctrl-track locked"></div>
-        <div class="ctrl-desc" contenteditable="true">无快 / 正常 / 慢三挡可选</div>
+        <div class="ctrl-desc" contenteditable="true">可手动选快 / 正常 / 慢 · 冥想、专注等场景无法自动调节语速</div>
       </div>
       <div class="ctrl">
         <div class="ctrl-label">P3</div>
         <div class="ctrl-name" contenteditable="true">情绪基调</div>
         <div class="ctrl-track locked"></div>
-        <div class="ctrl-desc" contenteditable="true">无欢快 / 平静 / 正式切换</div>
+        <div class="ctrl-desc" contenteditable="true">可手动切换平静 / 欢快 / 正式 · 无法识别用户情绪主动适配语气</div>
       </div>
     </div>
 
@@ -2546,7 +2662,7 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="reveal" style="--i:4;margin-top:auto;padding:clamp(0.7rem,1.4vh,1.1rem) clamp(1rem,2vw,1.6rem);background:var(--gold-glow);border-left:2px solid var(--gold);display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
       <span style="font-family:var(--font-mono);font-size:var(--tiny-size);letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;white-space:nowrap">修复方向</span>
       <span style="font-size:var(--small-size);color:var(--text-primary);line-height:1.5;flex:1;min-width:200px" contenteditable="true">
-        首次使用 30 秒<strong>「声音体检」</strong>沉淀语速/音量/情绪基调 · 老年模式 0.8× 语速 · 付费用户通过 <strong>Qwen3-TTS-VC</strong> 复刻专属音色
+        接入 Qwen3-ASR <strong>情绪识别</strong>信号，根据场景自动适配语速与基调 · 首次使用 30 秒<strong>「声音体检」</strong>建立个人偏好基准 · 付费用户通过 <strong>Qwen3-TTS-VC</strong> 复刻专属音色
       </span>
     </div>
   </div>
@@ -2554,10 +2670,10 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P8 · EXPERIENCE · 记忆与上下文
+     P10 · EXPERIENCE · 记忆与上下文
      ============================================================ -->
 <section class="slide" data-title="记忆与上下文">
-  <div class="slide-meta"><span class="meta-num">08</span> / 15 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
+  <div class="slide-meta"><span class="meta-num">10</span> / 18 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Memory</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">记忆 · <span class="accent">短板与方案</span></h2>
@@ -2649,10 +2765,31 @@ body.edit-active [contenteditable="true"]:focus {
 
 
 <!-- ============================================================
-     P9 · ECOSYSTEM · 整体逻辑
+     P11 · CHAPTER 3 COVER
+     ============================================================ -->
+<section class="slide chapter-cover" data-title="第三章">
+  <div class="slide-meta"><span class="meta-num">11</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="chcover-bg-num" aria-hidden="true">03</div>
+  <div class="chcover-content">
+    <div class="chcover-eyebrow reveal" style="--i:0">CHAPTER THREE &nbsp;·&nbsp; ECOSYSTEM</div>
+    <h2 class="chcover-title reveal" style="--i:1">千问 × 阿里生态</h2>
+    <div class="chcover-pills reveal" style="--i:2">
+      <span>淘宝</span>
+      <span>淘宝直播</span>
+      <span>闪购</span>
+      <span>高德</span>
+      <span>超级画像</span>
+    </div>
+  </div>
+  <div class="chcover-divider"></div>
+</section>
+
+
+<!-- ============================================================
+     P12 · ECOSYSTEM · 整体逻辑
      ============================================================ -->
 <section class="slide" data-title="生态整体逻辑">
-  <div class="slide-meta"><span class="meta-num">09</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-meta"><span class="meta-num">12</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Positioning</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">阿里生态中的<span class="accent">千问</span></h2>
@@ -2702,7 +2839,7 @@ body.edit-active [contenteditable="true"]:focus {
      P10 · ECOSYSTEM · 淘宝 × AI
      ============================================================ -->
 <section class="slide" data-title="淘宝 × AI">
-  <div class="slide-meta"><span class="meta-num">10</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-meta"><span class="meta-num">13</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · 淘宝 × AI</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">淘宝 <span class="accent">× AI</span><span class="en">Pre · Mid · Post Purchase</span></h2>
@@ -2748,7 +2885,7 @@ body.edit-active [contenteditable="true"]:focus {
      P11 · ECOSYSTEM · 淘宝直播 × AI
      ============================================================ -->
 <section class="slide" data-title="淘宝直播 × AI">
-  <div class="slide-meta"><span class="meta-num">11</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-meta"><span class="meta-num">14</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Taobao Live</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">淘宝直播 <span class="accent">× AI</span><span class="en">One-to-Many Personalization</span></h2>
@@ -2791,7 +2928,7 @@ body.edit-active [contenteditable="true"]:focus {
      P12 · ECOSYSTEM · 闪购 × AI
      ============================================================ -->
 <section class="slide" data-title="闪购 × AI">
-  <div class="slide-meta"><span class="meta-num">12</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-meta"><span class="meta-num">15</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Shangou</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">闪购 <span class="accent">× AI</span><span class="en">Three-Sided Delivery Opportunity</span></h2>
@@ -2829,7 +2966,7 @@ body.edit-active [contenteditable="true"]:focus {
      P13 · ECOSYSTEM · 高德 × AI
      ============================================================ -->
 <section class="slide" data-title="高德 × AI">
-  <div class="slide-meta"><span class="meta-num">13</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-meta"><span class="meta-num">16</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Gaode</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">高德 <span class="accent">× AI</span><span class="en">Driver &amp; Passenger Dual Entry</span></h2>
@@ -2883,7 +3020,7 @@ body.edit-active [contenteditable="true"]:focus {
      P14 · ECOSYSTEM · 跨场景超级画像
      ============================================================ -->
 <section class="slide" data-title="超级用户画像">
-  <div class="slide-meta"><span class="meta-num">14</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
+  <div class="slide-meta"><span class="meta-num">17</span> / 18 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Super Profile</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">跨应用<span class="accent">统一画像</span></h2>
@@ -2929,7 +3066,7 @@ body.edit-active [contenteditable="true"]:focus {
      P15 · ABOUT ME · 个人优势
      ============================================================ -->
 <section class="slide" data-title="个人优势">
-  <div class="slide-meta"><span class="meta-num">15</span> / 15 &nbsp;·&nbsp; CHAPTER 04 · ABOUT ME</div>
+  <div class="slide-meta"><span class="meta-num">18</span> / 18 &nbsp;·&nbsp; CHAPTER 04 · ABOUT ME</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人优势 · Experience &amp; Fit</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">我的经验 <span class="accent">× 千问</span></h2>
@@ -3225,13 +3362,13 @@ class InlineEditor {
       data[el.dataset.editIdx] = el.innerHTML;
     });
     try {
-      localStorage.setItem('qianwen-pitch-deck-v3', JSON.stringify(data));
+      localStorage.setItem('qianwen-pitch-deck-v4', JSON.stringify(data));
     } catch (e) { /* storage full or disabled */ }
   }
 
   loadSavedContent() {
     try {
-      const raw = localStorage.getItem('qianwen-pitch-deck-v3');
+      const raw = localStorage.getItem('qianwen-pitch-deck-v4');
       if (!raw) return;
       const data = JSON.parse(raw);
       document.querySelectorAll(this.editableSelector).forEach((el, idx) => {
