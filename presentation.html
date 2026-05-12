@@ -1676,6 +1676,327 @@ img, .image-container {
 }
 
 /* ===========================================
+   VISUAL PRIMITIVES · v3 redesign
+   =========================================== */
+/* Status panel cards (亮点/断点) */
+.vpanel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.8rem, 1.6vw, 1.4rem);
+  flex: 1;
+  margin-top: clamp(0.6rem, 1.5vh, 1.2rem);
+  min-height: 0;
+}
+.vpanel {
+  background: linear-gradient(180deg, var(--bg-secondary), rgba(17,22,42,0.4));
+  border: 1px solid var(--line-soft);
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.2vh, 0.9rem);
+  position: relative;
+  overflow: hidden;
+}
+.vpanel.ok { border-top: 2px solid var(--teal); }
+.vpanel.bad { border-top: 2px solid var(--red-warn); }
+.vpanel-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.vpanel.ok .vpanel-status { color: var(--teal); }
+.vpanel.bad .vpanel-status { color: var(--red-warn); }
+.vpanel-status .badge-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.vpanel.ok .badge-icon { background: var(--teal); color: var(--bg-primary); }
+.vpanel.bad .badge-icon { background: var(--red-warn); color: var(--bg-primary); }
+.vpanel-title {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.vpanel-viz {
+  height: clamp(60px, 10vh, 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.2rem 0;
+}
+.vpanel-desc {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.vpanel-fix {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--line-soft);
+  font-size: var(--tiny-size);
+  color: var(--text-dim);
+  line-height: 1.5;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.vpanel-fix strong {
+  color: var(--gold);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+/* Pipeline flow (P7) */
+.pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(0.4rem, 1vw, 0.8rem);
+  padding: clamp(1rem, 2vh, 1.6rem) clamp(1rem, 2vw, 2rem);
+  background: rgba(91, 206, 174, 0.06);
+  border: 1px solid var(--teal-soft);
+  border-radius: 4px;
+  margin-bottom: clamp(0.8rem, 1.8vh, 1.4rem);
+  position: relative;
+}
+.pipeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+}
+.pipeline-node .pn-circle {
+  width: clamp(34px, 4.5vw, 48px);
+  height: clamp(34px, 4.5vw, 48px);
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.pipeline-node.done .pn-circle {
+  background: var(--teal);
+  color: var(--bg-primary);
+}
+.pipeline-node .pn-label {
+  font-size: var(--tiny-size);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.pipeline-arrow {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--teal-soft), var(--teal), var(--teal-soft));
+  position: relative;
+}
+.pipeline-arrow::after {
+  content: '▶';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.55rem;
+  color: var(--teal);
+}
+.pipeline-check {
+  margin-left: auto;
+  padding: 0.4rem 0.8rem;
+  background: var(--teal);
+  color: var(--bg-primary);
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* Control sliders (P7 — locked state) */
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.8rem, 1.5vw, 1.3rem);
+  margin-bottom: clamp(0.8rem, 1.6vh, 1.3rem);
+}
+.ctrl {
+  background: var(--bg-secondary);
+  border: 1px solid var(--line-soft);
+  padding: clamp(0.8rem, 1.5vw, 1.2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+.ctrl::after {
+  content: 'LOCKED';
+  position: absolute;
+  top: 0.7rem;
+  right: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--red-warn);
+  padding: 0.15em 0.4em;
+  border: 1px solid var(--red-warn);
+  opacity: 0.7;
+}
+.ctrl-label {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--red-warn);
+  text-transform: uppercase;
+}
+.ctrl-name {
+  font-family: var(--font-cjk-serif);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  color: var(--text-primary);
+}
+.ctrl-track {
+  height: 4px;
+  background: rgba(234,230,224,0.06);
+  position: relative;
+  border-radius: 2px;
+}
+.ctrl-track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red-warn);
+  border: 2px solid var(--bg-secondary);
+  box-shadow: 0 0 0 1px var(--red-warn);
+}
+.ctrl-track.locked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 4px,
+    rgba(201,112,100,0.15) 4px,
+    rgba(201,112,100,0.15) 8px
+  );
+}
+.ctrl-desc {
+  font-size: var(--tiny-size);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* Memory decay chart (P8) */
+.decay-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(0.8rem, 1.5vw, 1.3rem);
+  background: var(--bg-secondary);
+  border: 1px solid var(--line-soft);
+  border-left: 2px solid var(--red-warn);
+}
+.decay-title {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.2em;
+  color: var(--red-warn);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.decay-svg {
+  width: 100%;
+  height: clamp(80px, 14vh, 130px);
+}
+.decay-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-top: 0.2rem;
+}
+.decay-note {
+  font-size: var(--small-size);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+.decay-note strong { color: var(--gold); font-weight: 500; }
+
+/* Memory pyramid (P8) */
+.mem-pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mem-layer {
+  display: grid;
+  grid-template-columns: clamp(5rem, 9vw, 8rem) 1fr auto;
+  align-items: center;
+  gap: clamp(0.6rem, 1.5vw, 1.2rem);
+  padding: clamp(0.55rem, 1.1vh, 0.85rem) clamp(0.8rem, 1.5vw, 1.2rem);
+  background: var(--bg-secondary);
+  border-left: 2px solid var(--gold);
+  transition: all 0.3s var(--ease);
+}
+.mem-layer:hover {
+  background: var(--bg-tertiary);
+  border-left-color: var(--gold-bright);
+}
+.mem-layer:nth-child(1) { border-left-color: var(--gold); }
+.mem-layer:nth-child(2) { border-left-color: var(--gold-bright); opacity: 0.92; }
+.mem-layer:nth-child(3) { border-left-color: var(--teal); opacity: 0.85; }
+.mem-layer:nth-child(4) { border-left-color: rgba(91,206,174,0.6); opacity: 0.78; }
+.mem-tag {
+  font-family: var(--font-mono);
+  font-size: var(--tiny-size);
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  font-weight: 500;
+}
+.mem-example {
+  font-size: var(--small-size);
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+.mem-life {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* Compaction gauges row */
+.compact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.8rem, 1.5vw, 1.3rem);
+  margin-top: clamp(0.6rem, 1.4vh, 1rem);
+}
+
+/* ===========================================
    EDIT MODE
    =========================================== */
 .edit-hotzone {
@@ -2009,33 +2330,77 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Intent Recognition</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">意图识别 · <span class="accent">亮点与断点</span></h2>
 
-    <div class="tri-col">
-      <div class="tri-card reveal-scale" style="--i:2;border-top-color:var(--teal)">
-        <div class="tc-num" style="color:var(--teal)">亮点 · HIGHLIGHT</div>
-        <div class="tc-title" contenteditable="true">视频模式读懂深层意图</div>
-        <div class="tc-body" contenteditable="true">
-          千问能从<strong>用户动作 + 界面切换</strong>中识别意图。<br><br>
-          停留、截图、跨 App 切换——行为本身就是信号，不需要用户开口。这一点明显优于豆包。
+    <div class="vpanel-grid">
+      <!-- 亮点 · 视频意图理解 -->
+      <div class="vpanel ok reveal-scale" style="--i:2">
+        <div class="vpanel-status"><span class="badge-icon">✓</span><span>亮点 · Highlight</span></div>
+        <div class="vpanel-title" contenteditable="true">视频读懂行为意图</div>
+        <div class="vpanel-viz">
+          <svg viewBox="0 0 220 80" style="width:100%;height:100%">
+            <!-- Behavior flow: app → app → app with eye -->
+            <rect x="10" y="28" width="32" height="24" rx="3" fill="none" stroke="#5BCEAE" stroke-width="1"/>
+            <text x="26" y="44" text-anchor="middle" fill="#5BCEAE" font-family="JetBrains Mono" font-size="8">APP 1</text>
+            <path d="M48 40 L70 40" stroke="#5BCEAE" stroke-width="1" stroke-dasharray="2 2"/>
+            <rect x="74" y="28" width="32" height="24" rx="3" fill="none" stroke="#5BCEAE" stroke-width="1"/>
+            <text x="90" y="44" text-anchor="middle" fill="#5BCEAE" font-family="JetBrains Mono" font-size="8">APP 2</text>
+            <path d="M112 40 L134 40" stroke="#5BCEAE" stroke-width="1" stroke-dasharray="2 2"/>
+            <rect x="138" y="28" width="32" height="24" rx="3" fill="none" stroke="#5BCEAE" stroke-width="1"/>
+            <text x="154" y="44" text-anchor="middle" fill="#5BCEAE" font-family="JetBrains Mono" font-size="8">APP 3</text>
+            <!-- Eye/AI watching -->
+            <circle cx="195" cy="40" r="12" fill="none" stroke="#D4A574" stroke-width="1"/>
+            <circle cx="195" cy="40" r="4" fill="#D4A574"/>
+            <text x="195" y="68" text-anchor="middle" fill="#D4A574" font-family="JetBrains Mono" font-size="7">AI</text>
+          </svg>
         </div>
+        <div class="vpanel-desc" contenteditable="true">
+          从<strong style="color:var(--text-primary)">动作 + 界面切换</strong>读出意图——停留、截图、跨 App 切换都是信号
+        </div>
+        <div class="vpanel-fix" contenteditable="true">明显优于豆包，是千问视频模式的护城河</div>
       </div>
 
-      <div class="tri-card reveal-scale" style="--i:3;border-top-color:var(--red-warn)">
-        <div class="tc-num" style="color:var(--red-warn)">断点 01</div>
-        <div class="tc-title" contenteditable="true">无法分辨单/多人</div>
-        <div class="tc-body" contenteditable="true">
-          视频中两人对话时，<strong>千问无法判断谁在说、意图归属谁</strong>。<br><br>
-          <span style="color:var(--gold);font-family:var(--font-mono);font-size:0.85em">FIX</span> 声纹分离 + 视频人脸定位，绑定意图归属
+      <!-- 断点 01 · 多人识别 -->
+      <div class="vpanel bad reveal-scale" style="--i:3">
+        <div class="vpanel-status"><span class="badge-icon">×</span><span>断点 01</span></div>
+        <div class="vpanel-title" contenteditable="true">无法区分单/多人</div>
+        <div class="vpanel-viz">
+          <svg viewBox="0 0 220 80" style="width:100%;height:100%">
+            <!-- Two people speaking -->
+            <circle cx="60" cy="32" r="14" fill="none" stroke="#C97064" stroke-width="1.2"/>
+            <path d="M48 60 Q60 48 72 60" fill="none" stroke="#C97064" stroke-width="1.2"/>
+            <text x="60" y="36" text-anchor="middle" fill="#C97064" font-family="serif" font-size="10">A</text>
+            <circle cx="105" cy="32" r="14" fill="none" stroke="#C97064" stroke-width="1.2"/>
+            <path d="M93 60 Q105 48 117 60" fill="none" stroke="#C97064" stroke-width="1.2"/>
+            <text x="105" y="36" text-anchor="middle" fill="#C97064" font-family="serif" font-size="10">B</text>
+            <!-- AI confusion -->
+            <path d="M140 40 L160 40" stroke="#C97064" stroke-width="1"/>
+            <text x="185" y="44" text-anchor="middle" fill="#C97064" font-family="JetBrains Mono" font-size="14" font-weight="700">??</text>
+          </svg>
         </div>
+        <div class="vpanel-desc" contenteditable="true">
+          两人对话时，<strong style="color:var(--text-primary)">无法判断谁在说、意图归属谁</strong>
+        </div>
+        <div class="vpanel-fix" contenteditable="true"><strong>FIX</strong> 声纹分离 + 视频人脸定位绑定意图归属</div>
       </div>
 
-      <div class="tri-card reveal-scale" style="--i:4;border-top-color:var(--red-warn)">
-        <div class="tc-num" style="color:var(--red-warn)">断点 02</div>
-        <div class="tc-title" contenteditable="true">无问词疑问句</div>
-        <div class="tc-body" contenteditable="true">
-          「这个日活是 5 亿？」<br>
-          ——靠语调上扬的疑问句，<strong>常被误判为陈述句</strong>，AI 顺势确认而非反问。<br><br>
-          <span style="color:var(--gold);font-family:var(--font-mono);font-size:0.85em">FIX</span> 音调特征 + 上下文联合判断疑问概率
+      <!-- 断点 02 · 无问词疑问句 -->
+      <div class="vpanel bad reveal-scale" style="--i:4">
+        <div class="vpanel-status"><span class="badge-icon">×</span><span>断点 02</span></div>
+        <div class="vpanel-title" contenteditable="true">无问词疑问句误判</div>
+        <div class="vpanel-viz">
+          <svg viewBox="0 0 220 80" style="width:100%;height:100%">
+            <!-- Rising tone waveform with ? -->
+            <path d="M10 55 Q30 50 50 48 T90 42 T130 32 T170 20" fill="none" stroke="#D4A574" stroke-width="1.5"/>
+            <circle cx="170" cy="20" r="3" fill="#D4A574"/>
+            <text x="195" y="28" fill="#D4A574" font-family="serif" font-size="22" font-weight="600">?</text>
+            <!-- AI hears as flat -->
+            <path d="M10 70 L210 70" stroke="#C97064" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <text x="110" y="78" text-anchor="middle" fill="#C97064" font-family="JetBrains Mono" font-size="7">AI 听成陈述句</text>
+          </svg>
         </div>
+        <div class="vpanel-desc" contenteditable="true">
+          「这个日活是 5 亿？」语调上扬，<strong style="color:var(--text-primary)">却被识别为陈述句</strong>
+        </div>
+        <div class="vpanel-fix" contenteditable="true"><strong>FIX</strong> 音调特征 + 上下文联合判断疑问概率</div>
       </div>
     </div>
   </div>
@@ -2051,43 +2416,50 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Tool Calling</div>
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">工具调用 · <span class="accent">闭环与控制</span></h2>
 
-    <!-- 亮点 banner -->
-    <div class="reveal" style="--i:2;display:flex;align-items:center;gap:1rem;padding:0.8rem 1.2rem;background:rgba(91,206,174,0.08);border-left:2px solid var(--teal);margin-bottom:clamp(1rem,2vh,1.5rem)">
-      <span style="font-family:var(--font-mono);font-size:var(--tiny-size);letter-spacing:0.2em;color:var(--teal);text-transform:uppercase;white-space:nowrap">亮点 · 闭环</span>
-      <span style="font-size:var(--body-size);color:var(--text-primary);line-height:1.5" contenteditable="true">
-        我实测「点一杯霸王茶姬不要冰」可以走完<strong style="color:var(--teal)">语音 → 确认 → 支付 → 出码</strong>全闭环——这是豆包结构上做不到的。
-      </span>
+    <!-- 亮点 · 完整闭环 pipeline -->
+    <div class="matrix-label reveal" style="--i:2;color:var(--teal);margin-top:0.5rem">亮点 · 履约闭环可走通（实测：点一杯霸王茶姬）</div>
+    <div class="pipeline reveal" style="--i:2">
+      <div class="pipeline-node done"><div class="pn-circle">01</div><div class="pn-label">语音</div></div>
+      <div class="pipeline-arrow"></div>
+      <div class="pipeline-node done"><div class="pn-circle">02</div><div class="pn-label">意图</div></div>
+      <div class="pipeline-arrow"></div>
+      <div class="pipeline-node done"><div class="pn-circle">03</div><div class="pn-label">工具</div></div>
+      <div class="pipeline-arrow"></div>
+      <div class="pipeline-node done"><div class="pn-circle">04</div><div class="pn-label">支付</div></div>
+      <div class="pipeline-arrow"></div>
+      <div class="pipeline-node done"><div class="pn-circle">05</div><div class="pn-label">出码</div></div>
+      <div class="pipeline-check">闭环 ✓</div>
     </div>
 
-    <div class="two-col-grid" style="margin-top:0">
-      <div class="reveal-left" style="--i:3">
-        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.5rem">断点 · 用户控制层缺失</div>
-        <div class="problem-list" style="margin-bottom:0">
-          <div class="problem-item" style="padding:0.5rem 0">
-            <span class="pid">P1</span>
-            <span contenteditable="true"><strong>音色固定</strong> · 老人想慢速大声、年轻人想活泼，无偏好层</span>
-          </div>
-          <div class="problem-item" style="padding:0.5rem 0">
-            <span class="pid">P2</span>
-            <span contenteditable="true"><strong>语速不可调</strong> · 无快/正常/慢三挡</span>
-          </div>
-          <div class="problem-item" style="padding:0.5rem 0">
-            <span class="pid">P3</span>
-            <span contenteditable="true"><strong>情绪基调不可选</strong> · 无欢快/平静/正式切换</span>
-          </div>
-        </div>
+    <!-- 断点 · 三个不可控参数 -->
+    <div class="matrix-label reveal" style="--i:3;color:var(--red-warn)">断点 · 用户控制层缺失</div>
+    <div class="controls-grid reveal" style="--i:3">
+      <div class="ctrl">
+        <div class="ctrl-label">P1</div>
+        <div class="ctrl-name" contenteditable="true">音色</div>
+        <div class="ctrl-track locked"></div>
+        <div class="ctrl-desc" contenteditable="true">无法切换 · 老人想慢速大声 / 年轻人想活泼</div>
       </div>
+      <div class="ctrl">
+        <div class="ctrl-label">P2</div>
+        <div class="ctrl-name" contenteditable="true">语速</div>
+        <div class="ctrl-track locked"></div>
+        <div class="ctrl-desc" contenteditable="true">无快 / 正常 / 慢三挡可选</div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-label">P3</div>
+        <div class="ctrl-name" contenteditable="true">情绪基调</div>
+        <div class="ctrl-track locked"></div>
+        <div class="ctrl-desc" contenteditable="true">无欢快 / 平静 / 正式切换</div>
+      </div>
+    </div>
 
-      <div class="reveal-right" style="--i:4">
-        <div class="matrix-label">修复方向 · 个性化偏好层</div>
-        <div class="fix-card" style="border-top-color:var(--gold);margin-top:0.4rem">
-          <div class="fix-body" contenteditable="true">
-            首次使用 30 秒「<strong>声音体检</strong>」沉淀语速 / 音量 / 情绪基调。<br><br>
-            · 老年模式自动 0.8× 语速 + 重音增强<br>
-            · 付费用户上传 30 秒参考音，通过 <strong>Qwen3-TTS-VC</strong> 复刻专属音色
-          </div>
-        </div>
-      </div>
+    <!-- 修复方向 -->
+    <div class="reveal" style="--i:4;margin-top:auto;padding:clamp(0.7rem,1.4vh,1.1rem) clamp(1rem,2vw,1.6rem);background:var(--gold-glow);border-left:2px solid var(--gold);display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap">
+      <span style="font-family:var(--font-mono);font-size:var(--tiny-size);letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;white-space:nowrap">修复方向</span>
+      <span style="font-size:var(--small-size);color:var(--text-primary);line-height:1.5;flex:1;min-width:200px" contenteditable="true">
+        首次使用 30 秒<strong>「声音体检」</strong>沉淀语速/音量/情绪基调 · 老年模式 0.8× 语速 · 付费用户通过 <strong>Qwen3-TTS-VC</strong> 复刻专属音色
+      </span>
     </div>
   </div>
 </section>
@@ -2103,72 +2475,86 @@ body.edit-active [contenteditable="true"]:focus {
     <h2 class="slide-title reveal" style="--i:1" contenteditable="true">记忆 · <span class="accent">短板与方案</span></h2>
 
     <div class="two-col-grid">
-      <div class="reveal-left" style="--i:2">
-        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.6rem">实测问题</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.55rem;margin-bottom:1rem">
-          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.5;padding-left:1rem;position:relative" contenteditable="true">
-            <span style="position:absolute;left:0;top:0.55em;width:6px;height:1px;background:var(--red-warn);display:block"></span>
-            上下文窗口太短：第 15 轮已忘记「<strong style="color:var(--gold)">我对花生过敏</strong>」
-          </li>
-          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.5;padding-left:1rem;position:relative" contenteditable="true">
-            <span style="position:absolute;left:0;top:0.55em;width:6px;height:1px;background:var(--red-warn);display:block"></span>
-            中长期记忆不准：跨会话偏好不沉淀
-          </li>
-          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.5;padding-left:1rem;position:relative" contenteditable="true">
-            <span style="position:absolute;left:0;top:0.55em;width:6px;height:1px;background:var(--red-warn);display:block"></span>
-            用户无法查看 / 编辑 AI 记住了什么
-          </li>
-        </ul>
-
-        <div class="matrix-label" style="margin-bottom:0.5rem">压缩触发机制（建议）</div>
-        <div class="memory-mechanism">
-          <div class="gauge">
-            <div class="gauge-label"><span contenteditable="true">上下文 70%</span><span class="pct">70%</span></div>
-            <div class="gauge-bar"><div class="gauge-fill f70"></div></div>
-            <div class="gauge-desc" contenteditable="true">主动提示拆分新会话</div>
+      <!-- Left: memory decay chart + compaction gauges -->
+      <div class="reveal-left" style="--i:2;display:flex;flex-direction:column;gap:clamp(0.7rem,1.4vh,1.1rem)">
+        <div class="decay-chart">
+          <div class="decay-title">记忆衰减实测 · 20 轮订餐订票</div>
+          <svg class="decay-svg" viewBox="0 0 320 120" preserveAspectRatio="none">
+            <!-- Grid lines -->
+            <line x1="0" y1="20" x2="320" y2="20" stroke="rgba(234,230,224,0.06)" stroke-width="1"/>
+            <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(234,230,224,0.06)" stroke-width="1"/>
+            <line x1="0" y1="100" x2="320" y2="100" stroke="rgba(234,230,224,0.06)" stroke-width="1"/>
+            <!-- Memory retention curve (decay) -->
+            <path d="M0 25 L80 28 L140 38 L200 65 L260 95 L320 108"
+                  fill="none" stroke="#D4A574" stroke-width="2"/>
+            <!-- Fill under -->
+            <path d="M0 25 L80 28 L140 38 L200 65 L260 95 L320 108 L320 120 L0 120 Z"
+                  fill="url(#decayGrad)" opacity="0.3"/>
+            <defs>
+              <linearGradient id="decayGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D4A574" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#D4A574" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Marker at turn 15 where it forgot -->
+            <circle cx="200" cy="65" r="4" fill="#C97064"/>
+            <line x1="200" y1="65" x2="200" y2="115" stroke="#C97064" stroke-width="1" stroke-dasharray="2 2"/>
+            <text x="205" y="58" fill="#C97064" font-family="JetBrains Mono" font-size="9">第 15 轮 · 已忘「花生过敏」</text>
+          </svg>
+          <div class="decay-labels">
+            <span>第 1 轮</span><span>5</span><span>10</span><span>15</span><span>20</span>
           </div>
-          <div class="gauge">
-            <div class="gauge-label"><span contenteditable="true">上下文 85%</span><span class="pct">85%</span></div>
-            <div class="gauge-bar"><div class="gauge-fill f85"></div></div>
-            <div class="gauge-desc" contenteditable="true">子 Agent 自动压缩归档</div>
+          <div class="decay-note" contenteditable="true">
+            上下文窗口太短 · 中长期偏好不沉淀 · <strong>用户无法查看 AI 记住了什么</strong>
+          </div>
+        </div>
+
+        <div>
+          <div class="matrix-label" style="margin-bottom:0.5rem">建议 · 上下文压缩触发机制</div>
+          <div class="compact-row">
+            <div class="gauge">
+              <div class="gauge-label"><span class="pct">70%</span><span contenteditable="true">提示拆分</span></div>
+              <div class="gauge-bar"><div class="gauge-fill f70"></div></div>
+              <div class="gauge-desc" contenteditable="true">主动询问用户是否拆新会话</div>
+            </div>
+            <div class="gauge">
+              <div class="gauge-label"><span class="pct">85%</span><span contenteditable="true">自动归档</span></div>
+              <div class="gauge-bar"><div class="gauge-fill f85"></div></div>
+              <div class="gauge-desc" contenteditable="true">子 Agent 压缩历史并归档</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="reveal-right" style="--i:3">
-        <div class="matrix-label">四层记忆模型（参考 Claude Code）</div>
-        <table class="memory-table">
-          <thead>
-            <tr><th>层级</th><th>示例</th><th>持久化</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td contenteditable="true">User</td>
-              <td contenteditable="true">姓名、年龄、过敏源</td>
-              <td contenteditable="true">永久 · 可编辑</td>
-            </tr>
-            <tr>
-              <td contenteditable="true">Preference</td>
-              <td contenteditable="true">口味、语速、说话风格</td>
-              <td contenteditable="true">跨会话调用</td>
-            </tr>
-            <tr>
-              <td contenteditable="true">Project</td>
-              <td contenteditable="true">订餐中、订票中</td>
-              <td contenteditable="true">任务结束归档</td>
-            </tr>
-            <tr>
-              <td contenteditable="true">Reference</td>
-              <td contenteditable="true">上传的文件、链接</td>
-              <td contenteditable="true">长期可引用</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Right: 4-layer memory pyramid -->
+      <div class="reveal-right" style="--i:3;display:flex;flex-direction:column;gap:clamp(0.5rem,1vh,0.8rem)">
+        <div class="matrix-label">建议 · 四层记忆模型（参考 Claude Code）</div>
+        <div class="mem-pyramid">
+          <div class="mem-layer">
+            <span class="mem-tag">REFERENCE</span>
+            <span class="mem-example" contenteditable="true">用户上传的文件、链接</span>
+            <span class="mem-life" contenteditable="true">长期可引用</span>
+          </div>
+          <div class="mem-layer">
+            <span class="mem-tag">PROJECT</span>
+            <span class="mem-example" contenteditable="true">订餐中、订票中</span>
+            <span class="mem-life" contenteditable="true">任务结束归档</span>
+          </div>
+          <div class="mem-layer">
+            <span class="mem-tag">PREFERENCE</span>
+            <span class="mem-example" contenteditable="true">口味、语速、说话风格</span>
+            <span class="mem-life" contenteditable="true">跨会话调用</span>
+          </div>
+          <div class="mem-layer">
+            <span class="mem-tag">USER</span>
+            <span class="mem-example" contenteditable="true">姓名、年龄、过敏源</span>
+            <span class="mem-life" contenteditable="true">永久 · 可编辑</span>
+          </div>
+        </div>
+        <div class="memory-quote" style="margin-top:auto;padding-top:clamp(0.7rem,1.5vh,1.1rem);font-size:clamp(0.78rem,1.2vw,0.95rem)" contenteditable="true">
+          跨会话记忆是<strong>豆包结构上做不到</strong>的差异化窗口期
+        </div>
       </div>
-    </div>
-
-    <div class="memory-quote reveal" style="--i:6" contenteditable="true">
-      跨会话记忆是<strong>豆包结构上做不到的差异化</strong>——只要千问先做好，粘性就形成护城河。
     </div>
   </div>
 </section>
@@ -2729,13 +3115,13 @@ class InlineEditor {
       data[el.dataset.editIdx] = el.innerHTML;
     });
     try {
-      localStorage.setItem('qianwen-pitch-deck', JSON.stringify(data));
+      localStorage.setItem('qianwen-pitch-deck-v3', JSON.stringify(data));
     } catch (e) { /* storage full or disabled */ }
   }
 
   loadSavedContent() {
     try {
-      const raw = localStorage.getItem('qianwen-pitch-deck');
+      const raw = localStorage.getItem('qianwen-pitch-deck-v3');
       if (!raw) return;
       const data = JSON.parse(raw);
       document.querySelectorAll(this.editableSelector).forEach((el, idx) => {
