@@ -2377,25 +2377,6 @@ body.edit-active [contenteditable="true"]:focus {
 .me-trait .mt-num { transition: transform 0.4s var(--ease-spring), color 0.4s var(--ease); }
 .me-trait:hover .mt-num { transform: scale(1.12); color: var(--gold-bright); }
 
-/* ---------- A4 · toc-item arrow indicator ---------- */
-.toc-item { position: relative; }
-.toc-item::after {
-  content: '→';
-  position: absolute;
-  right: clamp(1rem, 2vw, 2rem);
-  top: 50%;
-  transform: translate(-12px, -50%);
-  opacity: 0;
-  font-family: var(--font-mono);
-  font-size: clamp(1rem, 1.6vw, 1.4rem);
-  color: var(--gold);
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
-  pointer-events: none;
-}
-.toc-item:hover::after {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
 
 /* ---------- A5 · vs-col scale + border ---------- */
 .vs-col { transition: transform 0.4s var(--ease); }
