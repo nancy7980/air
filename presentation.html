@@ -2502,6 +2502,98 @@ body.edit-active [contenteditable="true"]:focus {
 }
 
 /* ============================================================
+   S · GLOBAL IMMERSIVE LAYER
+   ============================================================ */
+
+/* ---------- S1 · Cursor spotlight ---------- */
+.spotlight-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    700px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(212,165,116,0.055) 0%,
+    rgba(212,165,116,0.018) 28%,
+    transparent 65%
+  );
+  transition: background 0.08s linear;
+}
+
+/* ---------- S2 · 3D tilt cards (transform via JS, CSS sets perspective) ---------- */
+.why-card, .tri-card, .me-trait {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.why-card, .tri-card {
+  perspective: 800px;
+}
+
+/* ---------- Differentiated hover effects per card type ---------- */
+
+/* why-card (P6) — glass light sweep */
+.why-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -70%;
+  width: 50%; height: 100%;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+  transform: skewX(-15deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.why-card:hover::before { left: 130%; }
+
+/* tri-card (ecosystem P12-P16) — neon edge pulse on entry, gold shimmer on hover */
+.tri-card {
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease) !important;
+}
+.tri-card:hover {
+  box-shadow: 0 10px 36px rgba(212,165,116,0.15), 0 0 0 1px rgba(212,165,116,0.2);
+}
+.tri-card:hover::before { width: 100%; }
+
+/* vpanel (P8-P9) — enhanced glow (already A2, differentiate ok vs bad) */
+.vpanel.ok:hover { box-shadow: 0 8px 28px rgba(91,206,174,0.25), inset 0 0 30px rgba(91,206,174,0.04); }
+.vpanel.bad:hover { box-shadow: 0 8px 28px rgba(201,112,100,0.25), inset 0 0 30px rgba(201,112,100,0.04); }
+
+/* stat-item (P4) — radial shimmer + number glow */
+.stat-item {
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  border-radius: 4px;
+}
+.stat-item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(212,165,116,0.12);
+}
+.stat-item:hover .stat-num { text-shadow: 0 0 18px rgba(212,165,116,0.55); }
+
+/* toc-item (P2) — slide-in gold left border */
+.toc-item {
+  border-left: 3px solid transparent;
+  transition: border-color 0.4s var(--ease), padding-left 0.4s var(--ease),
+              background 0.4s var(--ease);
+  padding-left: clamp(1.5rem, 3vw, 2.5rem);
+}
+.toc-item:hover {
+  border-left-color: var(--gold);
+  padding-left: clamp(2rem, 4vw, 3.5rem);
+  background: rgba(212,165,116,0.04);
+}
+
+/* gaode-stage (P16) — upgraded: border-left grows + content shift */
+.gaode-stage {
+  border-left: 2px solid rgba(212,165,116,0.15);
+  padding-left: clamp(0.8rem, 1.5vw, 1.2rem);
+  transition: border-color 0.4s var(--ease), background 0.4s var(--ease), padding-left 0.4s var(--ease);
+}
+.gaode-stage:hover {
+  border-left-color: var(--gold);
+  background: rgba(212,165,116,0.04);
+}
+
+/* ============================================================
    D · INTERACTION & ANIMATION INTENSIFY LAYER
    ============================================================ */
 
@@ -2726,21 +2818,17 @@ body.edit-active [contenteditable="true"]:focus {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: clamp(0.6rem, 1.1vw, 0.95rem);
+  gap: clamp(0.5rem, 0.9vw, 0.75rem);
   min-height: 0;
 }
 .p8-vpanels .vpanel {
-  padding: clamp(0.65rem, 1.2vw, 1rem) clamp(0.85rem, 1.5vw, 1.2rem);
-  flex-direction: row;
-  align-items: center;
-  gap: clamp(0.6rem, 1.2vw, 1rem);
-  flex-wrap: wrap;
+  padding: clamp(0.55rem, 1vw, 0.85rem) clamp(0.7rem, 1.3vw, 1.1rem);
+  gap: clamp(0.3rem, 0.7vh, 0.5rem);
 }
-.p8-vpanels .vpanel-status { flex: 0 0 auto; min-width: clamp(5rem, 8vw, 7rem); }
-.p8-vpanels .vpanel-title { flex: 0 0 auto; font-size: clamp(0.88rem, 1.3vw, 1.05rem); }
-.p8-vpanels .vpanel-viz { display: none; }
-.p8-vpanels .vpanel-desc { flex: 1 1 60%; font-size: var(--small-size); min-width: 12rem; }
-.p8-vpanels .vpanel-fix { flex: 0 0 100%; font-size: var(--tiny-size); margin-top: -0.2rem; }
+.p8-vpanels .vpanel-title { font-size: clamp(0.9rem, 1.35vw, 1.05rem); }
+.p8-vpanels .vpanel-viz { height: clamp(3rem, 5.5vh, 4.5rem); }
+.p8-vpanels .vpanel-desc { font-size: var(--small-size); }
+.p8-vpanels .vpanel-fix { font-size: var(--tiny-size); }
 
 .p8-phone-wrap {
   display: flex; flex-direction: column;
@@ -2848,6 +2936,9 @@ body.edit-active [contenteditable="true"]:focus {
 </style>
 </head>
 <body>
+
+<!-- S1 · Cursor spotlight overlay -->
+<div class="spotlight-overlay" id="spotlightOverlay" aria-hidden="true"></div>
 
 <!-- Global ambient layer -->
 <div class="ambient">
@@ -3977,6 +4068,8 @@ class SlidePresentation {
   }
 
   scrambleTitleForSlide(slide) {
+    // Only run on main cover and chapter covers
+    if (!slide.classList.contains('cover') && !slide.classList.contains('chapter-cover')) return;
     const titles = slide.querySelectorAll('.slide-title, .chcover-title, .cover-title');
     const glyphs = '01アイウエオカキクケコサシスセソ#$%&@!?ABCDEF';
     titles.forEach((title) => {
@@ -4181,6 +4274,40 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // First slide always visible
   document.querySelector('.slide').classList.add('visible');
+
+  /* S1 · Cursor spotlight */
+  const root = document.documentElement;
+  document.addEventListener('mousemove', (e) => {
+    root.style.setProperty('--mx', e.clientX + 'px');
+    root.style.setProperty('--my', e.clientY + 'px');
+  }, { passive: true });
+
+  /* S2 · 3D card tilt */
+  const tiltEls = document.querySelectorAll('.why-card, .tri-card');
+  tiltEls.forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width  - 0.5) * 14;
+      const y = ((e.clientY - r.top)  / r.height - 0.5) * 14;
+      card.style.transform = `perspective(700px) rotateY(${x}deg) rotateX(${-y}deg) scale(1.025)`;
+    }, { passive: true });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  /* S2 · me-trait tilt (lighter, 8°) */
+  document.querySelectorAll('.me-trait').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width  - 0.5) * 8;
+      const y = ((e.clientY - r.top)  / r.height - 0.5) * 8;
+      card.style.transform = `perspective(600px) rotateY(${x}deg) rotateX(${-y}deg) translateX(4px)`;
+    }, { passive: true });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
 });
 </script>
 
