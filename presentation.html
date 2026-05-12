@@ -1788,7 +1788,7 @@ body.edit-active [contenteditable="true"]:focus {
     <div class="cover-label reveal" style="--i:0" contenteditable="false">千问 AI 产品经理 · 产品思考</div>
     <div class="draw-line"></div>
     <h1 class="cover-title reveal" style="--i:2" contenteditable="false">
-      千问语音助手的产品思考
+      千问语音助手 · 产品思考
       <span class="en">Market &middot; Experience &middot; Ecosystem &middot; About Me</span>
     </h1>
     <p class="cover-subtitle reveal" style="--i:4" contenteditable="false">
@@ -1909,7 +1909,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">04</span> / 15 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Competitive Landscape</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">流量帝国与<span class="accent">商业帝国</span>的结构性差异</h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">千问 <span class="accent">vs</span> 豆包</h2>
 
     <div class="vs-grid">
       <div class="vs-col doubao reveal-left" style="--i:2">
@@ -1969,7 +1969,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">05</span> / 15 &nbsp;·&nbsp; CHAPTER 01 · MARKET</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Why Now</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">需求、能力、信任三个<span class="accent">窗口同时打开</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">为什么是<span class="accent">现在</span></h2>
 
     <div class="why-grid">
       <div class="why-card reveal-scale" style="--i:2">
@@ -2007,47 +2007,35 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">06</span> / 15 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Intent Recognition</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">视频模式的<span class="accent">亮点与两个断点</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">意图识别 · <span class="accent">亮点与断点</span></h2>
 
-    <div class="two-col-grid">
-      <div class="bad-cases reveal-left" style="--i:2">
-        <div class="bad-case-label" style="color:var(--teal)">亮点 · 视频模式意图理解</div>
-        <p style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.65;margin-bottom:0.8rem;" contenteditable="true">
-          千问视频模式优于豆包的核心在于：能从用户的<strong style="color:var(--text-primary)">动作和界面切换</strong>中读出深层意图。刷抖音停留 3 秒、截图、切换到淘宝——这一系列行为本身就是意图信号，不需要用户开口。
-        </p>
-
-        <div class="bad-case-label" style="margin-top:0.6rem">断点 · Bad Cases</div>
-        <div class="dialog">
-          <div class="dialog-bubble user" contenteditable="true">你看下我在看什么</div>
-          <div class="dialog-bubble ai" data-issue="无法区分单人/多人" contenteditable="true">您正在浏览商品页面。</div>
+    <div class="tri-col">
+      <div class="tri-card reveal-scale" style="--i:2;border-top-color:var(--teal)">
+        <div class="tc-num" style="color:var(--teal)">亮点 · HIGHLIGHT</div>
+        <div class="tc-title" contenteditable="true">视频模式读懂深层意图</div>
+        <div class="tc-body" contenteditable="true">
+          千问能从<strong>用户动作 + 界面切换</strong>中识别意图。<br><br>
+          停留、截图、跨 App 切换——行为本身就是信号，不需要用户开口。这一点明显优于豆包。
         </div>
-        <p style="font-size:var(--tiny-size);color:var(--text-dim);margin-top:0.4rem;line-height:1.5" contenteditable="true">视频中若有两人，千问无法区分谁在讲话、意图属于谁</p>
       </div>
 
-      <div class="reveal-right" style="--i:3">
-        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.5rem">断点二 · ASR 疑问识别失败</div>
-        <div class="dialog" style="margin-bottom:0.8rem">
-          <div class="dialog-bubble user" contenteditable="true">这个日活是 5 亿？</div>
-          <div class="dialog-bubble ai" data-issue="疑问句误判为陈述" contenteditable="true">是的，日活达到 5 亿。</div>
+      <div class="tri-card reveal-scale" style="--i:3;border-top-color:var(--red-warn)">
+        <div class="tc-num" style="color:var(--red-warn)">断点 01</div>
+        <div class="tc-title" contenteditable="true">无法分辨单/多人</div>
+        <div class="tc-body" contenteditable="true">
+          视频中两人对话时，<strong>千问无法判断谁在说、意图归属谁</strong>。<br><br>
+          <span style="color:var(--gold);font-family:var(--font-mono);font-size:0.85em">FIX</span> 声纹分离 + 视频人脸定位，绑定意图归属
         </div>
-        <p style="font-size:var(--tiny-size);color:var(--text-dim);line-height:1.5;margin-bottom:1rem" contenteditable="true">没有疑问词的问句（靠语调上扬）常被判定为陈述句，错误确认而非反问</p>
+      </div>
 
-        <div class="matrix-label">修复方向</div>
-        <table class="matrix-table">
-          <thead>
-            <tr><th>问题</th><th>修复方向</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td contenteditable="true">单/双/多人识别</td>
-              <td contenteditable="true">声纹分离 + 视频人脸定位绑定意图归属</td>
-            </tr>
-            <tr>
-              <td contenteditable="true">无问词疑问句</td>
-              <td contenteditable="true">音调特征 + 前文上下文联合判断疑问概率</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="tri-card reveal-scale" style="--i:4;border-top-color:var(--red-warn)">
+        <div class="tc-num" style="color:var(--red-warn)">断点 02</div>
+        <div class="tc-title" contenteditable="true">无问词疑问句</div>
+        <div class="tc-body" contenteditable="true">
+          「这个日活是 5 亿？」<br>
+          ——靠语调上扬的疑问句，<strong>常被误判为陈述句</strong>，AI 顺势确认而非反问。<br><br>
+          <span style="color:var(--gold);font-family:var(--font-mono);font-size:0.85em">FIX</span> 音调特征 + 上下文联合判断疑问概率
+        </div>
       </div>
     </div>
   </div>
@@ -2061,48 +2049,42 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">07</span> / 15 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Tool Calling</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">闭环亮点已出现，<span class="accent">但用户控制层缺失</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">工具调用 · <span class="accent">闭环与控制</span></h2>
 
-    <div class="two-col-grid">
-      <div class="reveal-left" style="--i:2">
-        <div class="bad-case-label" style="color:var(--teal);margin-bottom:0.5rem">亮点 · 奶茶点单闭环</div>
-        <div class="dialog" style="margin-bottom:0.6rem">
-          <div class="dialog-bubble user" contenteditable="true">帮我点一杯霸王茶姬，不要冰</div>
-          <div class="dialog-bubble" style="background:rgba(91,206,174,0.1);border:1px solid var(--teal);align-self:flex-end;border-bottom-right-radius:4px;font-size:var(--body-size);padding:0.6em 0.9em;max-width:85%;line-height:1.5" contenteditable="true">好的，已为您下单，30 分钟后取餐。</div>
-        </div>
-        <p style="font-size:var(--tiny-size);color:var(--teal);line-height:1.5;margin-bottom:1.2rem" contenteditable="true">语音说 → 确认 → 支付 → 出码，这个闭环是豆包结构上做不到的</p>
+    <!-- 亮点 banner -->
+    <div class="reveal" style="--i:2;display:flex;align-items:center;gap:1rem;padding:0.8rem 1.2rem;background:rgba(91,206,174,0.08);border-left:2px solid var(--teal);margin-bottom:clamp(1rem,2vh,1.5rem)">
+      <span style="font-family:var(--font-mono);font-size:var(--tiny-size);letter-spacing:0.2em;color:var(--teal);text-transform:uppercase;white-space:nowrap">亮点 · 闭环</span>
+      <span style="font-size:var(--body-size);color:var(--text-primary);line-height:1.5" contenteditable="true">
+        我实测「点一杯霸王茶姬不要冰」可以走完<strong style="color:var(--teal)">语音 → 确认 → 支付 → 出码</strong>全闭环——这是豆包结构上做不到的。
+      </span>
+    </div>
 
-        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.5rem">断点 · 语音输出不可控</div>
+    <div class="two-col-grid" style="margin-top:0">
+      <div class="reveal-left" style="--i:3">
+        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.5rem">断点 · 用户控制层缺失</div>
         <div class="problem-list" style="margin-bottom:0">
-          <div class="problem-item" style="padding:0.4rem 0">
+          <div class="problem-item" style="padding:0.5rem 0">
             <span class="pid">P1</span>
-            <span contenteditable="true"><strong>音色固定</strong>：老人需要慢速大声，年轻用户想要活泼语气，当前没有偏好层</span>
+            <span contenteditable="true"><strong>音色固定</strong> · 老人想慢速大声、年轻人想活泼，无偏好层</span>
           </div>
-          <div class="problem-item" style="padding:0.4rem 0">
+          <div class="problem-item" style="padding:0.5rem 0">
             <span class="pid">P2</span>
-            <span contenteditable="true"><strong>语速不可调</strong>：没有快 / 正常 / 慢三挡，也没有情绪基调控制（欢快 / 平静 / 正式）</span>
+            <span contenteditable="true"><strong>语速不可调</strong> · 无快/正常/慢三挡</span>
+          </div>
+          <div class="problem-item" style="padding:0.5rem 0">
+            <span class="pid">P3</span>
+            <span contenteditable="true"><strong>情绪基调不可选</strong> · 无欢快/平静/正式切换</span>
           </div>
         </div>
       </div>
 
-      <div class="reveal-right" style="--i:3">
-        <div class="matrix-label">修复方向</div>
-        <div class="fix-grid" style="grid-template-columns:1fr;gap:clamp(0.6rem,1.2vh,1rem)">
-          <div class="fix-card" style="border-top-color:var(--teal)">
-            <div class="fix-num" style="color:var(--teal)">FIX 01</div>
-            <div class="fix-title" contenteditable="true">个性化语音偏好层</div>
-            <div class="fix-body" contenteditable="true">
-              首次使用 30 秒「声音体检」沉淀语速 / 音量 / 情绪基调。老年模式 0.8× 语速 + 重音增强；付费用户 30 秒参考音通过 Qwen3-TTS-VC 复刻专属音色。
-            </div>
-          </div>
-          <div class="fix-card">
-            <div class="fix-num">FIX 02</div>
-            <div class="fix-title" contenteditable="true">三级工具调用兜底</div>
-            <div class="fix-levels">
-              <div class="fix-level"><span class="lvl">L1</span> <span contenteditable="true">参数缺失 · 主动追问</span></div>
-              <div class="fix-level"><span class="lvl">L2</span> <span contenteditable="true">接口失败 · 降级次优工具</span></div>
-              <div class="fix-level"><span class="lvl">L3</span> <span contenteditable="true">完全失败 · 明确告知 + 人工通道</span></div>
-            </div>
+      <div class="reveal-right" style="--i:4">
+        <div class="matrix-label">修复方向 · 个性化偏好层</div>
+        <div class="fix-card" style="border-top-color:var(--gold);margin-top:0.4rem">
+          <div class="fix-body" contenteditable="true">
+            首次使用 30 秒「<strong>声音体检</strong>」沉淀语速 / 音量 / 情绪基调。<br><br>
+            · 老年模式自动 0.8× 语速 + 重音增强<br>
+            · 付费用户上传 30 秒参考音，通过 <strong>Qwen3-TTS-VC</strong> 复刻专属音色
           </div>
         </div>
       </div>
@@ -2118,35 +2100,35 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">08</span> / 15 &nbsp;·&nbsp; CHAPTER 02 · EXPERIENCE</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人体验报告 · Memory</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">上下文窗口太短，<span class="accent">中长期记忆不准确</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">记忆 · <span class="accent">短板与方案</span></h2>
 
     <div class="two-col-grid">
       <div class="reveal-left" style="--i:2">
-        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.5rem">实测问题</div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.9rem">
-          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.6;padding-left:1rem;position:relative" contenteditable="true">
+        <div class="bad-case-label" style="color:var(--red-warn);margin-bottom:0.6rem">实测问题</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.55rem;margin-bottom:1rem">
+          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.5;padding-left:1rem;position:relative" contenteditable="true">
             <span style="position:absolute;left:0;top:0.55em;width:6px;height:1px;background:var(--red-warn);display:block"></span>
-            连续 20 轮测试，第 15 轮已忘记「<strong style="color:var(--gold)">我对花生过敏</strong>」——上下文窗口太短
+            上下文窗口太短：第 15 轮已忘记「<strong style="color:var(--gold)">我对花生过敏</strong>」
           </li>
-          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.6;padding-left:1rem;position:relative" contenteditable="true">
+          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.5;padding-left:1rem;position:relative" contenteditable="true">
             <span style="position:absolute;left:0;top:0.55em;width:6px;height:1px;background:var(--red-warn);display:block"></span>
-            跨会话偏好不沉淀，每次重说「我喜欢辣的」——中长期记忆不可靠
+            中长期记忆不准：跨会话偏好不沉淀
           </li>
-          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.6;padding-left:1rem;position:relative" contenteditable="true">
+          <li style="font-size:var(--body-size);color:var(--text-secondary);line-height:1.5;padding-left:1rem;position:relative" contenteditable="true">
             <span style="position:absolute;left:0;top:0.55em;width:6px;height:1px;background:var(--red-warn);display:block"></span>
-            用户无法查看 / 编辑 AI 记住了什么，控制感缺失
+            用户无法查看 / 编辑 AI 记住了什么
           </li>
         </ul>
 
-        <div class="matrix-label" style="margin-bottom:0.5rem">上下文压缩触发机制（建议）</div>
+        <div class="matrix-label" style="margin-bottom:0.5rem">压缩触发机制（建议）</div>
         <div class="memory-mechanism">
           <div class="gauge">
-            <div class="gauge-label"><span contenteditable="true">上下文达到 70%</span><span class="pct">70%</span></div>
+            <div class="gauge-label"><span contenteditable="true">上下文 70%</span><span class="pct">70%</span></div>
             <div class="gauge-bar"><div class="gauge-fill f70"></div></div>
-            <div class="gauge-desc" contenteditable="true">主动提示用户拆分新会话</div>
+            <div class="gauge-desc" contenteditable="true">主动提示拆分新会话</div>
           </div>
           <div class="gauge">
-            <div class="gauge-label"><span contenteditable="true">上下文达到 85%</span><span class="pct">85%</span></div>
+            <div class="gauge-label"><span contenteditable="true">上下文 85%</span><span class="pct">85%</span></div>
             <div class="gauge-bar"><div class="gauge-fill f85"></div></div>
             <div class="gauge-desc" contenteditable="true">子 Agent 自动压缩归档</div>
           </div>
@@ -2154,31 +2136,31 @@ body.edit-active [contenteditable="true"]:focus {
       </div>
 
       <div class="reveal-right" style="--i:3">
-        <div class="matrix-label">四层记忆模型（参考 Claude Code CLAUDE.md 设计）</div>
+        <div class="matrix-label">四层记忆模型（参考 Claude Code）</div>
         <table class="memory-table">
           <thead>
-            <tr><th>层级</th><th>内容示例</th><th>持久化</th></tr>
+            <tr><th>层级</th><th>示例</th><th>持久化</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td contenteditable="true">User Memory</td>
+              <td contenteditable="true">User</td>
               <td contenteditable="true">姓名、年龄、过敏源</td>
-              <td contenteditable="true">永久，用户可编辑</td>
+              <td contenteditable="true">永久 · 可编辑</td>
             </tr>
             <tr>
-              <td contenteditable="true">Preference Memory</td>
+              <td contenteditable="true">Preference</td>
               <td contenteditable="true">口味、语速、说话风格</td>
-              <td contenteditable="true">跨会话，按场景调用</td>
+              <td contenteditable="true">跨会话调用</td>
             </tr>
             <tr>
-              <td contenteditable="true">Project Memory</td>
-              <td contenteditable="true">订餐进行中、订票中</td>
+              <td contenteditable="true">Project</td>
+              <td contenteditable="true">订餐中、订票中</td>
               <td contenteditable="true">任务结束归档</td>
             </tr>
             <tr>
-              <td contenteditable="true">Reference Memory</td>
-              <td contenteditable="true">用户上传的文件、链接</td>
-              <td contenteditable="true">长期，可被引用</td>
+              <td contenteditable="true">Reference</td>
+              <td contenteditable="true">上传的文件、链接</td>
+              <td contenteditable="true">长期可引用</td>
             </tr>
           </tbody>
         </table>
@@ -2186,7 +2168,7 @@ body.edit-active [contenteditable="true"]:focus {
     </div>
 
     <div class="memory-quote reveal" style="--i:6" contenteditable="true">
-      跨会话记忆是<strong>豆包结构上做不到的差异化</strong>——只要千问先做好，粘性就会形成护城河。
+      跨会话记忆是<strong>豆包结构上做不到的差异化</strong>——只要千问先做好，粘性就形成护城河。
     </div>
   </div>
 </section>
@@ -2199,7 +2181,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">09</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Positioning</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">千问在阿里生态中的<span class="accent">定位</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">阿里生态中的<span class="accent">千问</span></h2>
 
     <div class="eco-flow">
       <div class="eco-stage reveal" style="--i:2">
@@ -2249,39 +2231,38 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">10</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · 淘宝 × AI</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">覆盖购物<span class="accent">全链路</span>的三层 AI 机会</h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">淘宝 <span class="accent">× AI</span><span class="en">Pre · Mid · Post Purchase</span></h2>
 
     <div class="tri-col">
       <div class="tri-card reveal-scale" style="--i:2">
-        <div class="tc-num">01 / 售前</div>
-        <div class="tc-title" contenteditable="true">AI 需求挖掘</div>
+        <div class="tc-num">01 / 售前 · 需求挖掘</div>
+        <div class="tc-title" contenteditable="true">把展示变成体检</div>
         <div class="tc-body" contenteditable="true">
-          <strong>AI 试穿</strong>：Omni 视频通话 + 虚拟换装，替代实体试衣间<br>
-          <strong>AI 色彩测试</strong>：开摄像头分析肤色瞳色，推荐适配色系<br>
-          <strong>记忆机制挖掘需求</strong>：「最近长痘」→ 识别痘印 → 推荐医学护肤 + 天猫医药，把用户碎片信号转化为主动推荐
+          · <strong>AI 试穿</strong>：Omni 视频 + 虚拟换装<br>
+          · <strong>AI 色彩测试</strong>：肤色瞳色匹配适配色系<br>
+          · <strong>记忆挖掘</strong>：「最近长痘」→ 推荐医学护肤 + 天猫医药
         </div>
       </div>
 
       <div class="tri-card reveal-scale" style="--i:3">
-        <div class="tc-num">02 / 售中</div>
-        <div class="tc-title" contenteditable="true">AI 提效</div>
+        <div class="tc-num">02 / 售中 · AI 提效</div>
+        <div class="tc-title" contenteditable="true">替代导购，不止答疑</div>
         <div class="tc-body" contenteditable="true">
-          <strong>AI 省钱</strong>：实时比价、凑单优惠、领券提醒自动完成<br>
-          <strong>AI 帮你买</strong>：语音说 → 加购 → 支付一句话搞定<br>
-          <strong>7×24 语音陪购</strong>：基于历史画像主动建议，不只答疑<br>
-          <strong>情绪价值</strong>：「这件很适合你的身形」——夸身材、夸眼光，留住犹豫期用户
+          · <strong>AI 省钱</strong>：自动比价、凑单、领券<br>
+          · <strong>AI 帮你买</strong>：语音 → 加购 → 支付<br>
+          · <strong>7×24 陪购</strong>：基于历史画像主动建议<br>
+          · <strong>情绪价值</strong>：夸身材、夸眼光，留住犹豫期
         </div>
       </div>
 
       <div class="tri-card reveal-scale" style="--i:4">
-        <div class="tc-num">03 / 售后</div>
-        <div class="tc-title" contenteditable="true">AI 体验增强</div>
+        <div class="tc-num">03 / 售后 · 体验增强</div>
+        <div class="tc-title" contenteditable="true">把售后变成下一次起点</div>
         <div class="tc-body" contenteditable="true">
-          <strong>退货纠纷 + 情绪管理</strong>：语音客服先共情再解决，大幅降低客诉成本<br>
-          <strong>最后一公里满意度</strong>：<br>
-          · 买锅 → 主动推菜谱 + 调味料搭配<br>
-          · 买耳机 → 主动推保养方法 + 配件<br>
-          把售后变成下一次购买的起点
+          · <strong>退货纠纷 + 情绪管理</strong>：先共情再解决<br>
+          · <strong>最后一公里满意度</strong>：<br>
+          &nbsp;&nbsp;买锅 → 推菜谱 + 调味料<br>
+          &nbsp;&nbsp;买耳机 → 推保养 + 配件
         </div>
       </div>
     </div>
@@ -2296,7 +2277,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">11</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Taobao Live</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">淘宝直播 × AI<span class="en">One-to-Many Personalization</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">淘宝直播 <span class="accent">× AI</span><span class="en">One-to-Many Personalization</span></h2>
 
     <div class="live-top reveal" style="--i:2">
       <span class="live-counter"><span id="liveCounter">23,847</span> 在线</span>
@@ -2339,7 +2320,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">12</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Shangou</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">闪购 × AI<span class="en">Three-Sided Delivery Opportunity</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">闪购 <span class="accent">× AI</span><span class="en">Three-Sided Delivery Opportunity</span></h2>
 
     <div class="tri-col">
       <div class="tri-card reveal-scale" style="--i:2">
@@ -2377,7 +2358,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">13</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Gaode</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">高德 × AI<span class="en">Driver &amp; Passenger Dual Entry</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">高德 <span class="accent">× AI</span><span class="en">Driver &amp; Passenger Dual Entry</span></h2>
 
     <div class="gaode-grid">
       <div class="gaode-col reveal-left" style="--i:2">
@@ -2419,7 +2400,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">14</span> / 15 &nbsp;·&nbsp; CHAPTER 03 · ECOSYSTEM</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">Ecosystem · Super Profile</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">千问：串联四个应用的<span class="accent">统一用户画像层</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">跨应用<span class="accent">统一画像</span></h2>
 
     <div class="profile-grid">
       <div class="profile-viz reveal-scale" style="--i:2">
@@ -2465,7 +2446,7 @@ body.edit-active [contenteditable="true"]:focus {
   <div class="slide-meta"><span class="meta-num">15</span> / 15 &nbsp;·&nbsp; CHAPTER 04 · ABOUT ME</div>
   <div class="slide-content">
     <div class="eyebrow reveal" style="--i:0">个人优势 · Experience &amp; Fit</div>
-    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">我在快手做过的链路，与千问<span class="accent">工程结构高度同构</span></h2>
+    <h2 class="slide-title reveal" style="--i:1" contenteditable="true">我的经验 <span class="accent">× 千问</span></h2>
 
     <div class="exp-top">
       <div class="exp-chain reveal-left" style="--i:2">
