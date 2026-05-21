@@ -6,331 +6,311 @@
 <title>高德 × 世界模型 · 空间智能时代的产品思考</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@200;300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-/* === VIEWPORT BASE CSS (mandatory) === */
+/* === VIEWPORT BASE === */
 html,body{height:100%;overflow-x:hidden}
 html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
-.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;position:relative}
 .slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding)}
+
 :root{
-  --title-size:clamp(1.5rem,5vw,4rem);
-  --h2-size:clamp(1.1rem,3vw,2.2rem);
-  --h3-size:clamp(0.9rem,2vw,1.4rem);
-  --body-size:clamp(0.7rem,1.3vw,1rem);
-  --small-size:clamp(0.6rem,0.9vw,0.8rem);
-  --slide-padding:clamp(1rem,4vw,4rem);
-  --content-gap:clamp(0.5rem,1.5vw,1.5rem);
-  --element-gap:clamp(0.25rem,0.8vw,0.75rem);
+  --title-size:clamp(1.6rem,5vw,4rem);
+  --h2-size:clamp(1.1rem,2.6vw,2rem);
+  --h3-size:clamp(0.9rem,1.8vw,1.3rem);
+  --body-size:clamp(0.72rem,1.15vw,0.95rem);
+  --small-size:clamp(0.62rem,0.88vw,0.78rem);
+  --mono-size:clamp(0.55rem,0.78vw,0.72rem);
+  --slide-padding:clamp(1.5rem,5vw,5rem);
+  --gap:clamp(0.5rem,1.5vw,1.5rem);
+  --gap-sm:clamp(0.3rem,0.8vw,0.7rem);
 }
-@media(max-height:700px){:root{--slide-padding:clamp(0.75rem,3vw,2rem);--content-gap:clamp(0.4rem,1vw,1rem);--title-size:clamp(1.25rem,4.5vw,2.5rem);--h2-size:clamp(1rem,2.5vw,1.75rem)}}
-@media(max-height:600px){:root{--slide-padding:clamp(0.5rem,2vw,1.5rem);--content-gap:clamp(0.3rem,0.8vw,0.75rem);--title-size:clamp(1rem,4vw,2rem);--body-size:clamp(0.65rem,1vw,0.9rem)}.nav-dots,.keyboard-hint{display:none}}
-@media(max-height:500px){:root{--slide-padding:clamp(0.4rem,2vw,1rem);--title-size:clamp(1rem,3.5vw,1.5rem);--h2-size:clamp(0.9rem,2vw,1.25rem);--body-size:clamp(0.6rem,0.9vw,0.8rem)}}
+@media(max-height:700px){:root{--slide-padding:clamp(1rem,3.5vw,3rem);--title-size:clamp(1.4rem,4.5vw,2.8rem);--h2-size:clamp(1rem,2.4vw,1.7rem)}}
+@media(max-height:600px){:root{--slide-padding:clamp(0.75rem,2.5vw,2rem);--title-size:clamp(1.2rem,4vw,2.2rem);--body-size:clamp(0.65rem,1vw,0.85rem)}.nav-dots{display:none}}
+@media(max-height:500px){:root{--slide-padding:clamp(0.5rem,2vw,1.2rem);--title-size:clamp(1rem,3.5vw,1.6rem)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important}html{scroll-behavior:auto}}
 
 /* === THEME === */
 :root{
-  --bg:#07090f;
-  --bg2:#0d1220;
-  --bg3:#111827;
+  --bg:#08080c;
+  --bg2:#0c0c12;
+  --bg3:#10101a;
   --orange:#FF4E1A;
-  --orange2:#ff7040;
-  --orange-glow:rgba(255,78,26,0.25);
-  --blue:#00C8FF;
-  --blue-glow:rgba(0,200,255,0.2);
-  --text:#f0f4ff;
-  --text2:#8892a4;
-  --text3:#4a5568;
-  --glass:rgba(255,255,255,0.04);
-  --glass-border:rgba(255,255,255,0.08);
-  --ease:cubic-bezier(0.16,1,0.3,1);
+  --orange-dim:#c9572a;
+  --orange-glow:rgba(255,78,26,0.18);
+  --gold:#a89171;
+  --text:#ede7dc;
+  --text2:#787780;
+  --text3:#3e3e48;
+  --line:rgba(237,231,220,0.08);
+  --line-soft:rgba(237,231,220,0.04);
+  --ease:cubic-bezier(0.22,1,0.36,1);
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;cursor:default}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-weight:300;cursor:default;letter-spacing:0.01em}
 
-/* === PROGRESS BAR === */
-.progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--orange),var(--blue));z-index:1000;transition:width 0.4s var(--ease);width:0%}
+/* === PROGRESS === */
+.progress-bar{position:fixed;top:0;left:0;height:1px;background:var(--orange);z-index:1000;transition:width 0.6s var(--ease);width:0%}
 
 /* === NAV DOTS === */
-.nav-dots{position:fixed;right:clamp(0.75rem,2vw,1.5rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:999}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);border:none;cursor:pointer;transition:all 0.3s var(--ease);padding:0}
-.nav-dot.active{background:var(--orange);transform:scale(1.6)}
-.nav-dot:hover{background:var(--text2)}
+.nav-dots{position:fixed;right:clamp(1rem,2.5vw,2rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:999}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:transparent;border:1px solid var(--text3);cursor:pointer;transition:all 0.4s var(--ease);padding:0}
+.nav-dot.active{background:var(--orange);border-color:var(--orange);transform:scale(1.3)}
+.nav-dot:hover{border-color:var(--text2)}
 
-/* === SLIDE ANIMATIONS === */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease)}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease)}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease)}
-.reveal-scale{opacity:0;transform:scale(0.88);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease)}
-.slide.visible .reveal,.slide.visible .reveal-left,.slide.visible .reveal-right,.slide.visible .reveal-scale{opacity:1;transform:none}
-.d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}.d4{transition-delay:0.4s}
-.d5{transition-delay:0.5s}.d6{transition-delay:0.6s}.d7{transition-delay:0.7s}.d8{transition-delay:0.8s}
+/* === PAGE NUMBER === */
+.page-num{position:fixed;bottom:clamp(1rem,2.5vw,2rem);left:clamp(1.5rem,5vw,5rem);font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em;z-index:998;pointer-events:none}
+.page-num span{color:var(--text2)}
 
-/* === SHARED COMPONENTS === */
-.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:var(--small-size);font-weight:500;letter-spacing:0.03em}
-.tag-orange{background:rgba(255,78,26,0.15);color:var(--orange);border:1px solid rgba(255,78,26,0.3)}
-.tag-blue{background:rgba(0,200,255,0.12);color:var(--blue);border:1px solid rgba(0,200,255,0.25)}
-.tag-dim{background:rgba(255,255,255,0.06);color:var(--text2);border:1px solid var(--glass-border)}
-.accent-line{width:40px;height:3px;background:linear-gradient(90deg,var(--orange),var(--blue));border-radius:2px;flex-shrink:0}
-.slide-label{font-family:'JetBrains Mono',monospace;font-size:var(--small-size);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
+/* === ANIMATIONS === */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
+.reveal-up{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal-fade{opacity:0;transition:opacity 1.2s var(--ease)}
+.slide.visible .reveal,.slide.visible .reveal-up,.slide.visible .reveal-fade{opacity:1;transform:none}
+.d1{transition-delay:0.15s}.d2{transition-delay:0.3s}.d3{transition-delay:0.45s}.d4{transition-delay:0.6s}
+.d5{transition-delay:0.75s}.d6{transition-delay:0.9s}.d7{transition-delay:1.05s}.d8{transition-delay:1.2s}
 
-/* grid bg */
-.grid-bg::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+/* === SHARED === */
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--orange);letter-spacing:0.2em;text-transform:uppercase;font-weight:400}
+.eyebrow-dim{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;font-weight:400}
+.serif{font-family:'Noto Serif SC',serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.thin-line{height:1px;background:var(--line);border:none}
+.v-line{width:1px;background:var(--line);border:none}
+.dot{display:inline-block;width:3px;height:3px;background:var(--orange);border-radius:50%;vertical-align:middle;margin:0 8px}
 
-/* glass card */
-.g-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:clamp(0.6rem,1.5vw,1.2rem);transition:border-color 0.3s,background 0.3s}
-.g-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,78,26,0.3)}
+/* slide top label */
+.slide-eyebrow{position:absolute;top:clamp(1.2rem,3vw,2.5rem);left:clamp(1.5rem,5vw,5rem);display:flex;align-items:center;gap:14px}
+.slide-eyebrow::before{content:'';width:24px;height:1px;background:var(--orange)}
+
+/* slide section title (h2) */
+.slide-title{font-family:'Noto Serif SC',serif;font-size:var(--h2-size);font-weight:700;color:var(--text);line-height:1.35;letter-spacing:0.02em}
 
 /* =============================================
    SLIDE 1 · COVER
    ============================================= */
-#s1{background:var(--bg);overflow:hidden}
-.particles-canvas{position:absolute;inset:0;z-index:0}
-.cover-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,78,26,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;animation:pulseGlow 4s ease-in-out infinite}
-@keyframes pulseGlow{0%,100%{opacity:0.6;transform:translate(-50%,-55%) scale(1)}50%{opacity:1;transform:translate(-50%,-55%) scale(1.1)}}
-.cover-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:var(--slide-padding)}
-.cover-eyebrow{font-family:'JetBrains Mono',monospace;font-size:var(--small-size);color:var(--orange);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:clamp(0.5rem,2vh,1.5rem)}
-.cover-title{font-family:'Noto Serif SC',serif;font-size:clamp(2.5rem,8vw,6rem);font-weight:900;line-height:1.1;background:linear-gradient(135deg,#fff 40%,var(--orange) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:clamp(0.5rem,2vh,1.5rem)}
-.cover-x{color:var(--orange);-webkit-text-fill-color:var(--orange)}
-.cover-sub{font-size:clamp(0.9rem,2vw,1.4rem);color:var(--text2);max-width:600px;line-height:1.6;margin-bottom:clamp(1rem,3vh,2.5rem)}
-.cover-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.cover-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--orange),transparent);margin:clamp(0.75rem,2vh,1.5rem) auto}
+#s1{background:radial-gradient(ellipse at 30% 50%,rgba(255,78,26,0.08),transparent 50%),var(--bg)}
+.particles-canvas{position:absolute;inset:0;z-index:0;opacity:0.5}
+.cover-frame{position:relative;z-index:1;height:100%;width:100%;padding:clamp(2rem,6vw,6rem);display:grid;grid-template-rows:auto 1fr auto;align-items:start}
+.cover-top{display:flex;justify-content:space-between;align-items:center}
+.cover-mark{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.25em}
+.cover-mark span{color:var(--orange)}
+.cover-main{display:flex;flex-direction:column;justify-content:center;gap:clamp(1rem,3vh,2rem)}
+.cover-main .eyebrow{margin-bottom:clamp(0.3rem,1vh,0.6rem)}
+.cover-title{font-family:'Noto Serif SC',serif;font-size:clamp(2.2rem,8vw,6.5rem);font-weight:900;line-height:1.05;letter-spacing:-0.01em}
+.cover-title .x{color:var(--orange);font-weight:300;margin:0 0.2em;font-style:italic}
+.cover-sub{font-size:clamp(0.95rem,1.8vw,1.4rem);color:var(--text2);font-weight:300;letter-spacing:0.05em;max-width:600px}
+.cover-bottom{display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em}
+.cover-bottom .v-stack{display:flex;flex-direction:column;gap:4px;text-align:right}
 
 /* =============================================
-   SLIDE 2 · TABLE OF CONTENTS
+   SLIDE 2 · TOC
    ============================================= */
 #s2{background:var(--bg2)}
-#s2 .slide-content{justify-content:center}
-.toc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.5rem,1.5vw,1rem);max-width:1100px;margin:0 auto}
-.toc-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:14px;padding:clamp(0.75rem,2vw,1.5rem);cursor:pointer;transition:all 0.3s var(--ease);position:relative;overflow:hidden}
-.toc-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,78,26,0.06),transparent);opacity:0;transition:opacity 0.3s}
-.toc-card:hover{border-color:rgba(255,78,26,0.4);transform:translateY(-3px);box-shadow:0 12px 40px rgba(255,78,26,0.12)}
-.toc-card:hover::after{opacity:1}
-.toc-num{font-family:'JetBrains Mono',monospace;font-size:clamp(1.5rem,4vw,3rem);font-weight:700;color:rgba(255,78,26,0.2);line-height:1;margin-bottom:0.5rem}
-.toc-title{font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.8vw,1.2rem);font-weight:700;color:var(--text);margin-bottom:0.5rem}
-.toc-items{list-style:none;display:flex;flex-direction:column;gap:4px}
-.toc-items li{font-size:var(--small-size);color:var(--text2);padding-left:12px;position:relative}
-.toc-items li::before{content:'·';position:absolute;left:0;color:var(--orange)}
+.toc-frame{padding:clamp(2rem,6vw,6rem);height:100%;display:flex;flex-direction:column;justify-content:center;gap:clamp(1rem,3vh,2rem)}
+.toc-header{display:flex;justify-content:space-between;align-items:end;padding-bottom:clamp(0.8rem,2vh,1.5rem);border-bottom:1px solid var(--line)}
+.toc-header h2{font-family:'Noto Serif SC',serif;font-size:clamp(1.4rem,3vw,2.5rem);font-weight:300;color:var(--text);letter-spacing:0.1em}
+.toc-rows{display:flex;flex-direction:column}
+.toc-row{display:grid;grid-template-columns:clamp(60px,8vw,120px) 1fr 1.2fr;gap:clamp(1rem,3vw,3rem);padding:clamp(0.8rem,2vh,1.5rem) 0;border-bottom:1px solid var(--line);align-items:center;cursor:pointer;transition:all 0.4s var(--ease)}
+.toc-row:hover{padding-left:8px}
+.toc-row:hover .toc-num{color:var(--orange)}
+.toc-row:hover .toc-arrow{transform:translateX(8px);color:var(--orange)}
+.toc-num{font-family:'JetBrains Mono',monospace;font-size:clamp(1.2rem,2.5vw,2rem);font-weight:300;color:var(--text3);transition:color 0.4s var(--ease);letter-spacing:0.05em}
+.toc-title-row{font-family:'Noto Serif SC',serif;font-size:clamp(0.95rem,1.8vw,1.4rem);font-weight:600;color:var(--text);letter-spacing:0.05em}
+.toc-desc{font-size:var(--small-size);color:var(--text2);letter-spacing:0.04em;display:flex;align-items:center;gap:12px}
+.toc-arrow{margin-left:auto;color:var(--text3);transition:all 0.4s var(--ease);font-family:'JetBrains Mono',monospace;font-size:1.2em}
 
 /* =============================================
-   CHAPTER COVERS (slides 3, 7, 11)
+   CHAPTER COVERS (3, 7, 11)
    ============================================= */
-.chapter-slide{background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.chapter-bg-num{position:absolute;font-family:'JetBrains Mono',monospace;font-size:clamp(8rem,25vw,20rem);font-weight:900;color:rgba(255,78,26,0.05);line-height:1;right:5%;top:50%;transform:translateY(-50%);pointer-events:none;user-select:none}
-.chapter-content{position:relative;z-index:1;max-width:700px;padding:var(--slide-padding)}
-.chapter-num-label{font-family:'JetBrains Mono',monospace;font-size:var(--small-size);color:var(--orange);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:clamp(0.5rem,2vh,1rem)}
-.chapter-title{font-family:'Noto Serif SC',serif;font-size:clamp(1.8rem,5vw,3.5rem);font-weight:900;line-height:1.2;color:var(--text);margin-bottom:clamp(0.5rem,2vh,1rem)}
-.chapter-sub{font-size:var(--body-size);color:var(--text2);line-height:1.7;max-width:480px}
-.chapter-tags-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:clamp(0.75rem,2vh,1.5rem)}
-.chapter-bar{width:3px;height:clamp(40px,8vh,80px);background:linear-gradient(to bottom,var(--orange),var(--blue));border-radius:2px;position:absolute;left:-20px;top:50%;transform:translateY(-50%)}
+.chapter-slide{background:var(--bg);overflow:hidden}
+.chapter-frame{position:relative;height:100%;width:100%;padding:clamp(2rem,6vw,6rem);display:flex;align-items:center}
+.chapter-bg-num{position:absolute;font-family:'Noto Serif SC',serif;font-size:clamp(15rem,40vw,40rem);font-weight:300;color:transparent;-webkit-text-stroke:1px rgba(255,78,26,0.12);line-height:0.85;right:-3%;top:50%;transform:translateY(-50%);pointer-events:none;user-select:none;letter-spacing:-0.05em}
+.chapter-content{position:relative;z-index:1;max-width:600px}
+.chapter-label{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--orange);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:clamp(1.5rem,4vh,3rem);display:flex;align-items:center;gap:14px}
+.chapter-label::before{content:'';width:40px;height:1px;background:var(--orange)}
+.chapter-title{font-family:'Noto Serif SC',serif;font-size:clamp(2.2rem,5.5vw,4.5rem);font-weight:900;line-height:1.15;color:var(--text);margin-bottom:clamp(1.2rem,3vh,2.5rem);letter-spacing:-0.01em}
+.chapter-sub{font-size:clamp(0.9rem,1.5vw,1.15rem);color:var(--text2);line-height:1.7;font-weight:300;letter-spacing:0.03em;max-width:440px}
 
 /* =============================================
-   SLIDE 4 · FOUR TECH ROUTES
+   SLIDE 4 · TECH ROUTES (clean grid)
    ============================================= */
-#s4{background:var(--bg2)}
-.routes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(0.5rem,1.2vw,1rem);flex:1}
-.route-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:clamp(0.6rem,1.5vw,1rem);display:flex;flex-direction:column;gap:6px;transition:all 0.3s var(--ease);position:relative;overflow:hidden}
-.route-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0;opacity:0;transition:opacity 0.3s}
-.route-card:hover::before{opacity:1}
-.rc-a::before{background:linear-gradient(90deg,#a855f7,#ec4899)}
-.rc-b::before{background:linear-gradient(90deg,var(--blue),#6366f1)}
-.rc-c::before{background:linear-gradient(90deg,#10b981,var(--blue))}
-.rc-d::before{background:linear-gradient(90deg,var(--orange),#f59e0b)}
-.route-card:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-2px)}
-.route-header{display:flex;align-items:center;gap:8px}
-.route-icon{font-size:clamp(1rem,2vw,1.5rem)}
-.route-name{font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.6vw,1.15rem);font-weight:700;color:var(--text)}
-.route-paper{font-family:'JetBrains Mono',monospace;font-size:var(--small-size);color:var(--text3)}
-.route-pros,.route-cons{font-size:var(--small-size);color:var(--text2);line-height:1.5}
-.route-pros span,.route-cons span{color:var(--text3);margin-right:4px}
-.route-insight{font-size:var(--small-size);color:var(--orange);background:rgba(255,78,26,0.08);border-radius:6px;padding:4px 8px;margin-top:2px}
-.core-verdict{background:linear-gradient(135deg,rgba(255,78,26,0.1),rgba(0,200,255,0.08));border:1px solid rgba(255,78,26,0.2);border-radius:10px;padding:clamp(0.5rem,1.2vw,0.8rem) clamp(0.75rem,2vw,1.2rem);margin-top:clamp(0.3rem,0.8vh,0.6rem);text-align:center;font-size:var(--small-size);color:var(--text2)}
-.core-verdict strong{color:var(--text)}
+#s4{background:var(--bg)}
+.routes-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:0;flex:1;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.route-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(0.8rem,2vw,1.8rem);display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.8rem);transition:background 0.4s var(--ease);position:relative}
+.route-cell:hover{background:rgba(255,78,26,0.02)}
+.route-cell:hover .route-num{color:var(--orange)}
+.route-num{font-family:'JetBrains Mono',monospace;font-size:clamp(0.65rem,0.95vw,0.85rem);color:var(--text3);letter-spacing:0.15em;transition:color 0.4s var(--ease)}
+.route-name{font-family:'Noto Serif SC',serif;font-size:clamp(1rem,1.8vw,1.4rem);font-weight:600;color:var(--text);letter-spacing:0.04em}
+.route-paper{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);font-weight:300}
+.route-essence{font-size:var(--body-size);color:var(--text2);line-height:1.65;font-weight:300;margin-top:auto}
+.route-insight{font-size:var(--small-size);color:var(--orange);font-weight:400;letter-spacing:0.02em;padding-top:clamp(0.4rem,1vh,0.7rem);border-top:1px solid var(--line)}
+.route-insight::before{content:'→ ';font-family:'JetBrains Mono',monospace;color:var(--orange-dim)}
+
+.verdict-bar{margin-top:clamp(0.6rem,1.5vh,1.2rem);text-align:center;font-size:var(--small-size);color:var(--text2);font-style:italic;font-weight:300;letter-spacing:0.04em}
+.verdict-bar strong{color:var(--orange);font-style:normal;font-weight:400}
 
 /* =============================================
-   SLIDE 5 · VERTICAL PAIN POINTS
+   SLIDE 5 · VERTICAL APPLICATIONS
    ============================================= */
-#s5{background:var(--bg)}
-.vp-rows{display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem);flex:1}
-.vp-row{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:clamp(0.4rem,1vw,0.8rem);align-items:stretch}
-.vp-label{background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:8px;padding:clamp(0.4rem,1vw,0.75rem);display:flex;flex-direction:column;gap:4px}
-.vp-label-name{font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.6vw,1.1rem);font-weight:700;color:var(--text)}
-.vp-label-pain{font-size:var(--small-size);color:var(--text2);line-height:1.4}
-.vp-center{background:rgba(0,200,255,0.05);border:1px solid rgba(0,200,255,0.12);border-radius:8px;padding:clamp(0.4rem,1vw,0.75rem);font-size:var(--small-size);color:var(--text2);line-height:1.4}
-.vp-center strong{color:var(--blue);display:block;margin-bottom:2px;font-size:clamp(0.7rem,1.2vw,0.9rem)}
-.vp-right{display:flex;flex-direction:column;gap:4px;justify-content:space-between}
-.vp-cut{background:rgba(255,78,26,0.06);border:1px solid rgba(255,78,26,0.15);border-radius:8px;padding:clamp(0.3rem,0.8vw,0.6rem);font-size:var(--small-size);color:var(--text2)}
-.vp-cut strong{color:var(--orange);display:block;font-size:clamp(0.65rem,1.1vw,0.8rem);margin-bottom:1px}
-.vp-priority{text-align:right}
-.vp-bottom{display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.4rem,1vw,0.8rem);margin-top:clamp(0.3rem,0.6vh,0.5rem)}
-.vp-verdict{background:linear-gradient(135deg,rgba(255,78,26,0.08),rgba(0,200,255,0.05));border:1px solid rgba(255,78,26,0.15);border-radius:8px;padding:clamp(0.4rem,1vw,0.7rem);font-size:var(--small-size);color:var(--text2);text-align:center}
-.vp-verdict strong{color:var(--text);display:block;margin-bottom:2px}
+#s5{background:var(--bg2)}
+.vert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;flex:1;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.vert-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(0.8rem,2vw,1.8rem);display:flex;flex-direction:column;gap:clamp(0.3rem,0.8vh,0.6rem);position:relative}
+.vert-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.vert-name{font-family:'Noto Serif SC',serif;font-size:clamp(1rem,1.8vw,1.4rem);font-weight:600;color:var(--text)}
+.vert-stage{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);letter-spacing:0.1em;color:var(--text3)}
+.vert-stage.now{color:var(--orange)}
+.vert-pain{font-size:var(--small-size);color:var(--text2);line-height:1.6;font-weight:300}
+.vert-pain::before{content:'痛点 / ';color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:0.85em;letter-spacing:0.1em}
+.vert-cut{font-size:var(--small-size);color:var(--text);line-height:1.6;margin-top:auto;padding-top:clamp(0.3rem,0.7vh,0.5rem);border-top:1px dashed var(--line)}
+.vert-cut::before{content:'切口 / ';color:var(--orange);font-family:'JetBrains Mono',monospace;font-size:0.85em;letter-spacing:0.1em}
 
 /* =============================================
-   SLIDE 6 · COMPETITOR ANALYSIS
+   SLIDE 6 · COMPETITOR
    ============================================= */
-#s6{background:var(--bg2)}
-.comp-layout{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:clamp(0.5rem,1.2vw,1rem);flex:1}
-.comp-card{border-radius:12px;padding:clamp(0.6rem,1.5vw,1rem);display:flex;flex-direction:column;gap:clamp(0.3rem,0.8vw,0.6rem)}
-.comp-google{background:rgba(66,133,244,0.06);border:1px solid rgba(66,133,244,0.2)}
-.comp-baidu{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.18)}
-.comp-amap{background:rgba(255,78,26,0.07);border:1px solid rgba(255,78,26,0.25);position:relative;overflow:hidden}
-.comp-amap::before{content:'高德';position:absolute;bottom:-10px;right:-5px;font-family:'Noto Serif SC',serif;font-size:5rem;font-weight:900;color:rgba(255,78,26,0.06);pointer-events:none}
-.comp-logo{font-size:clamp(1rem,2vw,1.4rem);font-weight:700;font-family:'Noto Serif SC',serif;margin-bottom:2px}
-.comp-sub{font-size:var(--small-size);color:var(--text3);font-family:'JetBrains Mono',monospace}
-.comp-feat{display:flex;flex-direction:column;gap:4px}
-.comp-feat-item{font-size:var(--small-size);color:var(--text2);padding-left:12px;position:relative;line-height:1.4}
-.comp-feat-item::before{content:'→';position:absolute;left:0;color:var(--text3);font-size:0.65rem;top:1px}
-.comp-direction{font-size:var(--small-size);padding:4px 8px;border-radius:6px;margin-top:4px;font-style:italic;line-height:1.4}
-.dir-google{background:rgba(66,133,244,0.08);color:#93c5fd}
-.dir-baidu{background:rgba(59,130,246,0.08);color:#a5b4fc}
-.dir-amap{background:rgba(255,78,26,0.08);color:var(--orange2)}
-.comp-matrix{margin-top:clamp(0.4rem,1vh,0.6rem);border-radius:8px;overflow:hidden;border:1px solid var(--glass-border)}
-.matrix-row{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;font-size:var(--small-size);border-bottom:1px solid var(--glass-border)}
-.matrix-row:last-child{border-bottom:none}
-.matrix-row>div{padding:clamp(0.2rem,0.6vw,0.4rem) clamp(0.3rem,0.8vw,0.5rem);line-height:1.3}
-.matrix-row.header{background:rgba(255,255,255,0.04);color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:clamp(0.55rem,0.9vw,0.7rem)}
-.matrix-row>div:first-child{color:var(--text2)}
-.matrix-row>div:last-child{color:var(--orange);font-weight:500}
-.comp-verdict{margin-top:clamp(0.4rem,1vh,0.6rem);text-align:center;font-size:var(--small-size);color:var(--text2);background:rgba(255,78,26,0.06);border:1px solid rgba(255,78,26,0.15);border-radius:8px;padding:clamp(0.4rem,1vw,0.6rem);line-height:1.5}
-.comp-verdict strong{color:var(--orange)}
+#s6{background:var(--bg)}
+.comp-stack{display:flex;flex-direction:column;gap:clamp(0.5rem,1.5vh,1rem);flex:1}
+.comp-three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.comp-col{background:var(--bg);padding:clamp(0.7rem,1.8vw,1.4rem);display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem)}
+.comp-col.amap{background:rgba(255,78,26,0.025);position:relative}
+.comp-tag{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em}
+.comp-name{font-family:'Noto Serif SC',serif;font-size:clamp(0.95rem,1.7vw,1.3rem);font-weight:600;color:var(--text)}
+.comp-pos{font-size:var(--small-size);color:var(--text2);line-height:1.5;font-weight:300}
+.comp-amap-name{color:var(--orange)}
+.comp-matrix{border:1px solid var(--line)}
+.mat-row{display:grid;grid-template-columns:1.4fr repeat(3,1fr);font-size:var(--small-size);border-bottom:1px solid var(--line)}
+.mat-row:last-child{border-bottom:none}
+.mat-row>div{padding:clamp(0.3rem,0.8vw,0.55rem) clamp(0.5rem,1vw,0.9rem);line-height:1.3;display:flex;align-items:center}
+.mat-row.head{background:rgba(255,255,255,0.015)}
+.mat-row.head>div{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400}
+.mat-row>div:first-child{color:var(--text2)}
+.mat-row>div:nth-child(2),.mat-row>div:nth-child(3){color:var(--text2);font-weight:300}
+.mat-row>div:last-child{color:var(--text);font-weight:400}
+.mat-row.head>div:last-child{color:var(--orange)}
+.strong-cell{color:var(--orange) !important}
+.weak-cell{color:var(--text3) !important;text-decoration:line-through;text-decoration-color:var(--text3)}
 
 /* =============================================
-   SLIDE 8 · AMAP PAIN / OPPORTUNITY
+   SLIDE 8 · AMAP PAIN & OPPORTUNITY
    ============================================= */
-#s8{background:var(--bg)}
-.po-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.5rem,1.5vw,1rem);flex:1}
-.po-col{display:flex;flex-direction:column;gap:clamp(0.3rem,0.8vw,0.6rem)}
-.po-col-title{font-size:var(--small-size);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:2px}
-.col-pain .po-col-title{background:rgba(255,78,26,0.1);color:var(--orange)}
-.col-opp .po-col-title{background:rgba(0,200,255,0.1);color:var(--blue)}
-.po-item{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:clamp(0.4rem,1vw,0.7rem);border-radius:8px}
-.col-pain .po-item{background:rgba(255,78,26,0.04);border:1px solid rgba(255,78,26,0.1)}
-.col-opp .po-item{background:rgba(0,200,255,0.04);border:1px solid rgba(0,200,255,0.1)}
-.po-icon{font-size:clamp(0.9rem,1.8vw,1.2rem);line-height:1;padding-top:1px}
-.po-text strong{display:block;font-size:clamp(0.75rem,1.4vw,0.95rem);color:var(--text);margin-bottom:2px;font-weight:600}
-.po-text span{font-size:var(--small-size);color:var(--text2);line-height:1.4}
-.po-framework{grid-column:1/-1;text-align:center;background:linear-gradient(135deg,rgba(255,78,26,0.07),rgba(0,200,255,0.05));border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:clamp(0.4rem,1vw,0.7rem);font-size:var(--small-size);color:var(--text2);margin-top:auto}
-.po-framework strong{color:var(--text)}
+#s8{background:var(--bg2)}
+.po-split{display:grid;grid-template-columns:1fr 1px 1fr;gap:clamp(1rem,3vw,3rem);flex:1;align-items:stretch}
+.po-divider{background:var(--line)}
+.po-side{display:flex;flex-direction:column;gap:clamp(0.5rem,1.2vh,0.9rem)}
+.po-side-title{display:flex;align-items:center;gap:10px;margin-bottom:clamp(0.3rem,0.8vh,0.6rem)}
+.po-side-title .eyebrow-dim{color:var(--text2)}
+.po-side-title::before{content:'';width:20px;height:1px;background:var(--text3)}
+.po-side.opp .po-side-title::before{background:var(--orange)}
+.po-side.opp .po-side-title .eyebrow-dim{color:var(--orange)}
+.po-list{display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem)}
+.po-item{display:grid;grid-template-columns:auto 1fr;gap:clamp(0.6rem,1.5vw,1.2rem);align-items:baseline;padding:clamp(0.3rem,0.8vh,0.6rem) 0;border-bottom:1px solid var(--line-soft)}
+.po-idx{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.1em;font-weight:400}
+.po-side.opp .po-idx{color:var(--orange-dim)}
+.po-content strong{display:block;font-size:clamp(0.85rem,1.4vw,1rem);color:var(--text);font-weight:500;letter-spacing:0.02em;margin-bottom:3px;font-family:'Noto Serif SC',serif}
+.po-content span{font-size:var(--small-size);color:var(--text2);line-height:1.5;font-weight:300}
 
 /* =============================================
-   SLIDE 9 · AMAP SWOT
+   SLIDE 9 · SWOT
    ============================================= */
-#s9{background:var(--bg2)}
-.swot-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(0.5rem,1.5vw,1rem);flex:1}
-.swot-col{display:flex;flex-direction:column;gap:clamp(0.4rem,1vw,0.7rem)}
-.swot-group-title{font-size:var(--small-size);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
-.gt-strength{color:#4ade80}
-.gt-weak{color:#f87171}
-.swot-card{border-radius:10px;padding:clamp(0.5rem,1.2vw,0.9rem);display:flex;gap:10px;align-items:start}
-.s-card{background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.15)}
-.w-card{background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.15)}
-.swot-icon{font-size:clamp(1rem,1.8vw,1.3rem);flex-shrink:0;line-height:1.2}
-.swot-body strong{display:block;font-size:clamp(0.8rem,1.5vw,1rem);color:var(--text);margin-bottom:3px;font-weight:600}
-.swot-body p{font-size:var(--small-size);color:var(--text2);line-height:1.45}
-.swot-body p em{color:var(--text3);font-style:normal}
-.swot-verdict{background:linear-gradient(135deg,rgba(255,78,26,0.1),rgba(0,200,255,0.06));border:1px solid rgba(255,78,26,0.2);border-radius:10px;padding:clamp(0.5rem,1.2vw,0.9rem);margin-top:auto;font-size:var(--small-size);color:var(--text2);line-height:1.6;font-style:italic}
-.swot-verdict strong{color:var(--text);font-style:normal;display:block;margin-bottom:4px;font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.5vw,1rem)}
+#s9{background:var(--bg)}
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:1;border:1px solid var(--line)}
+.swot-section{padding:clamp(0.8rem,2vw,1.5rem);display:flex;flex-direction:column;gap:clamp(0.5rem,1.2vh,0.9rem)}
+.swot-section.s-side{border-right:1px solid var(--line)}
+.swot-head{display:flex;align-items:center;gap:10px}
+.swot-head .eyebrow{font-size:var(--mono-size)}
+.s-side .swot-head .eyebrow{color:var(--orange)}
+.w-side .swot-head .eyebrow{color:var(--text2)}
+.swot-list{display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem);flex:1}
+.swot-item{padding-bottom:clamp(0.4rem,1vh,0.7rem);border-bottom:1px solid var(--line-soft)}
+.swot-item:last-child{border-bottom:none}
+.swot-item-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.swot-item-idx{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.1em}
+.s-side .swot-item-idx{color:var(--orange-dim)}
+.swot-item-title{font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.45vw,1.05rem);font-weight:600;color:var(--text);letter-spacing:0.02em}
+.swot-item-desc{font-size:var(--small-size);color:var(--text2);line-height:1.55;font-weight:300;padding-left:clamp(1rem,2vw,1.8rem)}
+.swot-verdict{margin-top:auto;padding-top:clamp(0.5rem,1.2vh,0.9rem);border-top:1px solid var(--orange-glow);font-size:var(--small-size);color:var(--text);line-height:1.6;font-family:'Noto Serif SC',serif;font-style:italic;font-weight:400}
+.swot-verdict strong{color:var(--orange);font-style:normal}
 
 /* =============================================
    SLIDE 10 · ROADMAP
    ============================================= */
-#s10{background:var(--bg)}
-.roadmap-layout{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.5rem,1.5vw,1rem);flex:1}
-.rm-col{display:flex;flex-direction:column;gap:clamp(0.4rem,1vw,0.6rem)}
-.rm-header{border-radius:8px;padding:clamp(0.5rem,1.2vw,0.8rem);text-align:center}
-.rm-h1{background:rgba(255,78,26,0.1);border:1px solid rgba(255,78,26,0.25)}
-.rm-h2{background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.2)}
-.rm-h3{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2)}
-.rm-phase{font-family:'JetBrains Mono',monospace;font-size:var(--small-size);margin-bottom:2px}
-.rm-h1 .rm-phase{color:var(--orange)}
-.rm-h2 .rm-phase{color:var(--blue)}
-.rm-h3 .rm-phase{color:#a78bfa}
-.rm-period{font-family:'Noto Serif SC',serif;font-size:clamp(0.8rem,1.5vw,1.05rem);font-weight:700;color:var(--text)}
-.rm-items{display:flex;flex-direction:column;gap:4px}
-.rm-item{font-size:var(--small-size);color:var(--text2);padding:clamp(0.3rem,0.7vw,0.5rem) clamp(0.5rem,1vw,0.7rem);border-radius:6px;border-left:2px solid transparent;line-height:1.4}
-.rm-1 .rm-item{background:rgba(255,78,26,0.04);border-left-color:rgba(255,78,26,0.3)}
-.rm-2 .rm-item{background:rgba(0,200,255,0.04);border-left-color:rgba(0,200,255,0.25)}
-.rm-3 .rm-item{background:rgba(139,92,246,0.04);border-left-color:rgba(139,92,246,0.25)}
-.rm-metric{background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);border-radius:6px;padding:clamp(0.3rem,0.7vw,0.5rem) clamp(0.5rem,1vw,0.7rem);font-size:var(--small-size);color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:auto}
-.rm-metric span{color:var(--text2);font-family:'Noto Sans SC',sans-serif}
-.rm-principle{text-align:center;font-size:var(--small-size);color:var(--text2);background:linear-gradient(90deg,rgba(255,78,26,0.06),rgba(0,200,255,0.06));border:1px solid var(--glass-border);border-radius:8px;padding:clamp(0.4rem,0.8vw,0.6rem);margin-top:clamp(0.3rem,0.6vh,0.5rem)}
-.rm-principle strong{color:var(--text)}
+#s10{background:var(--bg2)}
+.rm-track{display:grid;grid-template-columns:repeat(3,1fr);gap:0;flex:1;position:relative}
+.rm-phase{padding:clamp(0.8rem,2vw,1.5rem) clamp(0.6rem,1.5vw,1.2rem);display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.8rem);border-left:1px solid var(--line);position:relative}
+.rm-phase:first-child{border-left:none}
+.rm-phase::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--line)}
+.rm-phase::after{content:'';position:absolute;top:-3px;left:clamp(0.6rem,1.5vw,1.2rem);width:5px;height:5px;border-radius:50%;background:var(--text3)}
+.rm-phase.p1::after{background:var(--orange)}
+.rm-phase.p2::after{background:var(--gold)}
+.rm-num{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em}
+.rm-period{font-family:'Noto Serif SC',serif;font-size:clamp(0.95rem,1.7vw,1.3rem);font-weight:600;color:var(--text);letter-spacing:0.03em}
+.rm-tagline{font-size:var(--small-size);color:var(--text2);font-weight:300;font-style:italic}
+.rm-divider{width:24px;height:1px;background:var(--line);margin:clamp(0.2rem,0.6vh,0.4rem) 0}
+.rm-items{display:flex;flex-direction:column;gap:6px;flex:1}
+.rm-item{font-size:var(--small-size);color:var(--text);line-height:1.5;font-weight:300;padding-left:14px;position:relative}
+.rm-item::before{content:'—';position:absolute;left:0;color:var(--text3);font-weight:300}
+.rm-phase.p1 .rm-item::before{color:var(--orange-dim)}
+.rm-metric{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);padding-top:clamp(0.4rem,1vh,0.7rem);border-top:1px dashed var(--line);letter-spacing:0.04em;line-height:1.6}
+.rm-metric span{color:var(--text2)}
+
+.rm-foot{text-align:center;font-size:var(--small-size);color:var(--text2);margin-top:clamp(0.5rem,1.2vh,0.9rem);font-style:italic;font-weight:300;letter-spacing:0.03em}
+.rm-foot strong{color:var(--text);font-style:normal;font-weight:400}
 
 /* =============================================
    SLIDE 12 · MY PAIN POINTS
    ============================================= */
-#s12{background:var(--bg2)}
-.pain-layers{display:flex;flex-direction:column;gap:clamp(0.35rem,0.9vh,0.6rem);flex:1}
-.pain-row{display:grid;grid-template-columns:120px 1fr 1fr;gap:clamp(0.4rem,1vw,0.7rem);align-items:stretch}
-.pain-layer-tag{display:flex;align-items:center;justify-content:center;border-radius:8px;padding:clamp(0.4rem,1vw,0.7rem);text-align:center;flex-direction:column;gap:4px;flex-shrink:0}
-.lt-pos{background:rgba(255,78,26,0.08);border:1px solid rgba(255,78,26,0.2)}
-.lt-path{background:rgba(0,200,255,0.07);border:1px solid rgba(0,200,255,0.18)}
-.lt-dec{background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.18)}
-.lt-syn{background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.18)}
-.layer-emoji{font-size:clamp(1rem,2vw,1.4rem)}
-.layer-name{font-size:var(--small-size);font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
-.lt-pos .layer-name{color:var(--orange)}
-.lt-path .layer-name{color:var(--blue)}
-.lt-dec .layer-name{color:#a78bfa}
-.lt-syn .layer-name{color:#4ade80}
-.pain-scene{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:clamp(0.4rem,1vw,0.7rem);font-size:var(--small-size);color:var(--text2);line-height:1.5;display:flex;align-items:center}
-.pain-essence{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:clamp(0.4rem,1vw,0.7rem);font-size:var(--small-size);color:var(--text2);line-height:1.5;display:flex;align-items:center}
-.pain-essence em{color:var(--text3);font-style:normal}
-.pain-golden{background:linear-gradient(135deg,rgba(255,78,26,0.12),rgba(139,92,246,0.08));border:1px solid rgba(255,78,26,0.25);border-radius:10px;padding:clamp(0.5rem,1.2vw,0.9rem);text-align:center;margin-top:auto;font-size:var(--small-size)}
-.pain-golden p{color:var(--text2);margin-bottom:4px}
-.pain-golden strong{color:var(--orange);font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.6vw,1.1rem);display:block}
+#s12{background:var(--bg)}
+.pain-table{display:flex;flex-direction:column;flex:1;border-top:1px solid var(--line)}
+.pain-head{display:grid;grid-template-columns:clamp(80px,12vw,140px) 1fr 1.2fr;gap:clamp(1rem,2.5vw,2.5rem);padding:clamp(0.4rem,1vh,0.7rem) clamp(0.8rem,2vw,1.5rem);border-bottom:1px solid var(--line)}
+.pain-head>div{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em;text-transform:uppercase}
+.pain-row{display:grid;grid-template-columns:clamp(80px,12vw,140px) 1fr 1.2fr;gap:clamp(1rem,2.5vw,2.5rem);padding:clamp(0.6rem,1.5vh,1.1rem) clamp(0.8rem,2vw,1.5rem);border-bottom:1px solid var(--line);transition:background 0.4s var(--ease);align-items:start}
+.pain-row:hover{background:rgba(255,78,26,0.02)}
+.pain-layer{display:flex;flex-direction:column;gap:4px}
+.pain-layer-idx{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--orange);letter-spacing:0.1em}
+.pain-layer-name{font-family:'Noto Serif SC',serif;font-size:clamp(0.9rem,1.55vw,1.15rem);font-weight:600;color:var(--text);letter-spacing:0.04em}
+.pain-scene-text{font-size:var(--body-size);color:var(--text);line-height:1.6;font-weight:300}
+.pain-essence-text{font-size:var(--small-size);color:var(--text2);line-height:1.55;font-weight:300}
+.pain-summary{margin-top:auto;padding:clamp(0.8rem,2vh,1.4rem) clamp(0.8rem,2vw,1.5rem);border:1px solid var(--line);background:rgba(255,78,26,0.025);display:flex;flex-direction:column;gap:6px}
+.pain-summary-label{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--orange);letter-spacing:0.15em}
+.pain-summary-text{font-family:'Noto Serif SC',serif;font-size:clamp(0.95rem,1.7vw,1.3rem);font-weight:600;color:var(--text);line-height:1.5;letter-spacing:0.02em}
+.pain-summary-text em{color:var(--orange);font-style:normal}
 
 /* =============================================
-   SLIDE 13 · WORLD MODEL SOLUTIONS
+   SLIDE 13 · SOLUTIONS (mirrors slide 12)
    ============================================= */
-#s13{background:var(--bg)}
-.sol-rows{display:flex;flex-direction:column;gap:clamp(0.35rem,0.9vh,0.6rem);flex:1}
-.sol-row{display:grid;grid-template-columns:120px 1fr 1fr 1fr;gap:clamp(0.4rem,1vw,0.7rem);align-items:stretch}
-.sol-layer-tag{display:flex;align-items:center;justify-content:center;border-radius:8px;padding:clamp(0.3rem,0.8vw,0.6rem);text-align:center;flex-direction:column;gap:3px;flex-shrink:0}
-.sol-layer-tag .layer-name{font-size:clamp(0.55rem,0.9vw,0.7rem)}
-.sol-cell{background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;padding:clamp(0.35rem,0.9vw,0.65rem);display:flex;flex-direction:column;gap:3px}
-.sol-cell-label{font-family:'JetBrains Mono',monospace;font-size:clamp(0.5rem,0.8vw,0.65rem);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px}
-.sol-cell-content{font-size:var(--small-size);color:var(--text2);line-height:1.4}
-.sol-tech{background:rgba(0,200,255,0.05);border-color:rgba(0,200,255,0.15)}
-.sol-tech .sol-cell-content{color:#7dd3fc}
-.sol-cap{background:rgba(139,92,246,0.05);border-color:rgba(139,92,246,0.15)}
-.sol-cap .sol-cell-content{color:#c4b5fd}
-.sol-prod{background:rgba(255,78,26,0.05);border-color:rgba(255,78,26,0.15)}
-.sol-prod .sol-cell-content{color:var(--orange2)}
-.sol-verdict{text-align:center;background:linear-gradient(90deg,rgba(255,78,26,0.06),rgba(0,200,255,0.06));border:1px solid var(--glass-border);border-radius:8px;padding:clamp(0.4rem,0.8vw,0.6rem);margin-top:auto;font-size:var(--small-size);color:var(--text2)}
-.sol-verdict strong{color:var(--text)}
+#s13{background:var(--bg2)}
+.sol-table{display:flex;flex-direction:column;flex:1;border-top:1px solid var(--line)}
+.sol-head{display:grid;grid-template-columns:clamp(80px,12vw,140px) 1.2fr 1.2fr 1.2fr;gap:clamp(0.5rem,1.5vw,1.5rem);padding:clamp(0.4rem,1vh,0.7rem) clamp(0.8rem,2vw,1.5rem);border-bottom:1px solid var(--line)}
+.sol-head>div{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em;text-transform:uppercase}
+.sol-head>div.h-final{color:var(--orange)}
+.sol-row{display:grid;grid-template-columns:clamp(80px,12vw,140px) 1.2fr 1.2fr 1.2fr;gap:clamp(0.5rem,1.5vw,1.5rem);padding:clamp(0.6rem,1.4vh,1rem) clamp(0.8rem,2vw,1.5rem);border-bottom:1px solid var(--line);transition:background 0.4s var(--ease);align-items:start}
+.sol-row:hover{background:rgba(255,78,26,0.02)}
+.sol-row .pain-layer{align-self:center}
+.sol-cell{display:flex;flex-direction:column;gap:3px}
+.sol-cell-main{font-size:var(--body-size);color:var(--text);line-height:1.5;font-weight:400}
+.sol-cell-meta{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.05em;font-weight:300}
+.sol-prod{color:var(--orange)}
+
+.sol-footer{margin-top:auto;padding:clamp(0.6rem,1.5vh,1rem) clamp(0.8rem,2vw,1.5rem);text-align:center;font-size:var(--small-size);color:var(--text2);font-style:italic;font-weight:300;line-height:1.6}
+.sol-footer strong{color:var(--text);font-style:normal;font-weight:400}
 
 /* =============================================
-   SLIDE 14 · FUTURE EXTENSIONS
+   SLIDE 14 · EXTENSIONS
    ============================================= */
-#s14{background:var(--bg2)}
-.ext-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(0.5rem,1.2vw,0.9rem);flex:1}
-.ext-card{border-radius:12px;padding:clamp(0.6rem,1.5vw,1.1rem);display:flex;flex-direction:column;gap:6px;transition:all 0.3s var(--ease);position:relative;overflow:hidden}
-.ext-card::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;border-radius:12px}
-.ext-card:hover::after{opacity:1}
-.ext-card:hover{transform:translateY(-3px)}
-.ec-ar{background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.2)}
-.ec-ar::after{background:linear-gradient(135deg,rgba(139,92,246,0.05),transparent)}
-.ec-silver{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2)}
-.ec-silver::after{background:linear-gradient(135deg,rgba(245,158,11,0.05),transparent)}
-.ec-multi{background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.2)}
-.ec-multi::after{background:linear-gradient(135deg,rgba(74,222,128,0.05),transparent)}
-.ec-v2x{background:rgba(255,78,26,0.06);border:1px solid rgba(255,78,26,0.2)}
-.ec-v2x::after{background:linear-gradient(135deg,rgba(255,78,26,0.05),transparent)}
-.ext-icon{font-size:clamp(1.2rem,2.5vw,1.8rem);line-height:1;position:relative;z-index:1}
-.ext-title{font-family:'Noto Serif SC',serif;font-size:clamp(0.9rem,1.8vw,1.2rem);font-weight:700;color:var(--text);position:relative;z-index:1}
-.ext-points{display:flex;flex-direction:column;gap:3px;position:relative;z-index:1}
-.ext-point{font-size:var(--small-size);color:var(--text2);padding-left:12px;position:relative;line-height:1.4}
-.ext-point::before{content:'·';position:absolute;left:0;color:var(--text3)}
-.ext-biz{font-size:var(--small-size);padding:3px 8px;border-radius:5px;display:inline-block;position:relative;z-index:1;margin-top:3px}
-.ec-ar .ext-biz{background:rgba(139,92,246,0.12);color:#a78bfa}
-.ec-silver .ext-biz{background:rgba(245,158,11,0.12);color:#fcd34d}
-.ec-multi .ext-biz{background:rgba(74,222,128,0.12);color:#4ade80}
-.ec-v2x .ext-biz{background:rgba(255,78,26,0.12);color:var(--orange2)}
-.ext-coda{grid-column:1/-1;text-align:center;background:linear-gradient(135deg,rgba(255,78,26,0.08),rgba(139,92,246,0.06));border:1px solid rgba(255,78,26,0.15);border-radius:10px;padding:clamp(0.5rem,1.2vw,0.9rem);font-size:var(--small-size);color:var(--text2);line-height:1.6}
-.ext-coda strong{color:var(--orange);font-family:'Noto Serif SC',serif;font-size:clamp(0.9rem,1.7vw,1.1rem);display:block;margin-bottom:4px}
+#s14{background:var(--bg)}
+.ext-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:0;flex:1;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.ext-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(0.8rem,2vw,1.8rem);display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.8rem);transition:background 0.4s var(--ease);position:relative}
+.ext-cell:hover{background:rgba(255,78,26,0.02)}
+.ext-cell:hover .ext-num{color:var(--orange)}
+.ext-head{display:flex;align-items:baseline;gap:14px}
+.ext-num{font-family:'Noto Serif SC',serif;font-size:clamp(1.5rem,3.5vw,2.8rem);font-weight:300;color:var(--text3);line-height:0.9;letter-spacing:0.02em;transition:color 0.4s var(--ease)}
+.ext-name{font-family:'Noto Serif SC',serif;font-size:clamp(1rem,1.7vw,1.3rem);font-weight:600;color:var(--text);line-height:1.3;letter-spacing:0.02em}
+.ext-desc{font-size:var(--small-size);color:var(--text2);line-height:1.65;font-weight:300;margin-top:auto}
+.ext-biz{font-size:var(--mono-size);color:var(--orange);letter-spacing:0.05em;font-family:'JetBrains Mono',monospace;padding-top:clamp(0.4rem,1vh,0.7rem);border-top:1px solid var(--line);font-weight:400}
+
+.ext-coda{margin-top:clamp(0.6rem,1.5vh,1.1rem);text-align:center;font-family:'Noto Serif SC',serif;font-size:clamp(0.9rem,1.55vw,1.15rem);font-weight:400;color:var(--text);line-height:1.7;letter-spacing:0.03em;font-style:italic}
+.ext-coda strong{color:var(--orange);font-style:normal;font-weight:600}
 
 </style>
 </head>
@@ -338,23 +318,29 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
 
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots" aria-label="幻灯片导航"></nav>
+<div class="page-num"><span id="pageCurrent">01</span> / <span id="pageTotal">14</span></div>
 
 <!-- =============================================
      SLIDE 1 · COVER
      ============================================= -->
 <section class="slide" id="s1">
   <canvas class="particles-canvas" id="particleCanvas"></canvas>
-  <div class="cover-glow"></div>
-  <div class="cover-content">
-    <p class="cover-eyebrow reveal">AMAP × WORLD MODEL · PRODUCT THINKING</p>
-    <h1 class="cover-title reveal d1">高德 <span class="cover-x">×</span> 世界模型</h1>
-    <div class="cover-divider reveal d2"></div>
-    <p class="cover-sub reveal d3">空间智能时代的产品思考<br>行业技术研判 · 高德战略机会 · 用户痛点洞察</p>
-    <div class="cover-tags reveal d4">
-      <span class="tag tag-orange">行业分析</span>
-      <span class="tag tag-dim">竞品格局</span>
-      <span class="tag tag-blue">用户视角</span>
-      <span class="tag tag-dim">应用产品经理</span>
+  <div class="cover-frame">
+    <div class="cover-top">
+      <div class="cover-mark reveal-fade">AMAP <span>×</span> WORLD MODEL</div>
+      <div class="cover-mark reveal-fade">2025 / 产品思考</div>
+    </div>
+    <div class="cover-main">
+      <p class="eyebrow reveal d1">空间智能时代的产品思考</p>
+      <h1 class="cover-title reveal-up d2">高德<span class="x">×</span>世界模型</h1>
+      <p class="cover-sub reveal d3">行业技术研判 · 高德战略机会 · 用户痛点洞察</p>
+    </div>
+    <div class="cover-bottom">
+      <div class="reveal-fade d5">PRESENTATION · 14 PAGES</div>
+      <div class="v-stack reveal-fade d6">
+        <div>FOR / AMAP WORLD MODEL PM</div>
+        <div>APPLICATION PRODUCT MANAGER</div>
+      </div>
     </div>
   </div>
 </section>
@@ -363,58 +349,41 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
      SLIDE 2 · TABLE OF CONTENTS
      ============================================= -->
 <section class="slide" id="s2">
-  <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.6rem,2vh,1.2rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">目录</span>
+  <div class="toc-frame">
+    <div class="toc-header">
+      <h2 class="reveal">目录</h2>
+      <div class="eyebrow-dim reveal d1">CONTENTS</div>
     </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.6rem,2vh,1.2rem)">全文导航</h2>
-    <div class="toc-grid reveal d2">
-      <div class="toc-card" onclick="goTo(2)">
+    <div class="toc-rows">
+      <div class="toc-row reveal d2" onclick="goTo(2)">
         <div class="toc-num">01</div>
-        <div class="toc-title">世界模型行业发展分析</div>
-        <ul class="toc-items">
-          <li>四条技术路线 + 前沿论文</li>
-          <li>垂直领域应用痛点</li>
-          <li>竞品分析与高德定位</li>
-        </ul>
+        <div class="toc-title-row">行业发展分析</div>
+        <div class="toc-desc">技术路线 · 应用痛点 · 竞品格局<span class="toc-arrow">→</span></div>
       </div>
-      <div class="toc-card" onclick="goTo(6)">
+      <div class="toc-row reveal d3" onclick="goTo(6)">
         <div class="toc-num">02</div>
-        <div class="toc-title">高德 × 世界模型</div>
-        <ul class="toc-items">
-          <li>高德的痛点与机会</li>
-          <li>高德优势与劣势</li>
-          <li>未来 Roadmap</li>
-        </ul>
+        <div class="toc-title-row">高德 × 世界模型</div>
+        <div class="toc-desc">痛点机会 · 优势劣势 · 落地节奏<span class="toc-arrow">→</span></div>
       </div>
-      <div class="toc-card" onclick="goTo(10)">
+      <div class="toc-row reveal d4" onclick="goTo(10)">
         <div class="toc-num">03</div>
-        <div class="toc-title">用户视角的优化思路</div>
-        <ul class="toc-items">
-          <li>我的出行痛点（实地挖掘）</li>
-          <li>世界模型如何解决痛点</li>
-          <li>延展：未来可能衍生哪些发展</li>
-        </ul>
+        <div class="toc-title-row">用户视角</div>
+        <div class="toc-desc">出行痛点 · 解法对应 · 未来延展<span class="toc-arrow">→</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 3 · CHAPTER 1 COVER
+     SLIDE 3 · CHAPTER 01
      ============================================= -->
 <section class="slide chapter-slide" id="s3">
-  <div class="chapter-bg-num">01</div>
-  <div class="chapter-content">
-    <div class="chapter-num-label reveal">CHAPTER 01</div>
-    <h2 class="chapter-title reveal d1">世界模型<br>行业发展分析</h2>
-    <div class="accent-line reveal d2" style="margin:clamp(0.5rem,1.5vh,1rem) 0"></div>
-    <p class="chapter-sub reveal d3">先判断技术路线与行业格局，再判断高德该如何落地</p>
-    <div class="chapter-tags-row reveal d4">
-      <span class="tag tag-dim">四条技术路线</span>
-      <span class="tag tag-dim">垂直领域痛点</span>
-      <span class="tag tag-orange">竞品格局</span>
+  <div class="chapter-frame">
+    <div class="chapter-bg-num reveal-fade">01</div>
+    <div class="chapter-content">
+      <div class="chapter-label reveal">CHAPTER ONE</div>
+      <h2 class="chapter-title reveal-up d1">世界模型<br>行业发展分析</h2>
+      <p class="chapter-sub reveal d2">先判断技术路线与行业格局，<br>再判断高德该如何落地</p>
     </div>
   </div>
 </section>
@@ -423,313 +392,282 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
      SLIDE 4 · FOUR TECH ROUTES
      ============================================= -->
 <section class="slide" id="s4">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">01 / 行业分析</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.6rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">行业分析 · 前沿论文</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.4rem,1.2vh,0.8rem)">先判断技术路线，再判断高德该怎么用</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">先判断技术路线，再判断高德如何落地</h2>
     <div class="routes-grid">
-      <div class="route-card rc-a reveal d2">
-        <div class="route-header">
-          <span class="route-icon">🎬</span>
-          <div>
-            <div class="route-name">视频生成路线</div>
-            <div class="route-paper">Sora (OpenAI 2024) · Veo (Google DeepMind)</div>
-          </div>
-        </div>
-        <p class="route-pros"><span>✦ 优势</span>画面真实，从视频中学习光影/材质/运动，适合路线预览与用户教育</p>
-        <p class="route-cons"><span>✗ 短板</span>因果弱、可控性差，能"看起来真"但不懂交通规则与行动后果</p>
-        <div class="route-insight">→ 高德：解释层辅助，不做事实源</div>
+      <div class="route-cell reveal d2">
+        <div class="route-num">01 / VIDEO GENERATION</div>
+        <div class="route-name">视频生成路线</div>
+        <div class="route-paper">Sora · Veo</div>
+        <p class="route-essence">画面真实感强，从视频学习光影与运动，但因果弱、不懂交通规则</p>
+        <p class="route-insight">高德：解释层辅助，不做事实源</p>
       </div>
-      <div class="route-card rc-b reveal d3">
-        <div class="route-header">
-          <span class="route-icon">🌐</span>
-          <div>
-            <div class="route-name">3D 空间智能</div>
-            <div class="route-paper">World Labs Marble (Fei-Fei Li, 2024)</div>
-          </div>
-        </div>
-        <p class="route-pros"><span>✦ 优势</span>空间一致性强，支持多视角查看、室内外连续导航</p>
-        <p class="route-cons"><span>✗ 短板</span>采集和更新成本极高，动态人车流仍难稳定建模</p>
-        <div class="route-insight">→ 高德：优先路口/商圈/停车场局部孪生</div>
+      <div class="route-cell reveal d3">
+        <div class="route-num">02 / 3D SPATIAL</div>
+        <div class="route-name">3D 空间智能</div>
+        <div class="route-paper">World Labs Marble</div>
+        <p class="route-essence">空间一致性强，支持多视角探索，但采集更新成本极高</p>
+        <p class="route-insight">高德：路口/商圈局部孪生</p>
       </div>
-      <div class="route-card rc-c reveal d4">
-        <div class="route-header">
-          <span class="route-icon">🎮</span>
-          <div>
-            <div class="route-name">交互环境路线</div>
-            <div class="route-paper">Genie / SIMA (DeepMind 2024)</div>
-          </div>
-        </div>
-        <p class="route-pros"><span>✦ 优势</span>强交互、可评测，适合任务闭环和极端场景验证</p>
-        <p class="route-cons"><span>✗ 短板</span>游戏世界规则清晰，迁移到真实道路需地图数据约束</p>
-        <div class="route-insight">→ 高德：Scenario Lab + 仿真评测工具</div>
+      <div class="route-cell reveal d4">
+        <div class="route-num">03 / INTERACTIVE</div>
+        <div class="route-name">交互环境路线</div>
+        <div class="route-paper">Genie · SIMA</div>
+        <p class="route-essence">强交互、可评测，适合任务闭环，但迁移真实道路需地图约束</p>
+        <p class="route-insight">高德：Scenario Lab + 仿真评测</p>
       </div>
-      <div class="route-card rc-d reveal d5">
-        <div class="route-header">
-          <span class="route-icon">🧠</span>
-          <div>
-            <div class="route-name">JEPA 抽象状态</div>
-            <div class="route-paper">V-JEPA 2 (Meta AI, 2025)</div>
-          </div>
-        </div>
-        <p class="route-pros"><span>✦ 优势</span>不预测像素，预测高维抽象状态，更接近"理解下一秒会怎样"</p>
-        <p class="route-cons"><span>✗ 短板</span>不直接产出可展示画面，产品表达门槛高</p>
-        <div class="route-insight">→ 高德：风险预测 + 决策内核</div>
+      <div class="route-cell reveal d5">
+        <div class="route-num">04 / ABSTRACT STATE</div>
+        <div class="route-name">JEPA 抽象状态</div>
+        <div class="route-paper">V-JEPA 2</div>
+        <p class="route-essence">理解"下一秒会怎样"，利于长时序推理，但表达门槛高</p>
+        <p class="route-insight">高德：风险预测 + 决策内核</p>
       </div>
     </div>
-    <div class="core-verdict reveal d6">
-      <strong>核心判断：</strong>视频真实感只是表层，<strong>地图对齐和行动后果</strong>才是高德应该建立的核心能力
-    </div>
+    <p class="verdict-bar reveal d6">视频真实感只是表层，<strong>地图对齐和行动后果</strong>才是高德的核心</p>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 5 · VERTICAL PAIN POINTS
+     SLIDE 5 · VERTICAL APPLICATIONS
      ============================================= -->
 <section class="slide" id="s5">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">01 / 应用痛点</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">垂直领域应用痛点</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.3rem,1vh,0.6rem)">四类应用方向，哪里是真正的切口？</h2>
-    <div class="vp-rows">
-      <div class="vp-row reveal d2">
-        <div class="vp-label">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:1.1rem">💬</span>
-            <span class="vp-label-name">智能交互</span>
-            <span class="tag tag-orange" style="margin-left:auto">短期</span>
-          </div>
-          <p class="vp-label-pain">需求模糊且多约束——顺路/停车/不堵/带老人，系统只能逐项回答</p>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">四类应用方向，哪里是真正的切口</h2>
+    <div class="vert-grid">
+      <div class="vert-cell reveal d2">
+        <div class="vert-head">
+          <div class="vert-name">智能交互</div>
+          <div class="vert-stage now">SHORT-TERM</div>
         </div>
-        <div class="vp-center"><strong>世界模型价值</strong>把意图+时间+空间+偏好统一成状态，给出可解释的组合方案</div>
-        <div class="vp-right">
-          <div class="vp-cut"><strong>高德切口</strong>小高老师 · 路线解释 · 临时改计划</div>
-        </div>
+        <p class="vert-pain">需求模糊且多约束，系统只能逐项回答</p>
+        <p class="vert-cut">小高老师 · 路线解释 · 临时改计划</p>
       </div>
-      <div class="vp-row reveal d3">
-        <div class="vp-label">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:1.1rem">🏙️</span>
-            <span class="vp-label-name">数字孪生</span>
-            <span class="tag tag-blue" style="margin-left:auto">中期</span>
-          </div>
-          <p class="vp-label-pain">城市三维资产是静态的，路况/施工/人流/天气难实时进入模型</p>
+      <div class="vert-cell reveal d3">
+        <div class="vert-head">
+          <div class="vert-name">数字孪生</div>
+          <div class="vert-stage">MID-TERM</div>
         </div>
-        <div class="vp-center"><strong>世界模型价值</strong>把"空间结构+动态事件"统一成可计算状态</div>
-        <div class="vp-right">
-          <div class="vp-cut"><strong>高德切口</strong>路口/枢纽/商圈/停车场局部孪生</div>
-        </div>
+        <p class="vert-pain">三维资产静态化，路况/施工/天气难实时入模</p>
+        <p class="vert-cut">路口/枢纽/商圈局部孪生</p>
       </div>
-      <div class="vp-row reveal d4">
-        <div class="vp-label">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:1.1rem">🔬</span>
-            <span class="vp-label-name">仿真模拟</span>
-            <span class="tag tag-blue" style="margin-left:auto">中期</span>
-          </div>
-          <p class="vp-label-pain">导航策略上线前，极端场景（事故/封路/异常流量）无法充分覆盖</p>
+      <div class="vert-cell reveal d4">
+        <div class="vert-head">
+          <div class="vert-name">仿真模拟</div>
+          <div class="vert-stage">MID-TERM</div>
         </div>
-        <div class="vp-center"><strong>世界模型价值</strong>生成可控长尾场景，提前验证路线、提示和调度策略</div>
-        <div class="vp-right">
-          <div class="vp-cut"><strong>高德切口</strong>复杂路口仿真 · 车企/机器人/低空路线</div>
-        </div>
+        <p class="vert-pain">极端场景上线前难覆盖，策略验证不足</p>
+        <p class="vert-cut">复杂路口仿真 · 车企机器人评测</p>
       </div>
-      <div class="vp-row reveal d5">
-        <div class="vp-label">
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:1.1rem">⚖️</span>
-            <span class="vp-label-name">决策支持</span>
-            <span class="tag tag-dim" style="margin-left:auto">长期</span>
-          </div>
-          <p class="vp-label-pain">ETA/绕行/分流像黑盒，用户不理解，业务也难解释策略收益</p>
+      <div class="vert-cell reveal d5">
+        <div class="vert-head">
+          <div class="vert-name">决策支持</div>
+          <div class="vert-stage">LONG-TERM</div>
         </div>
-        <div class="vp-center"><strong>世界模型价值</strong>预测"如果这样走会怎样"并解释关键因果链</div>
-        <div class="vp-right">
-          <div class="vp-cut"><strong>高德切口</strong>导航提前分流 · 城市事件推演 · 应急调度</div>
-        </div>
+        <p class="vert-pain">ETA/绕行如黑盒，用户与业务都难理解</p>
+        <p class="vert-cut">导航提前分流 · 城市事件推演</p>
       </div>
     </div>
-    <div class="reveal d6" style="text-align:center;font-size:var(--small-size);color:var(--text2);margin-top:clamp(0.3rem,0.7vh,0.5rem);padding:6px;background:rgba(255,78,26,0.05);border-radius:8px;border:1px solid rgba(255,78,26,0.12)">
-      判断：先做<strong style="color:var(--orange)">近场高频可量化</strong>（智能交互+决策解释），再扩城市级生态
-    </div>
+    <p class="verdict-bar reveal d6">先做<strong>近场高频可量化</strong>，再扩城市级生态</p>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 6 · COMPETITOR ANALYSIS
+     SLIDE 6 · COMPETITORS
      ============================================= -->
 <section class="slide" id="s6">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">01 / 竞品分析</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">竞品分析</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.3rem,1vh,0.5rem)">竞品走到哪一步了？高德的位置在哪？</h2>
-    <div class="comp-layout reveal d2">
-      <div class="comp-card comp-google">
-        <div>
-          <div class="comp-logo" style="color:#4285f4">🗺 Google Maps</div>
-          <div class="comp-sub">体验层标杆</div>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">竞品走到哪一步了，高德的位置在哪</h2>
+    <div class="comp-stack">
+      <div class="comp-three reveal d2">
+        <div class="comp-col">
+          <div class="comp-tag">GOOGLE MAPS / 体验层</div>
+          <div class="comp-name">视觉沉浸领跑</div>
+          <p class="comp-pos">Immersive View、Ask Maps、Live View AR——把视觉表达做成下一代地图入口</p>
         </div>
-        <div class="comp-feat">
-          <div class="comp-feat-item">Immersive View for Routes：路线沉浸式预演（2023）</div>
-          <div class="comp-feat-item">Ask Maps：Gemini 驱动 AI 自然语言查询（2024）</div>
-          <div class="comp-feat-item">Live View AR：实时 AR 步行导航</div>
-          <div class="comp-feat-item">全球街景 + 3D Tiles + 航拍融合</div>
+        <div class="comp-col">
+          <div class="comp-tag">百度 APOLLO / 能力层</div>
+          <div class="comp-name">车路协同深耕</div>
+          <p class="comp-pos">高精地图、车道级导航、Apollo + OEM 协同——B端能力输出路径清晰</p>
         </div>
-        <div class="comp-direction dir-google">WM方向：视觉+空间理解，面向 C 端体验层领跑</div>
+        <div class="comp-col amap">
+          <div class="comp-tag" style="color:var(--orange)">高德 / 数据层</div>
+          <div class="comp-name comp-amap-name">数据最强 · 待建模拟层</div>
+          <p class="comp-pos">170M DAU + 实时路况 + Qwen + 阿里生态——具备建立模拟/解释层的独特优势</p>
+        </div>
       </div>
-      <div class="comp-card comp-baidu">
-        <div>
-          <div class="comp-logo" style="color:#6366f1">🚗 百度 Apollo</div>
-          <div class="comp-sub">能力层标杆</div>
+      <div class="comp-matrix reveal d3">
+        <div class="mat-row head">
+          <div>对比维度</div><div>Google Maps</div><div>百度 Apollo</div><div>高德</div>
         </div>
-        <div class="comp-feat">
-          <div class="comp-feat-item">高精地图 (HD Map) + 车道级导航</div>
-          <div class="comp-feat-item">Apollo 与理想/蔚来等 OEM 深度协同</div>
-          <div class="comp-feat-item">ERNIE 大模型集成 + 智驾级路线规划</div>
-          <div class="comp-feat-item">车路协同数据采集闭环</div>
+        <div class="mat-row">
+          <div>中国实时交通数据</div><div>·</div><div>·</div><div class="strong-cell">★ 最强</div>
         </div>
-        <div class="comp-direction dir-baidu">WM方向：地图精度+自动驾驶，面向 B 端车企能力层布局</div>
-      </div>
-      <div class="comp-card comp-amap">
-        <div>
-          <div class="comp-logo" style="color:var(--orange)">📍 高德地图</div>
-          <div class="comp-sub">数据层最强 · 待建模拟&解释层</div>
+        <div class="mat-row">
+          <div>3D / 沉浸体验</div><div class="strong-cell">★</div><div>·</div><div class="weak-cell">缺口</div>
         </div>
-        <div class="comp-feat">
-          <div class="comp-feat-item"><strong style="color:var(--orange2)">170M DAU</strong> + 实时路况 + <strong style="color:var(--orange2)">200M+ POI</strong></div>
-          <div class="comp-feat-item">Qwen 大模型 + 小高老师 AI 交互基础</div>
-          <div class="comp-feat-item">阿里生态闭环（电商/本地生活/打车）</div>
-          <div class="comp-feat-item" style="color:#f87171">⚠ 3D 沉浸体验 / 智驾生态深度待补足</div>
+        <div class="mat-row">
+          <div>智驾 / 车路协同</div><div>·</div><div class="strong-cell">★</div><div class="weak-cell">缺口</div>
         </div>
-        <div class="comp-direction dir-amap">机会：数据最密集处率先建立模拟层+解释层，不追赶3D视觉</div>
+        <div class="mat-row">
+          <div>商业生态闭环</div><div>Google Search</div><div>智驾 OEM</div><div class="strong-cell">阿里全域</div>
+        </div>
       </div>
     </div>
-    <div class="comp-matrix reveal d3">
-      <div class="matrix-row header">
-        <div>对比维度</div><div>Google Maps</div><div>百度 Apollo</div><div>高德地图</div>
-      </div>
-      <div class="matrix-row">
-        <div>实时交通数据（中国）</div><div style="color:var(--text3)">★★★</div><div style="color:var(--text3)">★★★</div><div>★★★★★ 最强</div>
-      </div>
-      <div class="matrix-row">
-        <div>3D/沉浸体验</div><div style="color:#93c5fd">★★★★★</div><div style="color:var(--text3)">★★★</div><div style="color:#f87171">★★ 缺口</div>
-      </div>
-      <div class="matrix-row">
-        <div>智驾/车路协同</div><div style="color:var(--text3)">★★</div><div style="color:#a5b4fc">★★★★★</div><div style="color:#f87171">★★ 缺口</div>
-      </div>
-      <div class="matrix-row">
-        <div>商业生态闭环</div><div style="color:#93c5fd">Google Search</div><div style="color:var(--text3)">智驾OEM</div><div>阿里全域 ★★★★★</div>
-      </div>
-    </div>
-    <div class="comp-verdict reveal d4">我的判断：Google 领跑体验层，百度深耕能力层，<strong>高德应在实时数据最密集处率先建立模拟层+解释层优势</strong>，而非追赶3D视觉或智驾</div>
+    <p class="verdict-bar reveal d4" style="margin-top:auto">高德的不对称机会：<strong>在数据最密集处率先建立模拟层+解释层</strong></p>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 7 · CHAPTER 2 COVER
+     SLIDE 7 · CHAPTER 02
      ============================================= -->
 <section class="slide chapter-slide" id="s7">
-  <div class="chapter-bg-num">02</div>
-  <div class="chapter-content">
-    <div class="chapter-num-label reveal">CHAPTER 02</div>
-    <h2 class="chapter-title reveal d1">高德<br>× 世界模型</h2>
-    <div class="accent-line reveal d2" style="margin:clamp(0.5rem,1.5vh,1rem) 0"></div>
-    <p class="chapter-sub reveal d3">从行业判断，推导高德专属的产品机会与战略节奏</p>
-    <div class="chapter-tags-row reveal d4">
-      <span class="tag tag-orange">痛点与机会</span>
-      <span class="tag tag-dim">优势劣势</span>
-      <span class="tag tag-blue">三期 Roadmap</span>
+  <div class="chapter-frame">
+    <div class="chapter-bg-num reveal-fade">02</div>
+    <div class="chapter-content">
+      <div class="chapter-label reveal">CHAPTER TWO</div>
+      <h2 class="chapter-title reveal-up d1">高德 ×<br>世界模型</h2>
+      <p class="chapter-sub reveal d2">从行业判断，推导高德专属的<br>产品机会与战略节奏</p>
     </div>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 8 · AMAP PAIN & OPPORTUNITY
+     SLIDE 8 · PAIN & OPPORTUNITY
      ============================================= -->
 <section class="slide" id="s8">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">02 / 痛点与机会</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">高德 · 痛点与机会</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.3rem,1vh,0.6rem)">高德真正卡在哪里，机会又在哪里？</h2>
-    <div class="po-layout" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.5rem,1.5vw,1rem);flex:1">
-      <div class="po-col col-pain reveal d2">
-        <span class="po-col-title">五大痛点</span>
-        <div class="po-item"><span class="po-icon">📍</span><div class="po-text"><strong>最后 100 米断层</strong><span>导航到附近，用户找不到真实入口/停车场出口</span></div></div>
-        <div class="po-item"><span class="po-icon">❓</span><div class="po-text"><strong>路线推荐黑盒</strong><span>用户不理解为什么要绕行，对导航缺乏信任</span></div></div>
-        <div class="po-item"><span class="po-icon">⏰</span><div class="po-text"><strong>静态地图 vs 动态世界</strong><span>施工/活动/天气引发变化，系统无法预判</span></div></div>
-        <div class="po-item"><span class="po-icon">🔗</span><div class="po-text"><strong>场景链路断裂</strong><span>路线/停车/POI/打车/餐饮各自独立，用户多次切换</span></div></div>
-        <div class="po-item"><span class="po-icon">📱</span><div class="po-text"><strong>多端体验割裂</strong><span>手机/车机/未来 AR 眼镜无统一空间理解</span></div></div>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.8rem,2.5vh,1.5rem)">高德卡在哪里，机会又在哪里</h2>
+    <div class="po-split">
+      <div class="po-side pain reveal d2">
+        <div class="po-side-title"><span class="eyebrow-dim">PAIN POINTS</span></div>
+        <div class="po-list">
+          <div class="po-item">
+            <span class="po-idx">P/01</span>
+            <div class="po-content"><strong>最后 100 米断层</strong><span>到了附近找不到入口与楼层</span></div>
+          </div>
+          <div class="po-item">
+            <span class="po-idx">P/02</span>
+            <div class="po-content"><strong>路线推荐黑盒</strong><span>用户不理解为什么要绕行</span></div>
+          </div>
+          <div class="po-item">
+            <span class="po-idx">P/03</span>
+            <div class="po-content"><strong>静态地图 vs 动态世界</strong><span>变化只能事后响应</span></div>
+          </div>
+          <div class="po-item">
+            <span class="po-idx">P/04</span>
+            <div class="po-content"><strong>多端体验割裂</strong><span>手机/车机/AR 缺统一空间理解</span></div>
+          </div>
+        </div>
       </div>
-      <div class="po-col col-opp reveal d3">
-        <span class="po-col-title">对应机会</span>
-        <div class="po-item"><span class="po-icon">🏢</span><div class="po-text"><strong>空间智能落地</strong><span>AR 入口确认 + 室内连续导航 + 停车场最后 50 米</span></div></div>
-        <div class="po-item"><span class="po-icon">💡</span><div class="po-text"><strong>可解释导航</strong><span>世界模型把推荐理由"说出来"，重建用户信任</span></div></div>
-        <div class="po-item"><span class="po-icon">🔮</span><div class="po-text"><strong>动态路线预判</strong><span>提前感知变化，不等用户遇到问题才响应</span></div></div>
-        <div class="po-item"><span class="po-icon">🎯</span><div class="po-text"><strong>主动出行规划</strong><span>小高老师统筹路线+停车+POI+时间+服务</span></div></div>
-        <div class="po-item"><span class="po-icon">🔄</span><div class="po-text"><strong>统一空间状态</strong><span>多端共享同一空间理解模型，体验一致</span></div></div>
+      <div class="po-divider"></div>
+      <div class="po-side opp reveal d3">
+        <div class="po-side-title"><span class="eyebrow-dim">OPPORTUNITIES</span></div>
+        <div class="po-list">
+          <div class="po-item">
+            <span class="po-idx">O/01</span>
+            <div class="po-content"><strong>空间智能落地</strong><span>AR 入口确认 + 室内连续导航</span></div>
+          </div>
+          <div class="po-item">
+            <span class="po-idx">O/02</span>
+            <div class="po-content"><strong>可解释导航</strong><span>把推荐理由"说出来"</span></div>
+          </div>
+          <div class="po-item">
+            <span class="po-idx">O/03</span>
+            <div class="po-content"><strong>动态路线预判</strong><span>提前感知，主动响应</span></div>
+          </div>
+          <div class="po-item">
+            <span class="po-idx">O/04</span>
+            <div class="po-content"><strong>统一空间状态</strong><span>多端共享同一空间模型</span></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="po-framework reveal d4">
-      <strong>判断框架：</strong>离高德主导航链路越近 + 用户痛感越强 + 指标越可验证 = 越优先做
     </div>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 9 · AMAP SWOT
+     SLIDE 9 · SWOT
      ============================================= -->
 <section class="slide" id="s9">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">02 / 优势与劣势</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">高德 · 优势与劣势</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.3rem,1vh,0.6rem)">高德凭什么做，又卡在哪里？</h2>
-    <div class="swot-layout reveal d2">
-      <div class="swot-col">
-        <div class="swot-group-title gt-strength">✦ 四大优势</div>
-        <div class="swot-card s-card">
-          <span class="swot-icon">📊</span>
-          <div class="swot-body"><strong>数据飞轮（核心壁垒）</strong><p>170M DAU 行为数据 × 实时路况 × 200M+ POI × 出行 OD 数据 → 世界模型训练最优底座，Google/百度在中国无法复制</p></div>
-        </div>
-        <div class="swot-card s-card">
-          <span class="swot-icon">🔗</span>
-          <div class="swot-body"><strong>Qwen + 阿里生态</strong><p>大模型内部直连（无API成本）+ 本地生活/电商/打车商业闭环 → 从模拟层到执行层可打通</p></div>
-        </div>
-        <div class="swot-card s-card">
-          <span class="swot-icon">🇨🇳</span>
-          <div class="swot-body"><strong>本土高频场景</strong><p>中国出行用户停留时间长、反馈信号丰富 → 场景训练数据质量远高于通用世界模型</p></div>
-        </div>
-        <div class="swot-card s-card">
-          <span class="swot-icon">🤖</span>
-          <div class="swot-body"><strong>小高老师先发基础</strong><p>AI 交互链路初步建立，意图理解和对话规划能力有积累</p></div>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">高德凭什么做，又卡在哪里</h2>
+    <div class="swot-grid reveal d2">
+      <div class="swot-section s-side">
+        <div class="swot-head"><span class="eyebrow">STRENGTHS / 优势</span></div>
+        <div class="swot-list">
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">S/01</span>
+              <span class="swot-item-title">数据飞轮</span>
+            </div>
+            <p class="swot-item-desc">170M DAU + 实时路况 + 200M+ POI，Google/百度在中国无法复制的训练底座</p>
+          </div>
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">S/02</span>
+              <span class="swot-item-title">Qwen + 阿里生态</span>
+            </div>
+            <p class="swot-item-desc">大模型内部直连，本地生活与电商完成商业闭环</p>
+          </div>
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">S/03</span>
+              <span class="swot-item-title">本土高频场景</span>
+            </div>
+            <p class="swot-item-desc">中国出行场景反馈信号丰富，训练数据质量远高于通用模型</p>
+          </div>
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">S/04</span>
+              <span class="swot-item-title">小高老师先发</span>
+            </div>
+            <p class="swot-item-desc">AI 交互链路初步建立，意图理解能力已有积累</p>
+          </div>
         </div>
       </div>
-      <div class="swot-col">
-        <div class="swot-group-title gt-weak">✗ 三大挑战</div>
-        <div class="swot-card w-card">
-          <span class="swot-icon">🗺</span>
-          <div class="swot-body"><strong>3D 数据缺口</strong><p>全国高精3D地图采集成本极高，与 Google 全球街景覆盖差距大 → 短期内沉浸体验难对标</p></div>
-        </div>
-        <div class="swot-card w-card">
-          <span class="swot-icon">🚗</span>
-          <div class="swot-body"><strong>智驾生态弱</strong><p>车端传感数据和 OEM 协同深度不及百度 Apollo → 车路协同场景受限</p></div>
-        </div>
-        <div class="swot-card w-card">
-          <span class="swot-icon">⚡</span>
-          <div class="swot-body"><strong>算力与研究投入</strong><p>世界模型训练需极大算力，依赖阿里云资源协同 → 投入产出比需持续评估</p></div>
-        </div>
-        <div class="swot-verdict">
-          <strong>战略定位</strong>
-          不做全球3D，不追赶智驾。做中国出行链路上<em>最懂用户意图的空间智能平台</em>——用数据最密集处建立模拟层+解释层的不对称优势。
+      <div class="swot-section w-side">
+        <div class="swot-head"><span class="eyebrow">WEAKNESSES / 挑战</span></div>
+        <div class="swot-list">
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">W/01</span>
+              <span class="swot-item-title">3D 数据缺口</span>
+            </div>
+            <p class="swot-item-desc">全国高精 3D 地图采集成本极高，短期难对标 Google</p>
+          </div>
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">W/02</span>
+              <span class="swot-item-title">智驾生态弱</span>
+            </div>
+            <p class="swot-item-desc">车端数据与 OEM 协同深度不及百度 Apollo</p>
+          </div>
+          <div class="swot-item">
+            <div class="swot-item-head">
+              <span class="swot-item-idx">W/03</span>
+              <span class="swot-item-title">算力投入</span>
+            </div>
+            <p class="swot-item-desc">世界模型训练需极大算力，依赖阿里云资源协同</p>
+          </div>
+          <div class="swot-verdict">
+            <strong>战略定位</strong>　不做全球 3D，不追赶智驾。<br>做中国出行链路上<em>最懂用户意图</em>的空间智能平台。
+          </div>
         </div>
       </div>
     </div>
@@ -740,76 +678,63 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
      SLIDE 10 · ROADMAP
      ============================================= -->
 <section class="slide" id="s10">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">02 / 未来 ROADMAP</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">高德 · 未来 Roadmap</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.4rem,1.2vh,0.8rem)">三步走：近场 MVP → 全链路 → 空间智能生态</h2>
-    <div class="roadmap-layout">
-      <div class="rm-col rm-1 reveal d2">
-        <div class="rm-header rm-h1">
-          <div class="rm-phase">PHASE 01</div>
-          <div class="rm-period">短期 · 0–12 个月</div>
-          <div style="font-size:var(--small-size);color:var(--text2);margin-top:2px">近场高频，可验证</div>
-        </div>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.8rem,2.5vh,1.5rem)">近场 MVP → 全链路 → 空间智能生态</h2>
+    <div class="rm-track">
+      <div class="rm-phase p1 reveal d2">
+        <div class="rm-num">PHASE 01 / 0–12 MO</div>
+        <div class="rm-period">近场可验证</div>
+        <div class="rm-tagline">高频痛点，指标可量化</div>
+        <div class="rm-divider"></div>
         <div class="rm-items">
-          <div class="rm-item">🚦 复杂路口风险解释</div>
-          <div class="rm-item">🅿️ 停车场/室内最后 100 米</div>
-          <div class="rm-item">💬 路线推荐理由卡片</div>
-          <div class="rm-item">⚠️ 低置信度降级提示</div>
+          <div class="rm-item">复杂路口风险解释</div>
+          <div class="rm-item">停车场 / 室内最后 100 米</div>
+          <div class="rm-item">路线推荐理由卡片</div>
         </div>
-        <div class="rm-metric"><span>验收指标：</span>错过率↓ · 采纳率↑ · 误导投诉↓</div>
+        <div class="rm-metric"><span>METRICS</span><br>错过率 ↓ 采纳率 ↑</div>
       </div>
-      <div class="rm-col rm-2 reveal d3">
-        <div class="rm-header rm-h2">
-          <div class="rm-phase">PHASE 02</div>
-          <div class="rm-period">中期 · 1–2 年</div>
-          <div style="font-size:var(--small-size);color:var(--text2);margin-top:2px">链路全面延展</div>
-        </div>
+      <div class="rm-phase p2 reveal d3">
+        <div class="rm-num">PHASE 02 / 1–2 YR</div>
+        <div class="rm-period">链路延展</div>
+        <div class="rm-tagline">多端打通，主动规划</div>
+        <div class="rm-divider"></div>
         <div class="rm-items">
-          <div class="rm-item">🗣️ 小高老师主动出行规划</div>
-          <div class="rm-item">👓 AR/车机统一空间状态</div>
-          <div class="rm-item">🎪 活动/枢纽散场分流预判</div>
-          <div class="rm-item">🔄 绕行策略全链路解释</div>
+          <div class="rm-item">小高老师主动出行规划</div>
+          <div class="rm-item">AR / 车机统一空间状态</div>
+          <div class="rm-item">活动 / 枢纽散场分流</div>
         </div>
-        <div class="rm-metric"><span>验收指标：</span>ETA误差↓ · 转化率↑ · 二次搜索↓</div>
+        <div class="rm-metric"><span>METRICS</span><br>ETA误差 ↓ 转化率 ↑</div>
       </div>
-      <div class="rm-col rm-3 reveal d4">
-        <div class="rm-header rm-h3">
-          <div class="rm-phase">PHASE 03</div>
-          <div class="rm-period">长期 · 2–3 年+</div>
-          <div style="font-size:var(--small-size);color:var(--text2);margin-top:2px">生态化平台</div>
-        </div>
+      <div class="rm-phase p3 reveal d4">
+        <div class="rm-num">PHASE 03 / 2–3 YR+</div>
+        <div class="rm-period">生态化平台</div>
+        <div class="rm-tagline">空间智能输出</div>
+        <div class="rm-divider"></div>
         <div class="rm-items">
-          <div class="rm-item">🏙️ 城市级交通事件推演</div>
-          <div class="rm-item">🤖 车企/机器人/低空仿真</div>
-          <div class="rm-item">🔌 空间智能 API 生态</div>
-          <div class="rm-item">🏛️ 城市治理决策支持</div>
+          <div class="rm-item">城市级事件推演</div>
+          <div class="rm-item">车企 / 机器人 / 低空仿真</div>
+          <div class="rm-item">空间智能 API 生态</div>
         </div>
-        <div class="rm-metric"><span>验收指标：</span>B端收入 · API调用 · 行业影响力</div>
+        <div class="rm-metric"><span>METRICS</span><br>B端收入 · API调用</div>
       </div>
     </div>
-    <div class="rm-principle reveal d5">
-      <strong>核心原则：</strong>先做近场高频 MVP，快速验证指标闭环，再扩城市级生态——<strong>事实层来自地图，模拟层负责推演，解释层面向用户，执行层必须可确认</strong>
-    </div>
+    <p class="rm-foot reveal d5">事实层来自地图　模拟层负责推演　解释层面向用户　<strong>执行层必须可确认</strong></p>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 11 · CHAPTER 3 COVER
+     SLIDE 11 · CHAPTER 03
      ============================================= -->
 <section class="slide chapter-slide" id="s11">
-  <div class="chapter-bg-num">03</div>
-  <div class="chapter-content">
-    <div class="chapter-num-label reveal">CHAPTER 03</div>
-    <h2 class="chapter-title reveal d1">用户视角的<br>优化思路</h2>
-    <div class="accent-line reveal d2" style="margin:clamp(0.5rem,1.5vh,1rem) 0"></div>
-    <p class="chapter-sub reveal d3">从亲身出行体验出发，看高德与世界模型的真实结合点</p>
-    <div class="chapter-tags-row reveal d4">
-      <span class="tag tag-orange">实地痛点挖掘</span>
-      <span class="tag tag-dim">世界模型解法</span>
-      <span class="tag tag-blue">未来延展</span>
+  <div class="chapter-frame">
+    <div class="chapter-bg-num reveal-fade">03</div>
+    <div class="chapter-content">
+      <div class="chapter-label reveal">CHAPTER THREE</div>
+      <h2 class="chapter-title reveal-up d1">用户视角的<br>优化思路</h2>
+      <p class="chapter-sub reveal d2">从亲身出行体验出发，<br>看高德与世界模型的真实结合点</p>
     </div>
   </div>
 </section>
@@ -818,207 +743,216 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
      SLIDE 12 · MY PAIN POINTS
      ============================================= -->
 <section class="slide" id="s12">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">03 / 实地挖掘</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">用户视角 · 实地挖掘</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.3rem,1vh,0.6rem)">我的出行痛点有哪些？</h2>
-    <div class="pain-layers">
-      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:clamp(0.3rem,0.8vw,0.6rem);margin-bottom:2px">
-        <div style="font-size:var(--small-size);color:var(--text3);font-family:'JetBrains Mono',monospace;text-align:center">层次</div>
-        <div style="font-size:var(--small-size);color:var(--text3);font-family:'JetBrains Mono',monospace">具体场景</div>
-        <div style="font-size:var(--small-size);color:var(--text3);font-family:'JetBrains Mono',monospace">本质问题</div>
-      </div>
-      <div class="pain-row reveal d2">
-        <div class="pain-layer-tag lt-pos"><span class="layer-emoji">📍</span><span class="layer-name">位置层</span></div>
-        <div class="pain-scene">商场出来定位漂移，和朋友互相找只能靠"对讲机喊位置"</div>
-        <div class="pain-essence"><em>本质：</em>室内外定位断层，二维定位无法表达真实三维空间</div>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">我的出行痛点</h2>
+    <div class="pain-table">
+      <div class="pain-head reveal d2">
+        <div>层次</div>
+        <div>具体场景</div>
+        <div>本质问题</div>
       </div>
       <div class="pain-row reveal d3">
-        <div class="pain-layer-tag lt-path"><span class="layer-emoji">🚇</span><span class="layer-name">路径层</span></div>
-        <div class="pain-scene">不知道哪个地铁口有电梯、哪个出口排队少、哪个通道更近</div>
-        <div class="pain-essence"><em>本质：</em>缺少"软信息"，系统不区分用户身体差异与实际约束</div>
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/01</div>
+          <div class="pain-layer-name">位置层</div>
+        </div>
+        <div class="pain-scene-text">商场出来定位漂移，找朋友只能靠对讲机喊位置</div>
+        <div class="pain-essence-text">室内外定位断层，二维坐标无法表达真实三维空间</div>
       </div>
       <div class="pain-row reveal d4">
-        <div class="pain-layer-tag lt-dec"><span class="layer-emoji">🤔</span><span class="layer-name">决策层</span></div>
-        <div class="pain-scene">选错出口后已叫了车，只能取消订单重新打，多付钱多等待</div>
-        <div class="pain-essence"><em>本质：</em>信息缺失导致事后后悔，没有预演能力与因果解释</div>
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/02</div>
+          <div class="pain-layer-name">路径层</div>
+        </div>
+        <div class="pain-scene-text">不知道哪个地铁口有电梯、哪个出口排队少</div>
+        <div class="pain-essence-text">缺少"软信息"，系统不区分用户身体差异与实际约束</div>
       </div>
       <div class="pain-row reveal d5">
-        <div class="pain-layer-tag lt-syn"><span class="layer-emoji">👥</span><span class="layer-name">协同层</span></div>
-        <div class="pain-scene">大商场里和朋友互相找不到，各自的地图都说"已到达"</div>
-        <div class="pain-essence"><em>本质：</em>多人空间协同缺失，系统只服务单用户、单时刻</div>
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/03</div>
+          <div class="pain-layer-name">决策层</div>
+        </div>
+        <div class="pain-scene-text">选错出口后已叫车，只能取消订单重打</div>
+        <div class="pain-essence-text">信息缺失导致事后后悔，没有预演与因果解释</div>
+      </div>
+      <div class="pain-row reveal d6">
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/04</div>
+          <div class="pain-layer-name">协同层</div>
+        </div>
+        <div class="pain-scene-text">大商场里和朋友互相找不到，各自的地图都说"已到达"</div>
+        <div class="pain-essence-text">多人空间协同缺失，系统只服务单用户、单时刻</div>
       </div>
     </div>
-    <div class="pain-golden reveal d6">
-      <p>痛点共性</p>
-      <strong>当前地图只懂「路网」，不懂「空间」；只服务「平均人」，不服务「具体人」⭐</strong>
+    <div class="pain-summary reveal d7">
+      <div class="pain-summary-label">痛点共性</div>
+      <p class="pain-summary-text">当前地图只懂<em>路网</em>，不懂<em>空间</em>；只服务<em>平均人</em>，不服务<em>具体人</em></p>
     </div>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 13 · WORLD MODEL SOLUTIONS
+     SLIDE 13 · SOLUTIONS (mirrors 12)
      ============================================= -->
 <section class="slide" id="s13">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">03 / 世界模型解法</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">用户视角 · 世界模型解法</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.3rem,0.8vh,0.5rem)">世界模型如何接住这四层痛点？</h2>
-    <div class="sol-rows">
-      <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr;gap:clamp(0.3rem,0.8vw,0.6rem);margin-bottom:2px">
-        <div></div>
-        <div style="font-size:var(--small-size);color:var(--blue);font-family:'JetBrains Mono',monospace;text-align:center">技术方案</div>
-        <div style="font-size:var(--small-size);color:#a78bfa;font-family:'JetBrains Mono',monospace;text-align:center">关键能力</div>
-        <div style="font-size:var(--small-size);color:var(--orange);font-family:'JetBrains Mono',monospace;text-align:center">高德产品形态</div>
-      </div>
-      <div class="sol-row reveal d2">
-        <div class="sol-layer-tag lt-pos"><span class="layer-emoji">📍</span><span class="layer-name">位置层</span></div>
-        <div class="sol-cell sol-tech">
-          <div class="sol-cell-content">VLM（视觉语言模型）+ 视觉定位<br><em style="color:var(--text3);font-size:0.9em">→ 3D 空间智能路线</em></div>
-        </div>
-        <div class="sol-cell sol-cap">
-          <div class="sol-cell-content">看懂图像，锚定空间，理解"我面前是什么、几号门"</div>
-        </div>
-        <div class="sol-cell sol-prod">
-          <div class="sol-cell-content">AR 步行入口确认 · 室内外无缝定位切换</div>
-        </div>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">世界模型如何接住这四层痛点</h2>
+    <div class="sol-table">
+      <div class="sol-head reveal d2">
+        <div>层次</div>
+        <div>技术方案</div>
+        <div>关键能力</div>
+        <div class="h-final">高德产品形态</div>
       </div>
       <div class="sol-row reveal d3">
-        <div class="sol-layer-tag lt-path"><span class="layer-emoji">🚇</span><span class="layer-name">路径层</span></div>
-        <div class="sol-cell sol-tech">
-          <div class="sol-cell-content">具身智能 + 用户画像物理约束建模<br><em style="color:var(--text3);font-size:0.9em">→ JEPA 抽象状态路线</em></div>
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/01</div>
+          <div class="pain-layer-name">位置层</div>
         </div>
-        <div class="sol-cell sol-cap">
-          <div class="sol-cell-content">理解"具体人"的真实约束：有无电梯需求、拥挤耐受度</div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">VLM + 视觉定位</div>
+          <div class="sol-cell-meta">→ 3D 空间智能路线</div>
         </div>
-        <div class="sol-cell sol-prod">
-          <div class="sol-cell-content">个性化出口/路径推荐 · 无障碍路线规划</div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">看懂图像，锚定空间</div>
+        </div>
+        <div class="sol-cell">
+          <div class="sol-cell-main sol-prod">AR 步行入口确认</div>
+          <div class="sol-cell-meta">室内外无缝定位</div>
         </div>
       </div>
       <div class="sol-row reveal d4">
-        <div class="sol-layer-tag lt-dec"><span class="layer-emoji">🤔</span><span class="layer-name">决策层</span></div>
-        <div class="sol-cell sol-tech">
-          <div class="sol-cell-content">空间状态推演 + 因果链解释<br><em style="color:var(--text3);font-size:0.9em">→ 交互环境/视频生成路线</em></div>
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/02</div>
+          <div class="pain-layer-name">路径层</div>
         </div>
-        <div class="sol-cell sol-cap">
-          <div class="sol-cell-content">预演"选这个出口接下来会发生什么"，把结果提前给用户</div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">具身智能 + 用户画像</div>
+          <div class="sol-cell-meta">→ JEPA 抽象状态路线</div>
         </div>
-        <div class="sol-cell sol-prod">
-          <div class="sol-cell-content">出口结果预演 · 路线推荐理由卡片 · 低置信降级提示</div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">物理约束建模，理解具体人</div>
+        </div>
+        <div class="sol-cell">
+          <div class="sol-cell-main sol-prod">个性化路径推荐</div>
+          <div class="sol-cell-meta">无障碍 / 软信息</div>
         </div>
       </div>
       <div class="sol-row reveal d5">
-        <div class="sol-layer-tag lt-syn"><span class="layer-emoji">👥</span><span class="layer-name">协同层</span></div>
-        <div class="sol-cell sol-tech">
-          <div class="sol-cell-content">共享三维场景模型 + Multi-Agent 协同<br><em style="color:var(--text3);font-size:0.9em">→ 3D 空间 + 交互环境路线</em></div>
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/03</div>
+          <div class="pain-layer-name">决策层</div>
         </div>
-        <div class="sol-cell sol-cap">
-          <div class="sol-cell-content">多人共享同一空间状态，知道"对方在哪个空间位置"</div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">状态推演 + 因果链解释</div>
+          <div class="sol-cell-meta">→ 交互环境路线</div>
         </div>
-        <div class="sol-cell sol-prod">
-          <div class="sol-cell-content">多人实时空间定位 · 共享到达确认 · 集合点推荐</div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">预演"接下来会怎样"</div>
+        </div>
+        <div class="sol-cell">
+          <div class="sol-cell-main sol-prod">出口结果预演</div>
+          <div class="sol-cell-meta">推荐理由 / 降级提示</div>
+        </div>
+      </div>
+      <div class="sol-row reveal d6">
+        <div class="pain-layer">
+          <div class="pain-layer-idx">L/04</div>
+          <div class="pain-layer-name">协同层</div>
+        </div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">共享三维场景 + Multi-Agent</div>
+          <div class="sol-cell-meta">→ 3D + 交互环境路线</div>
+        </div>
+        <div class="sol-cell">
+          <div class="sol-cell-main">多人共享同一空间状态</div>
+        </div>
+        <div class="sol-cell">
+          <div class="sol-cell-main sol-prod">多人实时空间定位</div>
+          <div class="sol-cell-meta">集合点推荐</div>
         </div>
       </div>
     </div>
-    <div class="sol-verdict reveal d6">
-      <strong>四层痛点，恰好对应世界模型四条技术路线的产品落地场景</strong>——不是巧合，是世界模型本来就该服务真实出行
-    </div>
+    <p class="sol-footer reveal d7">四层痛点恰好对应世界模型四条技术路线——<strong>不是巧合，是世界模型本来就该服务真实出行</strong></p>
   </div>
 </section>
 
 <!-- =============================================
-     SLIDE 14 · FUTURE EXTENSIONS
+     SLIDE 14 · EXTENSIONS
      ============================================= -->
 <section class="slide" id="s14">
+  <div class="slide-eyebrow reveal">
+    <span class="eyebrow-dim">03 / 未来延展</span>
+  </div>
   <div class="slide-content">
-    <div class="reveal" style="display:flex;align-items:center;gap:12px;margin-bottom:clamp(0.3rem,1vh,0.5rem)">
-      <div class="accent-line"></div>
-      <span class="slide-label">用户视角 · 未来延展</span>
-    </div>
-    <h2 class="reveal d1" style="font-family:'Noto Serif SC',serif;font-size:var(--h2-size);color:var(--text);margin-bottom:clamp(0.4rem,1.2vh,0.8rem)">延展我的痛点：未来可能衍生哪些发展？</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">延展我的痛点：未来可能衍生的方向</h2>
     <div class="ext-grid">
-      <div class="ext-card ec-ar reveal d2">
-        <div class="ext-icon">🕶️</div>
-        <div class="ext-title">AR 眼镜时代：导航的下一代形态</div>
-        <div class="ext-points">
-          <div class="ext-point">从"低头看屏幕"变成"抬头看世界"</div>
-          <div class="ext-point">路口标识、入口指引、危险提示叠加在真实视野</div>
-          <div class="ext-point">高德世界模型成为 AR 空间理解引擎</div>
+      <div class="ext-cell reveal d2">
+        <div class="ext-head">
+          <div class="ext-num">01</div>
+          <div class="ext-name">AR 眼镜时代<br>导航的下一代形态</div>
         </div>
-        <span class="ext-biz">机会：与阿里/AI眼镜生态协同的新终端入口</span>
+        <p class="ext-desc">从"低头看屏幕"到"抬头看世界"，路口标识与入口指引叠加在真实视野中，高德世界模型成为 AR 的空间理解引擎</p>
+        <div class="ext-biz">→ 新终端入口 · 阿里 AI 眼镜生态协同</div>
       </div>
-      <div class="ext-card ec-silver reveal d3">
-        <div class="ext-icon">👴</div>
-        <div class="ext-title">银发与无障碍：被忽视的刚需</div>
-        <div class="ext-points">
-          <div class="ext-point">脚不好的老人、推婴儿车的父母、视障用户</div>
-          <div class="ext-point">当前"平均人"地图完全没服务到这些用户</div>
-          <div class="ext-point">世界模型理解具体人的物理约束→个性化路径</div>
+      <div class="ext-cell reveal d3">
+        <div class="ext-head">
+          <div class="ext-num">02</div>
+          <div class="ext-name">银发与无障碍<br>被忽视的刚需市场</div>
         </div>
-        <span class="ext-biz">机会：中国老龄化背景下的高确定性市场</span>
+        <p class="ext-desc">老人、推婴儿车的父母、视障群体，"平均人"地图从未真正服务过他们。世界模型理解具体人的物理约束</p>
+        <div class="ext-biz">→ 中国老龄化背景下的确定性市场</div>
       </div>
-      <div class="ext-card ec-multi reveal d4">
-        <div class="ext-icon">👨‍👩‍👧</div>
-        <div class="ext-title">多人出行 Agent：家庭/团建/约会场景</div>
-        <div class="ext-points">
-          <div class="ext-point">多用户位置、偏好、约束统一调度协同</div>
-          <div class="ext-point">共享空间状态 → 共享决策模型</div>
-          <div class="ext-point">从"工具"升级为"生活协同平台"</div>
+      <div class="ext-cell reveal d4">
+        <div class="ext-head">
+          <div class="ext-num">03</div>
+          <div class="ext-name">多人出行 Agent<br>家庭与社交场景</div>
         </div>
-        <span class="ext-biz">机会：高频家庭出行场景的深度渗透</span>
+        <p class="ext-desc">家庭、团建、约会场景下的多用户协同——位置、偏好、约束统一调度，共享空间状态即共享决策模型</p>
+        <div class="ext-biz">→ 从"工具"到"生活协同平台"</div>
       </div>
-      <div class="ext-card ec-v2x reveal d5">
-        <div class="ext-icon">🚗</div>
-        <div class="ext-title">车路协同：世界模型的终极形态</div>
-        <div class="ext-points">
-          <div class="ext-point">世界模型同时服务车 + 人 + 路 + 城市基建</div>
-          <div class="ext-point">红绿灯、车辆、行人进入同一空间状态</div>
-          <div class="ext-point">不只智驾，是城市级实时智能体</div>
+      <div class="ext-cell reveal d5">
+        <div class="ext-head">
+          <div class="ext-num">04</div>
+          <div class="ext-name">车路协同<br>世界模型的终极形态</div>
         </div>
-        <span class="ext-biz">机会：阿里集团对城市治理和智驾生态的长期赌注</span>
+        <p class="ext-desc">同时服务车、人、路、城市基建——红绿灯、车辆、行人进入同一空间状态。不只是智驾，而是城市级实时智能体</p>
+        <div class="ext-biz">→ 集团对城市治理与智驾的长期布局</div>
       </div>
     </div>
-    <div class="ext-coda reveal d6">
-      <strong>从个人痛点，看到更大的空间智能机会</strong>
-      我的痛点是入口——真正的产品机会是把高德从「导航工具」升级成「可推演真实世界变化的空间智能平台」
-    </div>
+    <p class="ext-coda reveal d6">我的痛点是入口，<strong>真正的产品机会</strong>是把高德从「导航工具」升级为「可推演真实世界变化的空间智能平台」</p>
   </div>
 </section>
 
 <script>
-/* =============================================
-   PARTICLE SYSTEM (Cover slide)
-   ============================================= */
+/* ============================================
+   PARTICLE BACKGROUND (cover only, very subtle)
+   ============================================ */
 (function(){
   const canvas = document.getElementById('particleCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
 
-  function Particle(){
-    this.reset();
-  }
+  function Particle(){ this.reset(); }
   Particle.prototype.reset = function(){
     this.x = Math.random() * W;
     this.y = Math.random() * H;
-    this.vx = (Math.random()-0.5)*0.4;
-    this.vy = (Math.random()-0.5)*0.4;
-    this.r = Math.random()*1.5+0.5;
-    this.alpha = Math.random()*0.5+0.1;
-    this.color = Math.random()>0.7 ? '#FF4E1A' : '#00C8FF';
+    this.vx = (Math.random()-0.5)*0.15;
+    this.vy = (Math.random()-0.5)*0.15;
+    this.r = Math.random()*1+0.3;
+    this.alpha = Math.random()*0.4+0.1;
   };
-
-  for(let i=0;i<80;i++) particles.push(new Particle());
+  for(let i=0;i<50;i++) particles.push(new Particle());
 
   function draw(){
     ctx.clearRect(0,0,W,H);
@@ -1027,43 +961,28 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
       if(p.x<0||p.x>W||p.y<0||p.y>H) p.reset();
       ctx.beginPath();
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.color;
-      ctx.globalAlpha=p.alpha;
+      ctx.fillStyle = `rgba(255,78,26,${p.alpha})`;
       ctx.fill();
     });
-    // connections
-    ctx.globalAlpha=1;
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        const dx=particles[i].x-particles[j].x;
-        const dy=particles[i].y-particles[j].y;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<100){
-          ctx.beginPath();
-          ctx.strokeStyle=`rgba(255,78,26,${0.06*(1-d/100)})`;
-          ctx.lineWidth=0.5;
-          ctx.moveTo(particles[i].x,particles[i].y);
-          ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.stroke();
-        }
-      }
-    }
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-/* =============================================
-   SLIDE PRESENTATION CONTROLLER
-   ============================================= */
+/* ============================================
+   SLIDE CONTROLLER
+   Native scroll-snap handles wheel/touch naturally.
+   We only add keyboard navigation + dots + progress.
+   ============================================ */
 class SlidePresentation {
   constructor(){
     this.slides = Array.from(document.querySelectorAll('.slide'));
     this.current = 0;
     this.total = this.slides.length;
-    this.isAnimating = false;
     this.progressBar = document.getElementById('progressBar');
     this.navDotsContainer = document.getElementById('navDots');
+    this.pageCurrent = document.getElementById('pageCurrent');
+    this.pageTotal = document.getElementById('pageTotal');
     this.init();
   }
 
@@ -1071,11 +990,9 @@ class SlidePresentation {
     this.buildNavDots();
     this.setupObserver();
     this.setupKeyboard();
-    this.setupWheel();
-    this.setupTouch();
+    this.pageTotal.textContent = String(this.total).padStart(2,'0');
     this.updateProgress(0);
-    // Mark first slide visible
-    setTimeout(()=>{ this.slides[0].classList.add('visible'); }, 100);
+    setTimeout(()=>{ this.slides[0].classList.add('visible'); }, 80);
   }
 
   buildNavDots(){
@@ -1083,7 +1000,7 @@ class SlidePresentation {
     this.slides.forEach((s,i)=>{
       const btn = document.createElement('button');
       btn.className = 'nav-dot' + (i===0?' active':'');
-      btn.setAttribute('aria-label', `幻灯片 ${i+1}`);
+      btn.setAttribute('aria-label', `第 ${i+1} 页`);
       btn.addEventListener('click', ()=>this.goTo(i));
       this.navDotsContainer.appendChild(btn);
     });
@@ -1092,23 +1009,25 @@ class SlidePresentation {
   setupObserver(){
     const obs = new IntersectionObserver(entries=>{
       entries.forEach(e=>{
-        if(e.isIntersecting){
+        if(e.isIntersecting && e.intersectionRatio > 0.55){
           e.target.classList.add('visible');
           const idx = this.slides.indexOf(e.target);
           if(idx>=0){
             this.current = idx;
             this.updateProgress(idx);
             this.updateDots(idx);
+            this.updatePageNum(idx);
           }
         }
       });
-    },{threshold:0.5});
+    },{threshold:[0.55]});
     this.slides.forEach(s=>obs.observe(s));
   }
 
   setupKeyboard(){
     document.addEventListener('keydown', e=>{
-      if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){
+      if(e.target.matches('input,textarea,[contenteditable]')) return;
+      if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){
         e.preventDefault(); this.next();
       } else if(e.key==='ArrowUp'||e.key==='ArrowLeft'||e.key==='PageUp'){
         e.preventDefault(); this.prev();
@@ -1120,38 +1039,17 @@ class SlidePresentation {
     });
   }
 
-  setupWheel(){
-    let wt = 0;
-    document.addEventListener('wheel', e=>{
-      const now = Date.now();
-      if(now-wt<800) return;
-      wt=now;
-      if(e.deltaY>0) this.next(); else this.prev();
-    },{passive:true});
-  }
-
-  setupTouch(){
-    let sy=0;
-    document.addEventListener('touchstart',e=>{ sy=e.touches[0].clientY; },{passive:true});
-    document.addEventListener('touchend',e=>{
-      const dy=sy-e.changedTouches[0].clientY;
-      if(Math.abs(dy)>50){ if(dy>0) this.next(); else this.prev(); }
-    },{passive:true});
-  }
-
   next(){ if(this.current<this.total-1) this.goTo(this.current+1); }
   prev(){ if(this.current>0) this.goTo(this.current-1); }
 
   goTo(idx){
     if(idx<0||idx>=this.total) return;
-    this.slides[idx].scrollIntoView({behavior:'smooth'});
-    this.current=idx;
-    this.updateProgress(idx);
-    this.updateDots(idx);
+    this.slides[idx].scrollIntoView({behavior:'smooth',block:'start'});
+    this.current = idx;
   }
 
   updateProgress(idx){
-    const pct = this.total>1 ? (idx/(this.total-1))*100 : 100;
+    const pct = this.total>1 ? ((idx+1)/this.total)*100 : 100;
     if(this.progressBar) this.progressBar.style.width = pct+'%';
   }
 
@@ -1159,11 +1057,13 @@ class SlidePresentation {
     const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
     dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
   }
+
+  updatePageNum(idx){
+    if(this.pageCurrent) this.pageCurrent.textContent = String(idx+1).padStart(2,'0');
+  }
 }
 
-// Expose goTo globally for TOC click handlers
 function goTo(idx){ presentation.goTo(idx); }
-
 const presentation = new SlidePresentation();
 </script>
 </body>
