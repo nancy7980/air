@@ -276,6 +276,11 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
 .pain-summary-text{font-family:'Noto Serif SC',serif;font-size:clamp(0.95rem,1.7vw,1.3rem);font-weight:600;color:var(--text);line-height:1.5;letter-spacing:0.02em}
 .pain-summary-text em{color:var(--orange);font-style:normal}
 
+/* art fill elements */
+.comp-art{margin-top:auto;padding-top:clamp(0.7rem,1.8vh,1.2rem);color:var(--text3);line-height:0;opacity:0.65}
+.rm-art{margin-top:auto;padding-top:clamp(0.5rem,1.2vh,0.8rem);color:var(--text3);line-height:0;opacity:0.55;display:flex;justify-content:flex-start}
+.pain-scene-art{position:absolute;right:clamp(0.4rem,0.8vw,0.8rem);top:50%;transform:translateY(-50%);color:var(--text3);opacity:0.18;pointer-events:none;line-height:0}
+
 /* =============================================
    SLIDE 13 · SOLUTIONS (mirrors slide 12)
    ============================================= */
@@ -493,16 +498,19 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="comp-tag">GOOGLE MAPS / 体验层</div>
           <div class="comp-name">视觉沉浸领跑</div>
           <p class="comp-pos">Immersive View、Ask Maps、Live View AR——把视觉表达做成下一代地图入口</p>
+          <div class="comp-art"><svg viewBox="0 0 76 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:76px"><rect x="2" y="4" width="48" height="30" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="12" y="10" width="48" height="30" rx="2" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.55"/><rect x="22" y="16" width="48" height="24" rx="2" stroke="currentColor" stroke-width="0.45" stroke-opacity="0.3"/><line x1="8" y1="19" x2="38" y2="19" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.5"/><line x1="8" y1="25" x2="30" y2="25" stroke="currentColor" stroke-width="0.6" stroke-opacity="0.35"/></svg></div>
         </div>
         <div class="comp-col">
           <div class="comp-tag">百度 APOLLO / 能力层</div>
           <div class="comp-name">车路协同深耕</div>
           <p class="comp-pos">高精地图、车道级导航、Apollo + OEM 协同——B端能力输出路径清晰</p>
+          <div class="comp-art"><svg viewBox="0 0 76 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:76px"><line x1="4" y1="14" x2="72" y2="14" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.35"/><line x1="4" y1="26" x2="72" y2="26" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.35"/><line x1="38" y1="4" x2="38" y2="14" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2,2" stroke-opacity="0.3"/><rect x="18" y="15" width="28" height="10" rx="2" stroke="currentColor" stroke-width="1.1"/><circle cx="24" cy="27.5" r="3.5" stroke="currentColor" stroke-width="1"/><circle cx="38" cy="27.5" r="3.5" stroke="currentColor" stroke-width="1"/><circle cx="8" cy="20" r="2" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.45"/><circle cx="64" cy="20" r="2" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.45"/><line x1="10" y1="20" x2="18" y2="20" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.35"/><line x1="46" y1="20" x2="62" y2="20" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.35"/></svg></div>
         </div>
         <div class="comp-col amap">
           <div class="comp-tag" style="color:var(--orange)">高德 / 数据层</div>
           <div class="comp-name comp-amap-name">数据最强 · 待建模拟层</div>
           <p class="comp-pos">170M DAU + 实时路况 + Qwen + 阿里生态——具备建立模拟/解释层的独特优势</p>
+          <div class="comp-art" style="color:var(--orange-dim)"><svg viewBox="0 0 76 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:76px"><circle cx="38" cy="21" r="6" stroke="currentColor" stroke-width="1.3"/><circle cx="38" cy="21" r="12" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.35" stroke-dasharray="2.5,3"/><circle cx="10" cy="8" r="3" stroke="currentColor" stroke-width="0.9"/><circle cx="66" cy="8" r="3" stroke="currentColor" stroke-width="0.9"/><circle cx="10" cy="34" r="3" stroke="currentColor" stroke-width="0.9"/><circle cx="66" cy="34" r="3" stroke="currentColor" stroke-width="0.9"/><line x1="38" y1="21" x2="13" y2="10" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/><line x1="38" y1="21" x2="63" y2="10" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/><line x1="38" y1="21" x2="13" y2="32" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/><line x1="38" y1="21" x2="63" y2="32" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/></svg></div>
         </div>
       </div>
       <div class="comp-matrix reveal d3">
@@ -693,6 +701,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="rm-item">复杂路口风险解释</div>
           <div class="rm-item">停车场 / 室内最后 100 米</div>
           <div class="rm-item">路线推荐理由卡片</div>
+          <div class="rm-art"><svg viewBox="0 0 64 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:60px"><circle cx="32" cy="21" r="16" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><circle cx="32" cy="21" r="10" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.6"/><circle cx="32" cy="21" r="4" stroke="currentColor" stroke-width="1.2"/><line x1="32" y1="2" x2="32" y2="11" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><line x1="32" y1="31" x2="32" y2="40" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><line x1="12" y1="21" x2="21" y2="21" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><line x1="43" y1="21" x2="52" y2="21" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/></svg></div>
         </div>
         <div class="rm-metric"><span>METRICS</span><br>错过率 ↓ 采纳率 ↑</div>
       </div>
@@ -705,6 +714,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="rm-item">小高老师主动出行规划</div>
           <div class="rm-item">AR / 车机统一空间状态</div>
           <div class="rm-item">活动 / 枢纽散场分流</div>
+          <div class="rm-art"><svg viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:72px"><circle cx="12" cy="16" r="5" stroke="currentColor" stroke-width="1"/><circle cx="40" cy="16" r="5" stroke="currentColor" stroke-width="1"/><circle cx="68" cy="16" r="5" stroke="currentColor" stroke-width="1"/><line x1="17" y1="16" x2="35" y2="16" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.5"/><line x1="45" y1="16" x2="63" y2="16" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.5"/><polyline points="30,12.5 35,16 30,19.5" stroke="currentColor" stroke-width="0.9" fill="none" stroke-opacity="0.5"/><polyline points="58,12.5 63,16 58,19.5" stroke="currentColor" stroke-width="0.9" fill="none" stroke-opacity="0.5"/></svg></div>
         </div>
         <div class="rm-metric"><span>METRICS</span><br>ETA误差 ↓ 转化率 ↑</div>
       </div>
@@ -717,6 +727,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="rm-item">城市级事件推演</div>
           <div class="rm-item">车企 / 机器人 / 低空仿真</div>
           <div class="rm-item">空间智能 API 生态</div>
+          <div class="rm-art"><svg viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:72px"><circle cx="40" cy="25" r="6" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="10" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="68" cy="10" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="12" cy="40" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="68" cy="40" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="40" cy="4" r="2.5" stroke="currentColor" stroke-width="0.8"/><circle cx="40" cy="46" r="2.5" stroke="currentColor" stroke-width="0.8"/><line x1="40" y1="25" x2="15" y2="12" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="65" y2="12" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="15" y2="38" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="65" y2="38" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="40" y2="6.5" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="40" y2="43.5" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="15" y1="10" x2="65" y2="10" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.22"/><line x1="15" y1="40" x2="65" y2="40" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.22"/></svg></div>
         </div>
         <div class="rm-metric"><span>METRICS</span><br>B端收入 · API调用</div>
       </div>
@@ -761,6 +772,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
         </div>
         <div class="pain-scene-text">商场出来定位漂移，找朋友只能靠微信电话互相指引</div>
         <div class="pain-essence-text">室内外定位断层，二维坐标无法表达真实三维空间</div>
+        <div class="pain-scene-art"><svg viewBox="0 0 72 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:68px"><path d="M14,5 C14,1 24,1 24,7 C24,15 19,21 19,21 C19,21 14,15 14,7Z" stroke="currentColor" stroke-width="1.3"/><circle cx="19" cy="7" r="3" stroke="currentColor" stroke-width="1"/><path d="M38,12 C38,8 47,8 47,13 C47,21 42.5,27 42.5,27 C42.5,27 38,21 38,13Z" stroke="currentColor" stroke-width="0.9" stroke-dasharray="2.5,1.5"/><circle cx="42.5" cy="13" r="2.5" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2,1.5"/><line x1="24" y1="14" x2="38" y2="16" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.55"/><rect x="2" y="40" width="68" height="14" rx="1" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.35"/><line x1="24" y1="40" x2="24" y2="54" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.25"/><line x1="46" y1="40" x2="46" y2="54" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.25"/><line x1="2" y1="48" x2="70" y2="48" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.2"/></svg></div>
       </div>
       <div class="pain-row reveal d4">
         <div class="pain-layer">
@@ -769,6 +781,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
         </div>
         <div class="pain-scene-text">不知道哪个地铁口有电梯、哪个出口排队少</div>
         <div class="pain-essence-text">缺少"软信息"，系统不区分用户身体差异与实际约束</div>
+        <div class="pain-scene-art"><svg viewBox="0 0 72 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:68px"><line x1="4" y1="26" x2="22" y2="26" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="26" r="2.5" fill="currentColor" opacity="0.6"/><line x1="22" y1="26" x2="50" y2="8" stroke="currentColor" stroke-width="1.1"/><line x1="22" y1="26" x2="50" y2="44" stroke="currentColor" stroke-width="1.1"/><polyline points="44,13 48,13 48,9 52,9" stroke="currentColor" stroke-width="1" fill="none"/><rect x="50" y="38" width="12" height="10" rx="1" stroke="currentColor" stroke-width="0.9"/><line x1="56" y1="38" x2="56" y2="48" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.35"/><line x1="50" y1="43" x2="62" y2="43" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.3"/></svg></div>
       </div>
       <div class="pain-row reveal d5">
         <div class="pain-layer">
@@ -777,6 +790,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
         </div>
         <div class="pain-scene-text">选错出口后已叫车，只能取消订单重打</div>
         <div class="pain-essence-text">信息缺失导致事后后悔，没有预演与因果解释</div>
+        <div class="pain-scene-art"><svg viewBox="0 0 72 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:68px"><path d="M6,5 C6,1 15,1 15,6 C15,13 10.5,18 10.5,18 C10.5,18 6,13 6,6Z" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="6" r="2.5" stroke="currentColor" stroke-width="0.9"/><line x1="16" y1="22" x2="30" y2="22" stroke="currentColor" stroke-width="0.9" stroke-dasharray="2,2" stroke-opacity="0.55"/><rect x="30" y="16" width="22" height="12" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="34" y="12" width="14" height="7" rx="1" stroke="currentColor" stroke-width="0.8"/><circle cx="36" cy="30" r="3.5" stroke="currentColor" stroke-width="1"/><circle cx="48" cy="30" r="3.5" stroke="currentColor" stroke-width="1"/><line x1="52" y1="2" x2="68" y2="18" stroke="currentColor" stroke-width="2.2" stroke-opacity="0.65"/><line x1="68" y1="2" x2="52" y2="18" stroke="currentColor" stroke-width="2.2" stroke-opacity="0.65"/></svg></div>
       </div>
       <div class="pain-row reveal d6">
         <div class="pain-layer">
@@ -785,6 +799,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
         </div>
         <div class="pain-scene-text">大商场里和朋友互相找不到，各自的地图都说"已到达"</div>
         <div class="pain-essence-text">多人空间协同缺失，系统只服务单用户、单时刻</div>
+        <div class="pain-scene-art"><svg viewBox="0 0 72 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:68px"><circle cx="12" cy="10" r="5" stroke="currentColor" stroke-width="1.1"/><line x1="12" y1="15" x2="12" y2="28" stroke="currentColor" stroke-width="1.1"/><line x1="12" y1="20" x2="6" y2="26" stroke="currentColor" stroke-width="1.1"/><line x1="12" y1="20" x2="18" y2="26" stroke="currentColor" stroke-width="1.1"/><line x1="12" y1="28" x2="7" y2="38" stroke="currentColor" stroke-width="1.1"/><line x1="12" y1="28" x2="17" y2="38" stroke="currentColor" stroke-width="1.1"/><path d="M5,41 C5,38 11,38 11,42 C11,46 8,49 8,49 C8,49 5,46 5,42Z" stroke="currentColor" stroke-width="0.8" fill="none"/><circle cx="60" cy="10" r="5" stroke="currentColor" stroke-width="1.1"/><line x1="60" y1="15" x2="60" y2="28" stroke="currentColor" stroke-width="1.1"/><line x1="60" y1="20" x2="54" y2="26" stroke="currentColor" stroke-width="1.1"/><line x1="60" y1="20" x2="66" y2="26" stroke="currentColor" stroke-width="1.1"/><line x1="60" y1="28" x2="55" y2="38" stroke="currentColor" stroke-width="1.1"/><line x1="60" y1="28" x2="65" y2="38" stroke="currentColor" stroke-width="1.1"/><path d="M55,41 C55,38 61,38 61,42 C61,46 58,49 58,49 C58,49 55,46 55,42Z" stroke="currentColor" stroke-width="0.8" fill="none"/><line x1="19" y1="22" x2="53" y2="22" stroke="currentColor" stroke-width="0.7" stroke-dasharray="3,2.5" stroke-opacity="0.45"/></svg></div>
       </div>
     </div>
     <div class="pain-summary reveal d7">
@@ -904,10 +919,10 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
       <div class="ext-cell reveal d3">
         <div class="ext-head">
           <div class="ext-num">02</div>
-          <div class="ext-name">银发与无障碍<br>被忽视的刚需市场</div>
+          <div class="ext-name">低空经济<br>三维空域的数字底座</div>
         </div>
-        <p class="ext-desc">老人、推婴儿车的父母、视障群体，"平均人"地图从未真正服务过他们。世界模型理解具体人的物理约束</p>
-        <div class="ext-biz">→ 中国老龄化背景下的确定性市场</div>
+        <p class="ext-desc">eVTOL、无人机配送、空中出租车——低空经济开启垂直出行维度，高德已布局低空数字地图，世界模型提供立体航线规划与空地协同导航的推演基础</p>
+        <div class="ext-biz">→ 阿里低空战略协同 · 城市三维导航新入口</div>
       </div>
       <div class="ext-cell reveal d4">
         <div class="ext-head">
