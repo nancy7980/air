@@ -12,22 +12,22 @@
 html,body{height:100%;overflow-x:hidden}
 html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
 .slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;position:relative}
-.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding)}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:flex-start;max-height:100%;overflow:hidden;padding:var(--slide-padding);padding-top:calc(var(--slide-padding) + clamp(2rem,4.5vh,3.5rem))}
 
 :root{
   --title-size:clamp(1.6rem,5vw,4rem);
   --h2-size:clamp(1.1rem,2.6vw,2rem);
   --h3-size:clamp(0.9rem,1.8vw,1.3rem);
-  --body-size:clamp(0.72rem,1.15vw,0.95rem);
-  --small-size:clamp(0.62rem,0.88vw,0.78rem);
-  --mono-size:clamp(0.55rem,0.78vw,0.72rem);
-  --slide-padding:clamp(1.5rem,5vw,5rem);
+  --body-size:clamp(0.88rem,1.2vw,1.02rem);
+  --small-size:clamp(0.82rem,0.98vw,0.92rem);
+  --mono-size:clamp(0.72rem,0.85vw,0.8rem);
+  --slide-padding:clamp(1.2rem,4vw,4rem);
   --gap:clamp(0.5rem,1.5vw,1.5rem);
   --gap-sm:clamp(0.3rem,0.8vw,0.7rem);
 }
-@media(max-height:700px){:root{--slide-padding:clamp(1rem,3.5vw,3rem);--title-size:clamp(1.4rem,4.5vw,2.8rem);--h2-size:clamp(1rem,2.4vw,1.7rem)}}
-@media(max-height:600px){:root{--slide-padding:clamp(0.75rem,2.5vw,2rem);--title-size:clamp(1.2rem,4vw,2.2rem);--body-size:clamp(0.65rem,1vw,0.85rem)}.nav-dots{display:none}}
-@media(max-height:500px){:root{--slide-padding:clamp(0.5rem,2vw,1.2rem);--title-size:clamp(1rem,3.5vw,1.6rem)}}
+@media(max-height:700px){:root{--slide-padding:clamp(1rem,3.5vw,3rem);--title-size:clamp(1.4rem,4.5vw,2.8rem);--h2-size:clamp(1rem,2.4vw,1.7rem);--body-size:clamp(0.82rem,1.1vw,0.95rem);--small-size:clamp(0.76rem,0.9vw,0.86rem)}}
+@media(max-height:600px){:root{--slide-padding:clamp(0.75rem,2.5vw,2rem);--title-size:clamp(1.2rem,4vw,2.2rem);--body-size:clamp(0.78rem,1vw,0.9rem);--small-size:clamp(0.72rem,0.85vw,0.82rem)}.nav-dots{display:none}}
+@media(max-height:500px){:root{--slide-padding:clamp(0.5rem,2vw,1.2rem);--title-size:clamp(1rem,3.5vw,1.6rem);--body-size:clamp(0.75rem,0.95vw,0.85rem)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.2s!important}html{scroll-behavior:auto}}
 
 /* === THEME === */
@@ -138,13 +138,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
    ============================================= */
 #s4{background:var(--bg)}
 .routes-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:0;flex:1;border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.route-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(0.8rem,2vw,1.8rem);display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.8rem);transition:background 0.4s var(--ease);position:relative}
+.route-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(1rem,2.5vw,2.2rem);display:flex;flex-direction:column;gap:clamp(0.5rem,1.3vh,1rem);transition:background 0.4s var(--ease);position:relative}
 .route-cell:hover{background:rgba(255,78,26,0.02)}
 .route-cell:hover .route-num{color:var(--orange)}
 .route-num{font-family:'JetBrains Mono',monospace;font-size:clamp(0.65rem,0.95vw,0.85rem);color:var(--text3);letter-spacing:0.15em;transition:color 0.4s var(--ease)}
-.route-name{font-family:'Noto Serif SC',serif;font-size:clamp(1rem,1.8vw,1.4rem);font-weight:600;color:var(--text);letter-spacing:0.04em}
+.route-name{font-family:'Noto Serif SC',serif;font-size:clamp(1.1rem,1.9vw,1.5rem);font-weight:600;color:var(--text);letter-spacing:0.04em}
 .route-paper{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);font-weight:300}
-.route-essence{font-size:var(--body-size);color:var(--text2);line-height:1.65;font-weight:300;margin-top:auto}
+.route-essence{font-size:var(--body-size);color:var(--text2);line-height:1.75;font-weight:300;margin-top:clamp(0.3rem,0.8vh,0.6rem)}
 .route-insight{font-size:var(--small-size);color:var(--orange);font-weight:400;letter-spacing:0.02em;padding-top:clamp(0.4rem,1vh,0.7rem);border-top:1px solid var(--line)}
 .route-insight::before{content:'→ ';font-family:'JetBrains Mono',monospace;color:var(--orange-dim)}
 
@@ -156,7 +156,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
    ============================================= */
 #s5{background:var(--bg2)}
 .vert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;flex:1;border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.vert-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(0.8rem,2vw,1.8rem);display:flex;flex-direction:column;gap:clamp(0.3rem,0.8vh,0.6rem);position:relative}
+.vert-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(1rem,2.5vw,2.2rem);display:flex;flex-direction:column;gap:clamp(0.5rem,1.2vh,0.9rem);position:relative}
 .vert-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .vert-name{font-family:'Noto Serif SC',serif;font-size:clamp(1rem,1.8vw,1.4rem);font-weight:600;color:var(--text)}
 .vert-stage{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);letter-spacing:0.1em;color:var(--text3)}
@@ -171,8 +171,8 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
    ============================================= */
 #s6{background:var(--bg)}
 .comp-stack{display:flex;flex-direction:column;gap:clamp(0.5rem,1.5vh,1rem);flex:1}
-.comp-three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-.comp-col{background:var(--bg);padding:clamp(0.7rem,1.8vw,1.4rem);display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem)}
+.comp-three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);flex:1}
+.comp-col{background:var(--bg);padding:clamp(0.9rem,2.2vw,1.8rem);display:flex;flex-direction:column;gap:clamp(0.5rem,1.2vh,0.9rem)}
 .comp-col.amap{background:rgba(255,78,26,0.025);position:relative}
 .comp-tag{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.15em}
 .comp-name{font-family:'Noto Serif SC',serif;font-size:clamp(0.95rem,1.7vw,1.3rem);font-weight:600;color:var(--text)}
@@ -181,7 +181,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
 .comp-matrix{border:1px solid var(--line)}
 .mat-row{display:grid;grid-template-columns:1.4fr repeat(3,1fr);font-size:var(--small-size);border-bottom:1px solid var(--line)}
 .mat-row:last-child{border-bottom:none}
-.mat-row>div{padding:clamp(0.3rem,0.8vw,0.55rem) clamp(0.5rem,1vw,0.9rem);line-height:1.3;display:flex;align-items:center}
+.mat-row>div{padding:clamp(0.5rem,1.1vw,0.8rem) clamp(0.5rem,1vw,0.9rem);line-height:1.4;display:flex;align-items:center}
 .mat-row.head{background:rgba(255,255,255,0.015)}
 .mat-row.head>div{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400}
 .mat-row>div:first-child{color:var(--text2)}
@@ -204,7 +204,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
 .po-side.opp .po-side-title::before{background:var(--orange)}
 .po-side.opp .po-side-title .eyebrow-dim{color:var(--orange)}
 .po-list{display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem)}
-.po-item{display:grid;grid-template-columns:auto 1fr;gap:clamp(0.6rem,1.5vw,1.2rem);align-items:baseline;padding:clamp(0.3rem,0.8vh,0.6rem) 0;border-bottom:1px solid var(--line-soft)}
+.po-item{display:grid;grid-template-columns:auto 1fr;gap:clamp(0.6rem,1.5vw,1.2rem);align-items:baseline;padding:clamp(0.5rem,1.2vh,0.9rem) 0;border-bottom:1px solid var(--line-soft)}
 .po-idx{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.1em;font-weight:400}
 .po-side.opp .po-idx{color:var(--orange-dim)}
 .po-content strong{display:block;font-size:clamp(0.85rem,1.4vw,1rem);color:var(--text);font-weight:500;letter-spacing:0.02em;margin-bottom:3px;font-family:'Noto Serif SC',serif}
@@ -221,15 +221,15 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
 .swot-head .eyebrow{font-size:var(--mono-size)}
 .s-side .swot-head .eyebrow{color:var(--orange)}
 .w-side .swot-head .eyebrow{color:var(--text2)}
-.swot-list{display:flex;flex-direction:column;gap:clamp(0.4rem,1vh,0.7rem);flex:1}
-.swot-item{padding-bottom:clamp(0.4rem,1vh,0.7rem);border-bottom:1px solid var(--line-soft)}
+.swot-list{display:flex;flex-direction:column;gap:clamp(0.5rem,1.2vh,0.9rem)}
+.swot-item{padding-bottom:clamp(0.5rem,1.2vh,0.9rem);border-bottom:1px solid var(--line-soft)}
 .swot-item:last-child{border-bottom:none}
 .swot-item-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
 .swot-item-idx{font-family:'JetBrains Mono',monospace;font-size:var(--mono-size);color:var(--text3);letter-spacing:0.1em}
 .s-side .swot-item-idx{color:var(--orange-dim)}
 .swot-item-title{font-family:'Noto Serif SC',serif;font-size:clamp(0.85rem,1.45vw,1.05rem);font-weight:600;color:var(--text);letter-spacing:0.02em}
 .swot-item-desc{font-size:var(--small-size);color:var(--text2);line-height:1.55;font-weight:300;padding-left:clamp(1rem,2vw,1.8rem)}
-.swot-verdict{margin-top:auto;padding-top:clamp(0.5rem,1.2vh,0.9rem);border-top:1px solid var(--orange-glow);font-size:var(--small-size);color:var(--text);line-height:1.6;font-family:'Noto Serif SC',serif;font-style:italic;font-weight:400}
+.swot-verdict{margin-top:clamp(0.8rem,2vh,1.5rem);padding-top:clamp(0.5rem,1.2vh,0.9rem);border-top:1px solid var(--orange-glow);font-size:var(--small-size);color:var(--text);line-height:1.6;font-family:'Noto Serif SC',serif;font-style:italic;font-weight:400}
 .swot-verdict strong{color:var(--orange);font-style:normal}
 
 /* =============================================
@@ -396,35 +396,35 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
     <span class="eyebrow-dim">01 / 行业分析</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">先判断技术路线，再判断高德如何落地</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">世界模型当前的技术路线</h2>
     <div class="routes-grid">
       <div class="route-cell reveal d2">
         <div class="route-num">01 / VIDEO GENERATION</div>
         <div class="route-name">视频生成路线</div>
         <div class="route-paper">Sora · Veo</div>
-        <p class="route-essence">画面真实感强，从视频学习光影与运动，但因果弱、不懂交通规则</p>
-        <p class="route-insight">高德：解释层辅助，不做事实源</p>
+        <p class="route-essence">从海量视频中学习光影、材质、运动和场景连续性，画面高度逼真。但模型对因果关系理解薄弱，无法真正懂得交通规则与行动后果，生成内容"看起来真"不等于"可用于决策"。</p>
+        <p class="route-insight">高德：用于路线预览与解释层，不替代地图事实</p>
       </div>
       <div class="route-cell reveal d3">
         <div class="route-num">02 / 3D SPATIAL</div>
         <div class="route-name">3D 空间智能</div>
         <div class="route-paper">World Labs Marble</div>
-        <p class="route-essence">空间一致性强，支持多视角探索，但采集更新成本极高</p>
-        <p class="route-insight">高德：路口/商圈局部孪生</p>
+        <p class="route-essence">生成可转身、可探索、具备三维一致性的空间模型，支持多视角查看与室内外连续导航。核心挑战是全国规模的采集和实时更新成本极高，动态人流、车流仍难以稳定建模。</p>
+        <p class="route-insight">高德：优先做路口、枢纽、停车场局部孪生</p>
       </div>
       <div class="route-cell reveal d4">
         <div class="route-num">03 / INTERACTIVE</div>
         <div class="route-name">交互环境路线</div>
         <div class="route-paper">Genie · SIMA</div>
-        <p class="route-essence">强交互、可评测，适合任务闭环，但迁移真实道路需地图约束</p>
-        <p class="route-insight">高德：Scenario Lab + 仿真评测</p>
+        <p class="route-essence">在可交互环境中训练智能体，通过观察动作带来的后果来学习。具备强交互性与可评测性，适合验证极端场景策略。将游戏规则迁移至真实道路仍需地图数据约束。</p>
+        <p class="route-insight">高德：Scenario Lab 场景生成 + 导航策略仿真评测</p>
       </div>
       <div class="route-cell reveal d5">
         <div class="route-num">04 / ABSTRACT STATE</div>
         <div class="route-name">JEPA 抽象状态</div>
         <div class="route-paper">V-JEPA 2</div>
-        <p class="route-essence">理解"下一秒会怎样"，利于长时序推理，但表达门槛高</p>
-        <p class="route-insight">高德：风险预测 + 决策内核</p>
+        <p class="route-essence">不预测像素，预测高维抽象状态的下一步变化，更接近对世界的真实"理解"。利于规划、长时序推理与机器人决策。不直接输出可展示画面，产品表达需要额外转化。</p>
+        <p class="route-insight">高德：路线风险预测、动态分流与决策内核</p>
       </div>
     </div>
     <p class="verdict-bar reveal d6">视频真实感只是表层，<strong>地图对齐和行动后果</strong>才是高德的核心</p>
@@ -439,39 +439,39 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
     <span class="eyebrow-dim">01 / 应用痛点</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">四类应用方向，哪里是真正的切口</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">世界模型应用的切入点</h2>
     <div class="vert-grid">
       <div class="vert-cell reveal d2">
         <div class="vert-head">
           <div class="vert-name">智能交互</div>
           <div class="vert-stage now">SHORT-TERM</div>
         </div>
-        <p class="vert-pain">需求模糊且多约束，系统只能逐项回答</p>
-        <p class="vert-cut">小高老师 · 路线解释 · 临时改计划</p>
+        <p class="vert-pain">用户的真实目标往往包含多个约束：顺路接人、找停车、避堵、带老人小孩……当前系统只能一个一个回答，无法给出综合最优方案</p>
+        <p class="vert-cut">小高老师多约束规划 · 路线解释 · 临时改计划</p>
       </div>
       <div class="vert-cell reveal d3">
         <div class="vert-head">
           <div class="vert-name">数字孪生</div>
           <div class="vert-stage">MID-TERM</div>
         </div>
-        <p class="vert-pain">三维资产静态化，路况/施工/天气难实时入模</p>
-        <p class="vert-cut">路口/枢纽/商圈局部孪生</p>
+        <p class="vert-pain">城市和商圈的三维资产常是静态快照，路况变化、施工封道、天气影响、大型活动人流等动态事件，难以实时融入空间模型</p>
+        <p class="vert-cut">路口/枢纽/商圈/停车场局部实时孪生</p>
       </div>
       <div class="vert-cell reveal d4">
         <div class="vert-head">
           <div class="vert-name">仿真模拟</div>
           <div class="vert-stage">MID-TERM</div>
         </div>
-        <p class="vert-pain">极端场景上线前难覆盖，策略验证不足</p>
-        <p class="vert-cut">复杂路口仿真 · 车企机器人评测</p>
+        <p class="vert-pain">导航和调度策略在上线前，极难覆盖恶劣天气、突发事故、临时封道、演唱会散场等长尾场景，线上才暴露问题代价极高</p>
+        <p class="vert-cut">复杂路口/极端天气仿真 · 车企与机器人场景评测</p>
       </div>
       <div class="vert-cell reveal d5">
         <div class="vert-head">
           <div class="vert-name">决策支持</div>
           <div class="vert-stage">LONG-TERM</div>
         </div>
-        <p class="vert-pain">ETA/绕行如黑盒，用户与业务都难理解</p>
-        <p class="vert-cut">导航提前分流 · 城市事件推演</p>
+        <p class="vert-pain">ETA预测、绕行推荐、拥堵分流对用户是黑盒——"为什么走这条路"没有解释，用户不信任、不采纳，业务也无法量化策略收益</p>
+        <p class="vert-cut">可解释分流策略 · 城市级事件推演 · 应急调度</p>
       </div>
     </div>
     <p class="verdict-bar reveal d6">先做<strong>近场高频可量化</strong>，再扩城市级生态</p>
@@ -549,7 +549,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
     <span class="eyebrow-dim">02 / 痛点与机会</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.8rem,2.5vh,1.5rem)">高德卡在哪里，机会又在哪里</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.8rem,2.5vh,1.5rem)">高德 · 为什么做世界模型</h2>
     <div class="po-split">
       <div class="po-side pain reveal d2">
         <div class="po-side-title"><span class="eyebrow-dim">PAIN POINTS</span></div>
@@ -606,7 +606,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
     <span class="eyebrow-dim">02 / 优势与劣势</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">高德凭什么做，又卡在哪里</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.6rem,2vh,1.2rem)">高德 × 世界模型 · 优势和劣势</h2>
     <div class="swot-grid reveal d2">
       <div class="swot-section s-side">
         <div class="swot-head"><span class="eyebrow">STRENGTHS / 优势</span></div>
@@ -682,7 +682,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
     <span class="eyebrow-dim">02 / 未来 ROADMAP</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.8rem,2.5vh,1.5rem)">近场 MVP → 全链路 → 空间智能生态</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.8rem,2.5vh,1.5rem)">未来 RoadMap · 近场 MVP → 全链路 → 空间智能生态</h2>
     <div class="rm-track">
       <div class="rm-phase p1 reveal d2">
         <div class="rm-num">PHASE 01 / 0–12 MO</div>
@@ -759,7 +759,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="pain-layer-idx">L/01</div>
           <div class="pain-layer-name">位置层</div>
         </div>
-        <div class="pain-scene-text">商场出来定位漂移，找朋友只能靠对讲机喊位置</div>
+        <div class="pain-scene-text">商场出来定位漂移，找朋友只能靠微信电话互相指引</div>
         <div class="pain-essence-text">室内外定位断层，二维坐标无法表达真实三维空间</div>
       </div>
       <div class="pain-row reveal d4">
