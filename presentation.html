@@ -288,10 +288,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
 .pain-row:hover .pain-illus{opacity:1;color:var(--orange)}
 .pain-illus svg *{stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset 0s}
 @keyframes draw-stroke{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
-.slide.visible .pain-row:nth-child(2) .pain-illus svg *{animation:draw-stroke 1s var(--ease) 0.4s both}
-.slide.visible .pain-row:nth-child(3) .pain-illus svg *{animation:draw-stroke 1s var(--ease) 0.65s both}
+/* L/01 and L/02 use photo placeholders (no SVG), L/03 gets SVG at child(4) */
 .slide.visible .pain-row:nth-child(4) .pain-illus svg *{animation:draw-stroke 1s var(--ease) 0.9s both}
-.slide.visible .pain-row:nth-child(5) .pain-illus svg *{animation:draw-stroke 1s var(--ease) 1.15s both}
+/* photo placeholders */
+.photo-ph{display:flex;flex-direction:column;gap:4px;width:100%;height:100%;padding:2px}
+.photo-ph-item{flex:1;border:1px dashed rgba(237,231,220,0.18);border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:clamp(0.58rem,0.7vw,0.68rem);color:var(--text3);letter-spacing:0.04em;padding:3px 4px;text-align:center;line-height:1.4;min-height:22px;gap:2px;transition:border-color 0.4s var(--ease)}
+.photo-ph-item span{font-size:0.9em;opacity:0.6}
+.pain-row:hover .photo-ph-item{border-color:rgba(255,78,26,0.3);color:var(--text2)}
 
 /* =============================================
    SLIDE 13 · SOLUTIONS (mirrors slide 12)
@@ -425,16 +428,16 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
       <div class="route-cell reveal d3">
         <div class="route-num">02 / 3D SPATIAL</div>
         <div class="route-name">3D 空间智能</div>
-        <div class="route-paper">World Labs Marble</div>
-        <p class="route-essence">生成可转身、可探索、具备三维一致性的空间模型，支持多视角查看与室内外连续导航。核心挑战是全国规模的采集和实时更新成本极高，动态人流、车流仍难以稳定建模。</p>
-        <p class="route-insight">高德：优先做路口、枢纽、停车场局部孪生</p>
+        <div class="route-paper">World Labs · Marble · 阿里 Fantasy World</div>
+        <p class="route-essence">生成可探索、具备三维一致性的空间模型，支持多视角查看与室内外连续导航。高德已积累三维空间建模能力，在停车场、重点路口完成局部场景验证。挑战：全国规模采集成本高，动态人流实时更新是工程难点。</p>
+        <p class="route-insight">高德：以真实 3D 路况数据为底座，优先覆盖地铁站、商圈、停车场等高频枢纽</p>
       </div>
       <div class="route-cell reveal d4">
         <div class="route-num">03 / INTERACTIVE</div>
         <div class="route-name">交互环境路线</div>
         <div class="route-paper">Genie · SIMA</div>
-        <p class="route-essence">在可交互环境中训练智能体，通过观察动作带来的后果来学习。具备强交互性与可评测性，适合验证极端场景策略。将游戏规则迁移至真实道路仍需地图数据约束。</p>
-        <p class="route-insight">高德：Scenario Lab 场景生成 + 导航策略仿真评测</p>
+        <p class="route-essence">在可交互环境中训练智能体，通过观察「动作→后果」来学习策略。具备强交互性，适合验证极端场景（演唱会散场/地震疏散）。迁移至真实道路需严格地图数据约束。</p>
+        <p class="route-insight">高德：自研情景推演引擎，构建极端场景用于导航策略仿真评测与主动预警</p>
       </div>
       <div class="route-cell reveal d5">
         <div class="route-num">04 / ABSTRACT STATE</div>
@@ -500,50 +503,50 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
      ============================================= -->
 <section class="slide" id="s6">
   <div class="slide-eyebrow reveal">
-    <span class="eyebrow-dim">01 / 竞品分析</span>
+    <span class="eyebrow-dim">01 / 行业格局</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">竞品走到哪一步了，高德的位置在哪</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">行业生态格局与竞合关系</h2>
     <div class="comp-stack">
       <div class="comp-three reveal d2">
         <div class="comp-col">
-          <div class="comp-tag">GOOGLE MAPS / 体验层</div>
-          <div class="comp-name">视觉沉浸领跑</div>
-          <p class="comp-pos">Immersive View、Ask Maps、Live View AR——把视觉表达做成下一代地图入口</p>
+          <div class="comp-tag">GOOGLE MAPS / 技术标杆</div>
+          <div class="comp-name">全球 3D 体验领跑</div>
+          <p class="comp-pos">Immersive View、Live View AR——视觉沉浸体验全球领先。在中国受监管限制不可用，对高德不构成直接用户竞争。<br><em style="color:var(--text3);font-size:0.88em">对高德意义：3D/AR 方向的技术参照系</em></p>
           <div class="comp-art"><svg viewBox="0 0 76 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:76px"><rect x="2" y="4" width="48" height="30" rx="2" stroke="currentColor" stroke-width="1.1"/><rect x="12" y="10" width="48" height="30" rx="2" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.55"/><rect x="22" y="16" width="48" height="24" rx="2" stroke="currentColor" stroke-width="0.45" stroke-opacity="0.3"/><line x1="8" y1="19" x2="38" y2="19" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.5"/><line x1="8" y1="25" x2="30" y2="25" stroke="currentColor" stroke-width="0.6" stroke-opacity="0.35"/></svg></div>
         </div>
         <div class="comp-col">
-          <div class="comp-tag">百度 APOLLO / 能力层</div>
-          <div class="comp-name">车路协同深耕</div>
-          <p class="comp-pos">高精地图、车道级导航、Apollo + OEM 协同——B端能力输出路径清晰</p>
+          <div class="comp-tag">百度地图 + APOLLO</div>
+          <div class="comp-name">C端竞争 · 智驾B端深耕</div>
+          <p class="comp-pos">百度地图：中国C端直接竞对，市占约30–40%。Apollo 已与吉利、长城、比亚迪等车企签约，OEM智驾B2B路径成熟——与高德C端出行赛道差异明显。<br><em style="color:var(--text3);font-size:0.88em">竞合关系：地图C端竞争，智驾B端不同赛道</em></p>
           <div class="comp-art"><svg viewBox="0 0 76 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:76px"><line x1="4" y1="14" x2="72" y2="14" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.35"/><line x1="4" y1="26" x2="72" y2="26" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.35"/><line x1="38" y1="4" x2="38" y2="14" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2,2" stroke-opacity="0.3"/><rect x="18" y="15" width="28" height="10" rx="2" stroke="currentColor" stroke-width="1.1"/><circle cx="24" cy="27.5" r="3.5" stroke="currentColor" stroke-width="1"/><circle cx="38" cy="27.5" r="3.5" stroke="currentColor" stroke-width="1"/><circle cx="8" cy="20" r="2" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.45"/><circle cx="64" cy="20" r="2" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.45"/><line x1="10" y1="20" x2="18" y2="20" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.35"/><line x1="46" y1="20" x2="62" y2="20" stroke="currentColor" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.35"/></svg></div>
         </div>
         <div class="comp-col amap">
-          <div class="comp-tag" style="color:var(--orange)">高德 / 数据层</div>
-          <div class="comp-name comp-amap-name">数据最强 · 待建模拟层</div>
-          <p class="comp-pos">170M DAU + 实时路况 + Qwen + 阿里生态——具备建立模拟/解释层的独特优势</p>
+          <div class="comp-tag" style="color:var(--orange)">高德 / 数据 + AI生态</div>
+          <div class="comp-name comp-amap-name">中国数据最强 · 阿里生态协同</div>
+          <p class="comp-pos">170M+ DAU，实时交通数据行业天花板。背靠阿里 AI 基础设施与全域生态（本地生活/支付/电商），商业闭环完整。已有三维空间建模能力积累。<br><em style="color:var(--orange-dim);font-size:0.88em">不对称优势：数据 + AI生态 + 全域商业</em></p>
           <div class="comp-art" style="color:var(--orange-dim)"><svg viewBox="0 0 76 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:76px"><circle cx="38" cy="21" r="6" stroke="currentColor" stroke-width="1.3"/><circle cx="38" cy="21" r="12" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.35" stroke-dasharray="2.5,3"/><circle cx="10" cy="8" r="3" stroke="currentColor" stroke-width="0.9"/><circle cx="66" cy="8" r="3" stroke="currentColor" stroke-width="0.9"/><circle cx="10" cy="34" r="3" stroke="currentColor" stroke-width="0.9"/><circle cx="66" cy="34" r="3" stroke="currentColor" stroke-width="0.9"/><line x1="38" y1="21" x2="13" y2="10" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/><line x1="38" y1="21" x2="63" y2="10" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/><line x1="38" y1="21" x2="13" y2="32" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/><line x1="38" y1="21" x2="63" y2="32" stroke="currentColor" stroke-width="0.75" stroke-opacity="0.5"/></svg></div>
         </div>
       </div>
       <div class="comp-matrix reveal d3">
         <div class="mat-row head">
-          <div>对比维度</div><div>Google Maps</div><div>百度 Apollo</div><div>高德</div>
+          <div>竞合维度</div><div>Google Maps</div><div>百度地图 / Apollo</div><div>高德</div>
         </div>
         <div class="mat-row">
-          <div>中国实时交通数据</div><div>·</div><div>·</div><div class="strong-cell">★ 最强</div>
+          <div>中国C端用户</div><div class="weak-cell">不可用</div><div>●● 直接竞争</div><div class="strong-cell">★ 最强</div>
         </div>
         <div class="mat-row">
-          <div>3D / 沉浸体验</div><div class="strong-cell">★</div><div>·</div><div class="weak-cell">缺口</div>
+          <div>3D / 沉浸体验</div><div class="strong-cell">★ 标杆</div><div>·</div><div class="weak-cell">缺口</div>
         </div>
         <div class="mat-row">
-          <div>智驾 / 车路协同</div><div>·</div><div class="strong-cell">★</div><div class="weak-cell">缺口</div>
+          <div>智驾 / OEM 合作</div><div>·</div><div class="strong-cell">★ Apollo</div><div class="weak-cell">待建</div>
         </div>
         <div class="mat-row">
-          <div>商业生态闭环</div><div>Google Search</div><div>智驾 OEM</div><div class="strong-cell">阿里全域</div>
+          <div>AI生态 + 商业闭环</div><div>Google AI</div><div>百度大模型</div><div class="strong-cell">阿里全域生态</div>
         </div>
       </div>
     </div>
-    <p class="verdict-bar reveal d4" style="margin-top:auto">高德的不对称机会：<strong>在数据最密集处率先建立模拟层+解释层</strong></p>
+    <p class="verdict-bar reveal d4" style="margin-top:auto">Google定义3D方向；百度Apollo深耕智驾B端；高德的不对称机会：<strong>中国数据最密处，率先建立仿真推演层+可解释层</strong></p>
   </div>
 </section>
 
@@ -576,19 +579,19 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
         <div class="po-list">
           <div class="po-item">
             <span class="po-idx">P/01</span>
-            <div class="po-content"><strong>最后 100 米断层</strong><span>到了附近找不到入口与楼层</span></div>
+            <div class="po-content"><strong>感知层断层</strong><span>室内外定位切换断裂，GPS 无楼层感知，复杂枢纽地图漂移</span></div>
           </div>
           <div class="po-item">
             <span class="po-idx">P/02</span>
-            <div class="po-content"><strong>路线推荐黑盒</strong><span>用户不理解为什么要绕行</span></div>
+            <div class="po-content"><strong>理解层黑盒</strong><span>ETA 与绕行策略无法解释，用户信任低、推荐采纳率低</span></div>
           </div>
           <div class="po-item">
             <span class="po-idx">P/03</span>
-            <div class="po-content"><strong>静态地图 vs 动态世界</strong><span>变化只能事后响应</span></div>
+            <div class="po-content"><strong>状态层滞后</strong><span>施工封道、活动人流、临时出口关闭——地图是「过去的快照」</span></div>
           </div>
           <div class="po-item">
             <span class="po-idx">P/04</span>
-            <div class="po-content"><strong>多端体验割裂</strong><span>手机/车机/AR 缺统一空间理解</span></div>
+            <div class="po-content"><strong>情境层缺失</strong><span>不区分崴脚/轮椅等身体状态；不感知演唱会散场等场景变化</span></div>
           </div>
         </div>
       </div>
@@ -598,19 +601,19 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
         <div class="po-list">
           <div class="po-item">
             <span class="po-idx">O/01</span>
-            <div class="po-content"><strong>空间智能落地</strong><span>AR 入口确认 + 室内连续导航</span></div>
+            <div class="po-content"><strong>空间感知连续化</strong><span>AR 入口确认 + 室内外无缝定位</span></div>
           </div>
           <div class="po-item">
             <span class="po-idx">O/02</span>
-            <div class="po-content"><strong>可解释导航</strong><span>把推荐理由"说出来"</span></div>
+            <div class="po-content"><strong>推荐可解释化</strong><span>路线推荐理由用自然语言说出来，建立用户信任</span></div>
           </div>
           <div class="po-item">
             <span class="po-idx">O/03</span>
-            <div class="po-content"><strong>动态路线预判</strong><span>提前感知，主动响应</span></div>
+            <div class="po-content"><strong>状态动态化</strong><span>提前感知场景变化，主动响应而非被动更新</span></div>
           </div>
           <div class="po-item">
             <span class="po-idx">O/04</span>
-            <div class="po-content"><strong>统一空间状态</strong><span>多端共享同一空间模型</span></div>
+            <div class="po-content"><strong>情境个性化</strong><span>服务具体人的具体约束，而非平均最优解</span></div>
           </div>
         </div>
       </div>
@@ -634,30 +637,30 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">S/01</span>
-              <span class="swot-item-title">数据飞轮</span>
+              <span class="swot-item-title">中国出行数据壁垒</span>
             </div>
-            <p class="swot-item-desc">170M DAU + 实时路况 + 200M+ POI，Google/百度在中国无法复制的训练底座</p>
+            <p class="swot-item-desc">170M+ DAU + 实时路况 + 200M+ POI——十余年用户积累的飞轮，Google 在中国不可用，百度数据规模落后</p>
           </div>
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">S/02</span>
-              <span class="swot-item-title">Qwen + 阿里生态</span>
+              <span class="swot-item-title">背靠阿里，AI 能力不靠外采</span>
             </div>
-            <p class="swot-item-desc">大模型内部直连，本地生活与电商完成商业闭环</p>
+            <p class="swot-item-desc">直连阿里大模型与阿里云算力，无需第三方 API——独立导航公司在 AI 时代没有这个条件</p>
           </div>
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">S/03</span>
-              <span class="swot-item-title">本土高频场景</span>
+              <span class="swot-item-title">阿里全域商业生态闭环</span>
             </div>
-            <p class="swot-item-desc">中国出行场景反馈信号丰富，训练数据质量远高于通用模型</p>
+            <p class="swot-item-desc">导航→本地生活→支付→电商，高德是阿里全域流量的空间入口，商业转化链路完整</p>
           </div>
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">S/04</span>
-              <span class="swot-item-title">小高老师先发</span>
+              <span class="swot-item-title">本土高频场景训练信号</span>
             </div>
-            <p class="swot-item-desc">AI 交互链路初步建立，意图理解能力已有积累</p>
+            <p class="swot-item-desc">春运、演唱会散场、节假日商圈——场景密度和极端情况多样性是国际模型无法获得的训练素材</p>
           </div>
         </div>
       </div>
@@ -667,26 +670,26 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">W/01</span>
-              <span class="swot-item-title">3D 数据缺口</span>
+              <span class="swot-item-title">3D 体验缺口</span>
             </div>
-            <p class="swot-item-desc">全国高精 3D 地图采集成本极高，短期难对标 Google</p>
+            <p class="swot-item-desc">与 Google Immersive View 相比，沉浸式三维体验差距明显，短期难以追平</p>
           </div>
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">W/02</span>
-              <span class="swot-item-title">智驾生态弱</span>
+              <span class="swot-item-title">车端整合深度弱</span>
             </div>
-            <p class="swot-item-desc">车端数据与 OEM 协同深度不及百度 Apollo</p>
+            <p class="swot-item-desc">OEM 智驾合作层面远不及百度 Apollo，车机场景渗透率有限</p>
           </div>
           <div class="swot-item">
             <div class="swot-item-head">
               <span class="swot-item-idx">W/03</span>
-              <span class="swot-item-title">算力投入</span>
+              <span class="swot-item-title">室内场景数据稀缺</span>
             </div>
-            <p class="swot-item-desc">世界模型训练需极大算力，依赖阿里云资源协同</p>
+            <p class="swot-item-desc">商场/枢纽室内图覆盖率不足，视觉定位训练数据需大规模采集建立</p>
           </div>
           <div class="swot-verdict">
-            <strong>战略定位</strong>　不做全球 3D，不追赶智驾。<br>做中国出行链路上<em>最懂用户意图</em>的空间智能平台。
+            <strong>战略定位</strong>　不做全球 3D，不追赶智驾。<br>做中国出行链路上<em>数据最密、生态最全</em>的空间智能平台。
           </div>
         </div>
       </div>
@@ -707,44 +710,44 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
       <div class="rm-phase p1 reveal d2">
         <div class="rm-num">PHASE 01 / 0–12 MO</div>
         <div class="rm-period">近场可验证</div>
-        <div class="rm-tagline">高频痛点，指标可量化</div>
+        <div class="rm-tagline">让用户感受到「高德懂我在哪 + 懂我为什么」</div>
         <div class="rm-divider"></div>
         <div class="rm-items">
-          <div class="rm-item">复杂路口风险解释</div>
-          <div class="rm-item">停车场 / 室内最后 100 米</div>
-          <div class="rm-item">路线推荐理由卡片</div>
+          <div class="rm-item">室内连续导航：停车场 / 地铁站 / 商圈楼层级引导</div>
+          <div class="rm-item">路线推荐归因：每次导航附带理由卡片</div>
+          <div class="rm-item">复杂路口风险提示：「预计延误 8 分钟，建议绕行」</div>
           <div class="rm-art"><svg viewBox="0 0 64 42" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:60px"><circle cx="32" cy="21" r="16" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><circle cx="32" cy="21" r="10" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.6"/><circle cx="32" cy="21" r="4" stroke="currentColor" stroke-width="1.2"/><line x1="32" y1="2" x2="32" y2="11" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><line x1="32" y1="31" x2="32" y2="40" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><line x1="12" y1="21" x2="21" y2="21" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/><line x1="43" y1="21" x2="52" y2="21" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.4"/></svg></div>
         </div>
-        <div class="rm-metric"><span>METRICS</span><br>错过率 ↓ 采纳率 ↑</div>
+        <div class="rm-metric"><span>METRICS</span><br>室内定位准确率 ↑ 采纳率 ↑</div>
       </div>
       <div class="rm-phase p2 reveal d3">
         <div class="rm-num">PHASE 02 / 1–2 YR</div>
-        <div class="rm-period">链路延展</div>
-        <div class="rm-tagline">多端打通，主动规划</div>
+        <div class="rm-period">3D 空间铺开</div>
+        <div class="rm-tagline">核心枢纽三维化，主动出行规划落地</div>
         <div class="rm-divider"></div>
         <div class="rm-items">
-          <div class="rm-item">小高老师主动出行规划</div>
-          <div class="rm-item">AR / 车机统一空间状态</div>
-          <div class="rm-item">活动 / 枢纽散场分流</div>
+          <div class="rm-item">Top-100 枢纽三维场景上线（机场/高铁站/商圈）</div>
+          <div class="rm-item">主动规划：感知场景变化，提前推送规避路线</div>
+          <div class="rm-item">AR 空间导航：相机画面实时叠加路径指引</div>
           <div class="rm-art"><svg viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:72px"><circle cx="12" cy="16" r="5" stroke="currentColor" stroke-width="1"/><circle cx="40" cy="16" r="5" stroke="currentColor" stroke-width="1"/><circle cx="68" cy="16" r="5" stroke="currentColor" stroke-width="1"/><line x1="17" y1="16" x2="35" y2="16" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.5"/><line x1="45" y1="16" x2="63" y2="16" stroke="currentColor" stroke-width="0.9" stroke-opacity="0.5"/><polyline points="30,12.5 35,16 30,19.5" stroke="currentColor" stroke-width="0.9" fill="none" stroke-opacity="0.5"/><polyline points="58,12.5 63,16 58,19.5" stroke="currentColor" stroke-width="0.9" fill="none" stroke-opacity="0.5"/></svg></div>
         </div>
-        <div class="rm-metric"><span>METRICS</span><br>ETA误差 ↓ 转化率 ↑</div>
+        <div class="rm-metric"><span>METRICS</span><br>3D覆盖城市数 ↑ ETA误差 ↓</div>
       </div>
       <div class="rm-phase p3 reveal d4">
         <div class="rm-num">PHASE 03 / 2–3 YR+</div>
-        <div class="rm-period">生态化平台</div>
-        <div class="rm-tagline">空间智能输出</div>
+        <div class="rm-period">灾难预演 · 城市级</div>
+        <div class="rm-tagline">从服务出行升级为城市应急基础设施</div>
         <div class="rm-divider"></div>
         <div class="rm-items">
-          <div class="rm-item">城市级事件推演</div>
-          <div class="rm-item">车企 / 机器人 / 低空仿真</div>
-          <div class="rm-item">空间智能 API 生态</div>
+          <div class="rm-item">极端事件推演：地震 / 洪水疏散路线实时重算</div>
+          <div class="rm-item">城市级应急调度：政府 / 交管 B 端接口</div>
+          <div class="rm-item">空间智能 API：车企 / 机器人 / 城市治理接入</div>
           <div class="rm-art"><svg viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:72px"><circle cx="40" cy="25" r="6" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="10" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="68" cy="10" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="12" cy="40" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="68" cy="40" r="3.5" stroke="currentColor" stroke-width="0.9"/><circle cx="40" cy="4" r="2.5" stroke="currentColor" stroke-width="0.8"/><circle cx="40" cy="46" r="2.5" stroke="currentColor" stroke-width="0.8"/><line x1="40" y1="25" x2="15" y2="12" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="65" y2="12" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="15" y2="38" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="65" y2="38" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="40" y2="6.5" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="40" y1="25" x2="40" y2="43.5" stroke="currentColor" stroke-width="0.7" stroke-opacity="0.5"/><line x1="15" y1="10" x2="65" y2="10" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.22"/><line x1="15" y1="40" x2="65" y2="40" stroke="currentColor" stroke-width="0.4" stroke-opacity="0.22"/></svg></div>
         </div>
-        <div class="rm-metric"><span>METRICS</span><br>B端收入 · API调用</div>
+        <div class="rm-metric"><span>METRICS</span><br>灾害预演准确率 · B端接入量</div>
       </div>
     </div>
-    <p class="rm-foot reveal d5">事实层来自地图　模拟层负责推演　解释层面向用户　<strong>执行层必须可确认</strong></p>
+    <p class="rm-foot reveal d5">事实层来自地图　模型层阿里AI基础设施　解释层大模型驱动　<strong>执行层必须可确认</strong></p>
   </div>
 </section>
 
@@ -783,41 +786,43 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="pain-layer-idx">L/01</div>
           <div class="pain-layer-name">位置层</div>
         </div>
-        <div class="pain-scene-text">商场出来定位漂移，找朋友只能靠微信电话互相指引</div>
-        <div class="pain-essence-text">室内外定位断层，二维坐标无法表达真实三维空间</div>
-        <div class="pain-illus"><svg viewBox="0 0 140 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><rect pathLength="200" x="4" y="40" width="78" height="56" rx="2" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="4" y1="68" x2="82" y2="68" stroke="currentColor" stroke-width="0.9"/><line pathLength="200" x1="44" y1="40" x2="44" y2="96" stroke="currentColor" stroke-width="0.9"/><rect pathLength="200" x="8" y="44" width="14" height="20" rx="1" stroke="currentColor" stroke-width="0.8"/><rect pathLength="200" x="26" y="44" width="14" height="20" rx="1" stroke="currentColor" stroke-width="0.8"/><circle pathLength="200" cx="22" cy="56" r="5" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="22" y1="61" x2="22" y2="70" stroke="currentColor" stroke-width="1.3"/><path pathLength="200" d="M16,5 C16,0 30,0 30,8 C30,17 23,23 23,23 C23,23 16,17 16,8Z" stroke="currentColor" stroke-width="2"/><circle pathLength="200" cx="23" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path pathLength="200" d="M95,12 C95,7 109,7 109,14 C109,23 102,29 102,29 C102,29 95,23 95,14Z" stroke="currentColor" stroke-width="1.7"/><circle pathLength="200" cx="102" cy="14" r="3" stroke="currentColor" stroke-width="1.3"/><line pathLength="200" x1="84" y1="4" x2="99" y2="19" stroke="currentColor" stroke-width="3.2"/><line pathLength="200" x1="99" y1="4" x2="84" y2="19" stroke="currentColor" stroke-width="3.2"/></svg></div>
+        <div class="pain-scene-text">大商场里找朋友，地图显示「已到达」但彼此还是找不到——只能靠微信电话互相描述位置，最后靠蒙</div>
+        <div class="pain-essence-text">二维坐标无法区分楼层；室内定位精度不足，「地图漂移」无处反馈</div>
+        <div class="pain-illus">
+          <div class="photo-ph">
+            <div class="photo-ph-item">截图1<span>找朋友对话</span></div>
+            <div class="photo-ph-item">截图2<span>「我在B1」</span></div>
+            <div class="photo-ph-item">截图3<span>地图漂移</span></div>
+          </div>
+        </div>
       </div>
       <div class="pain-row reveal d4">
         <div class="pain-layer">
           <div class="pain-layer-idx">L/02</div>
           <div class="pain-layer-name">路径层</div>
         </div>
-        <div class="pain-scene-text">不知道哪个地铁口有电梯、哪个出口排队少</div>
-        <div class="pain-essence-text">缺少"软信息"，系统不区分用户身体差异与实际约束</div>
-        <div class="pain-illus"><svg viewBox="0 0 140 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><rect pathLength="200" x="50" y="32" width="40" height="32" rx="2" stroke="currentColor" stroke-width="1.8"/><line pathLength="200" x1="70" y1="32" x2="70" y2="8" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="70" y1="64" x2="70" y2="88" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="50" y1="48" x2="14" y2="48" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="90" y1="48" x2="126" y2="48" stroke="currentColor" stroke-width="1.6"/><circle pathLength="200" cx="70" cy="6" r="7" stroke="currentColor" stroke-width="1.5"/><circle pathLength="200" cx="70" cy="90" r="7" stroke="currentColor" stroke-width="1.5"/><circle pathLength="200" cx="10" cy="48" r="7" stroke="currentColor" stroke-width="1.5"/><circle pathLength="200" cx="130" cy="48" r="7" stroke="currentColor" stroke-width="1.5"/><circle pathLength="200" cx="70" cy="42" r="6" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="70" y1="48" x2="70" y2="60" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="70" y1="53" x2="62" y2="60" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="70" y1="53" x2="78" y2="60" stroke="currentColor" stroke-width="1.4"/></svg></div>
+        <div class="pain-scene-text">商场打烊后出口关闭，导航未提前告知——叫车出发后才发现大幅绕路。演唱会散场，出口陆续关，导航还在推荐人最多那条</div>
+        <div class="pain-essence-text">系统不感知「场景状态变化」——路网动态约束无法实时融入导航决策</div>
+        <div class="pain-illus">
+          <div class="photo-ph">
+            <div class="photo-ph-item">截图4<span>打车绕路</span></div>
+            <div class="photo-ph-item">截图5<span>费用/路线对比</span></div>
+          </div>
+        </div>
       </div>
       <div class="pain-row reveal d5">
         <div class="pain-layer">
           <div class="pain-layer-idx">L/03</div>
           <div class="pain-layer-name">决策层</div>
         </div>
-        <div class="pain-scene-text">选错出口后已叫车，只能取消订单重打</div>
-        <div class="pain-essence-text">信息缺失导致事后后悔，没有预演与因果解释</div>
-        <div class="pain-illus"><svg viewBox="0 0 140 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><path pathLength="200" d="M10,5 C10,0 26,0 26,9 C26,19 18,26 18,26 C18,26 10,19 10,9Z" stroke="currentColor" stroke-width="2"/><circle pathLength="200" cx="18" cy="9" r="4.5" stroke="currentColor" stroke-width="1.6"/><line pathLength="200" x1="28" y1="32" x2="52" y2="32" stroke="currentColor" stroke-width="1.4"/><polyline pathLength="200" points="46,26 52,32 46,38" stroke="currentColor" stroke-width="1.5" fill="none"/><rect pathLength="200" x="54" y="22" width="50" height="22" rx="3.5" stroke="currentColor" stroke-width="1.8"/><rect pathLength="200" x="62" y="12" width="28" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><circle pathLength="200" cx="64" cy="47" r="7" stroke="currentColor" stroke-width="1.7"/><circle pathLength="200" cx="90" cy="47" r="7" stroke="currentColor" stroke-width="1.7"/><line pathLength="200" x1="82" y1="58" x2="116" y2="92" stroke="currentColor" stroke-width="4.5"/><line pathLength="200" x1="116" y1="58" x2="82" y2="92" stroke="currentColor" stroke-width="4.5"/></svg></div>
-      </div>
-      <div class="pain-row reveal d6">
-        <div class="pain-layer">
-          <div class="pain-layer-idx">L/04</div>
-          <div class="pain-layer-name">协同层</div>
-        </div>
-        <div class="pain-scene-text">大商场里和朋友互相找不到，各自的地图都说"已到达"</div>
-        <div class="pain-essence-text">多人空间协同缺失，系统只服务单用户、单时刻</div>
-        <div class="pain-illus"><svg viewBox="0 0 140 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><circle pathLength="200" cx="22" cy="14" r="8" stroke="currentColor" stroke-width="1.7"/><line pathLength="200" x1="22" y1="22" x2="22" y2="40" stroke="currentColor" stroke-width="1.7"/><line pathLength="200" x1="22" y1="29" x2="11" y2="38" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="22" y1="29" x2="33" y2="38" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="22" y1="40" x2="13" y2="56" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="22" y1="40" x2="31" y2="56" stroke="currentColor" stroke-width="1.5"/><path pathLength="200" d="M13,61 C13,55 27,55 27,63 C27,71 20,78 20,78 C20,78 13,71 13,63Z" stroke="currentColor" stroke-width="1.5"/><circle pathLength="200" cx="118" cy="14" r="8" stroke="currentColor" stroke-width="1.7"/><line pathLength="200" x1="118" y1="22" x2="118" y2="40" stroke="currentColor" stroke-width="1.7"/><line pathLength="200" x1="118" y1="29" x2="107" y2="38" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="118" y1="29" x2="129" y2="38" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="118" y1="40" x2="109" y2="56" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="118" y1="40" x2="127" y2="56" stroke="currentColor" stroke-width="1.5"/><path pathLength="200" d="M109,61 C109,55 123,55 123,63 C123,71 116,78 116,78 C116,78 109,71 109,63Z" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="38" y1="33" x2="102" y2="33" stroke="currentColor" stroke-width="1.3"/><polyline pathLength="200" points="45,27 38,33 45,39" stroke="currentColor" stroke-width="1.5" fill="none"/><polyline pathLength="200" points="95,27 102,33 95,39" stroke="currentColor" stroke-width="1.5" fill="none"/><circle pathLength="200" cx="22" cy="90" r="4" stroke="currentColor" stroke-width="1.3"/><circle pathLength="200" cx="118" cy="90" r="4" stroke="currentColor" stroke-width="1.3"/><line pathLength="200" x1="62" y1="87" x2="78" y2="87" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="62" y1="94" x2="78" y2="94" stroke="currentColor" stroke-width="1.4"/></svg></div>
+        <div class="pain-scene-text">崴脚后想走最省力的出口，不知道哪个有电梯——选了「最近」的，走到才发现全是楼梯</div>
+        <div class="pain-essence-text">导航不理解用户身体状态；没有「结果预演」能力——无法提前告知「需要上 2 段楼梯」</div>
+        <div class="pain-illus"><svg viewBox="0 0 140 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"><rect pathLength="200" x="6" y="18" width="52" height="72" rx="2" stroke="currentColor" stroke-width="1.6"/><rect pathLength="200" x="18" y="28" width="16" height="28" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle pathLength="200" cx="26" cy="36" r="3.5" stroke="currentColor" stroke-width="1.2"/><polyline pathLength="200" points="24,36 26,33 28,36" stroke="currentColor" stroke-width="1.1" fill="none"/><circle pathLength="200" cx="26" cy="48" r="3.5" stroke="currentColor" stroke-width="1.2"/><polyline pathLength="200" points="24,48 26,51 28,48" stroke="currentColor" stroke-width="1.1" fill="none"/><circle pathLength="200" cx="72" cy="22" r="7" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="72" y1="29" x2="72" y2="50" stroke="currentColor" stroke-width="1.5"/><line pathLength="200" x1="72" y1="37" x2="62" y2="46" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="72" y1="37" x2="82" y2="46" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="72" y1="50" x2="62" y2="66" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="72" y1="50" x2="84" y2="68" stroke="currentColor" stroke-width="1.4"/><line pathLength="200" x1="60" y1="66" x2="56" y2="86" stroke="currentColor" stroke-width="2.8"/><line pathLength="200" x1="52" y1="72" x2="61" y2="72" stroke="currentColor" stroke-width="1.8"/><line pathLength="200" x1="104" y1="22" x2="136" y2="72" stroke="currentColor" stroke-width="3.5"/><line pathLength="200" x1="136" y1="22" x2="104" y2="72" stroke="currentColor" stroke-width="3.5"/></svg></div>
       </div>
     </div>
-    <div class="pain-summary reveal d7">
+    <div class="pain-summary reveal d6">
       <div class="pain-summary-label">痛点共性</div>
-      <p class="pain-summary-text">当前地图只懂<em>路网</em>，不懂<em>空间</em>；只服务<em>平均人</em>，不服务<em>具体人</em></p>
+      <p class="pain-summary-text">地图只懂<em>路网</em>，不懂<em>空间</em>；只服务<em>平均人</em>，不服务<em>具体人</em>在具体处境下的具体需求</p>
     </div>
   </div>
 </section>
@@ -830,7 +835,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
     <span class="eyebrow-dim">03 / 世界模型解法</span>
   </div>
   <div class="slide-content">
-    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">世界模型如何接住这四层痛点</h2>
+    <h2 class="slide-title reveal d1" style="margin-bottom:clamp(0.5rem,1.5vh,1rem)">具体解决方案</h2>
     <div class="sol-table">
       <div class="sol-head reveal d2">
         <div>层次</div>
@@ -844,15 +849,15 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="pain-layer-name">位置层</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main">VLM + 视觉定位</div>
-          <div class="sol-cell-meta">→ 3D 空间智能路线</div>
+          <div class="sol-cell-main">视觉定位 + 三维场景匹配</div>
+          <div class="sol-cell-meta">VLM 图像识别 + 高斯泼溅场景</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main">看懂图像，锚定空间</div>
+          <div class="sol-cell-main">拍摄周围环境自动定位，精度达楼层级</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main sol-prod">AR 步行入口确认</div>
-          <div class="sol-cell-meta">室内外无缝定位</div>
+          <div class="sol-cell-main sol-prod">AR 导航实景叠加</div>
+          <div class="sol-cell-meta">「往左走 20m，3号店右转」</div>
         </div>
       </div>
       <div class="sol-row reveal d4">
@@ -861,15 +866,15 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="pain-layer-name">路径层</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main">具身智能 + 用户画像</div>
-          <div class="sol-cell-meta">→ JEPA 抽象状态路线</div>
+          <div class="sol-cell-main">状态推演 + 场景感知</div>
+          <div class="sol-cell-meta">情景推演引擎 + 场景触发器</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main">物理约束建模，理解具体人</div>
+          <div class="sol-cell-main">感知演唱会 / 商场关闭等事件，预测路网变化提前规划</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main sol-prod">个性化路径推荐</div>
-          <div class="sol-cell-meta">无障碍 / 软信息</div>
+          <div class="sol-cell-main sol-prod">散场前预警推送</div>
+          <div class="sol-cell-meta">「X号出口将关，建议改走Y」</div>
         </div>
       </div>
       <div class="sol-row reveal d5">
@@ -878,36 +883,19 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
           <div class="pain-layer-name">决策层</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main">状态推演 + 因果链解释</div>
-          <div class="sol-cell-meta">→ 交互环境路线</div>
+          <div class="sol-cell-main">个性化因果推理</div>
+          <div class="sol-cell-meta">用户状态感知 + 大模型推理</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main">预演"接下来会怎样"</div>
+          <div class="sol-cell-main">感知崴脚 / 轮椅等状态，生成最优路径并附带因果解释</div>
         </div>
         <div class="sol-cell">
-          <div class="sol-cell-main sol-prod">出口结果预演</div>
-          <div class="sol-cell-meta">推荐理由 / 降级提示</div>
-        </div>
-      </div>
-      <div class="sol-row reveal d6">
-        <div class="pain-layer">
-          <div class="pain-layer-idx">L/04</div>
-          <div class="pain-layer-name">协同层</div>
-        </div>
-        <div class="sol-cell">
-          <div class="sol-cell-main">共享三维场景 + Multi-Agent</div>
-          <div class="sol-cell-meta">→ 3D + 交互环境路线</div>
-        </div>
-        <div class="sol-cell">
-          <div class="sol-cell-main">多人共享同一空间状态</div>
-        </div>
-        <div class="sol-cell">
-          <div class="sol-cell-main sol-prod">多人实时空间定位</div>
-          <div class="sol-cell-meta">集合点推荐</div>
+          <div class="sol-cell-main sol-prod">个性化路线 + 理由说明</div>
+          <div class="sol-cell-meta">「C出口有电梯，多走 3 分钟」</div>
         </div>
       </div>
     </div>
-    <p class="sol-footer reveal d7">四层痛点恰好对应世界模型四条技术路线——<strong>不是巧合，是世界模型本来就该服务真实出行</strong></p>
+    <p class="sol-footer reveal d6">三层痛点 × 三项核心能力——<strong>世界模型本来就该服务真实出行的每一个处境</strong></p>
   </div>
 </section>
 
@@ -948,13 +936,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-seri
       <div class="ext-cell reveal d5">
         <div class="ext-head">
           <div class="ext-num">04</div>
-          <div class="ext-name">车路协同<br>世界模型的终极形态</div>
+          <div class="ext-name">城市级灾难预演<br>从导航工具到应急基础设施</div>
         </div>
-        <p class="ext-desc">同时服务车、人、路、城市基建——红绿灯、车辆、行人进入同一空间状态。不只是智驾，而是城市级实时智能体</p>
-        <div class="ext-biz">→ 集团对城市治理与智驾的长期布局</div>
+        <p class="ext-desc">地震 / 洪水 / 大型活动应急——实时重算疏散路线、协调交通管控。这是高德从消费产品升级为城市基础设施的关键跃迁，也是阿里城市大脑战略的空间智能延伸</p>
+        <div class="ext-biz">→ 政府 / 交管 B端接口 · 阿里云城市大脑延伸</div>
       </div>
     </div>
-    <p class="ext-coda reveal d6">我的痛点是入口，<strong>真正的产品机会</strong>是把高德从「导航工具」升级为「可推演真实世界变化的空间智能平台」</p>
+    <p class="ext-coda reveal d6">我的痛点是入口，<strong>真正的产品机会</strong>是把高德从「导航工具」升级为「可推演真实世界变化的空间智能平台」——中国最强出行数据 × 阿里AI生态，缺的只是产品落地节奏</p>
   </div>
 </section>
 
