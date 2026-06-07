@@ -3,255 +3,289 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>语音模型产品 · 评测与策略作品集</title>
+<title>语音模型 · 评测与策略作品集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#070710; --bg2:#0c0c18; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.07);
-  --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
-  --cyan:#22d3ee; --violet:#8b5cf6; --pink:#ec4899; --magenta:#f0abfc;
-  --green:#34d399; --red:#fb7185; --amber:#fbbf24; --blue:#60a5fa;
-  --text:#eaeaf4; --muted:#9595ad;
-  --grad:linear-gradient(120deg,#22d3ee,#8b5cf6 55%,#ec4899);
-  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  /* premium ink palette */
+  --bg:#08080c; --bg-soft:#0c0c12;
+  --panel:rgba(255,255,255,.028); --panel-2:rgba(255,255,255,.05);
+  --hair:rgba(255,255,255,.08); --hair-2:rgba(255,255,255,.14);
+  --ink:#f2f2f7; --ink-2:#b6b6c6; --ink-3:#7a7a8c; --ink-4:#54546494;
+  /* refined accents — cool duo + champagne micro accent */
+  --a1:#7cc7ff; --a2:#a78bfa; --a3:#e8c39e;
+  --grad:linear-gradient(118deg,#7cc7ff 0%,#a78bfa 60%,#c9a8ff 100%);
+  --good:#5fd6a4; --warn:#f0c277; --bad:#f4889a;
+  --serif:"Noto Serif SC",Georgia,"Songti SC",serif;
+  --sans:"Inter","Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
   --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+  --r:20px; --maxw:1140px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  font-family:var(--font); color:var(--text); background:var(--bg);
-  line-height:1.7; overflow-x:hidden; -webkit-font-smoothing:antialiased;
-}
-body::before{
-  content:""; position:fixed; inset:0; z-index:-2;
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.7;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;font-feature-settings:"ss01","cv01","tnum";letter-spacing:.01em}
+/* layered premium background */
+body::before{content:"";position:fixed;inset:0;z-index:-3;
   background:
-    radial-gradient(900px 600px at 12% -5%, rgba(139,92,246,.22), transparent 60%),
-    radial-gradient(800px 600px at 95% 8%, rgba(34,211,238,.16), transparent 60%),
-    radial-gradient(900px 700px at 50% 110%, rgba(236,72,153,.14), transparent 60%),
-    var(--bg);
-}
-body::after{
-  content:""; position:fixed; inset:0; z-index:-1; opacity:.5; pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
-  background-size:34px 34px; mask-image:radial-gradient(circle at 50% 30%,#000,transparent 85%);
-}
+    radial-gradient(1100px 720px at 8% -8%, rgba(124,199,255,.10), transparent 58%),
+    radial-gradient(900px 720px at 100% 4%, rgba(167,139,250,.12), transparent 56%),
+    radial-gradient(1000px 800px at 50% 116%, rgba(201,168,255,.08), transparent 60%),
+    var(--bg);}
+body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:26px 26px;
+  mask-image:radial-gradient(circle at 50% 26%,#000,transparent 90%)}
+/* fine grain */
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 a{color:inherit;text-decoration:none}
-::selection{background:rgba(139,92,246,.4)}
+::selection{background:rgba(167,139,250,.35)}
 
 /* progress + nav */
-#prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;background:var(--grad);box-shadow:0 0 14px rgba(139,92,246,.7)}
+#prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;background:var(--grad);box-shadow:0 0 12px rgba(167,139,250,.6)}
 nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;gap:18px;
-  padding:14px 26px;backdrop-filter:blur(14px);background:linear-gradient(to bottom,rgba(7,7,16,.85),rgba(7,7,16,0));
-  transition:background .3s}
-nav .brand{font-weight:800;letter-spacing:.5px;font-size:15px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-nav .links{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
-nav .links a{font-size:13px;color:var(--muted);padding:6px 12px;border-radius:20px;transition:.2s;white-space:nowrap}
-nav .links a:hover{color:#fff;background:var(--panel2)}
-@media(max-width:820px){nav .links{display:none}}
+  padding:18px 34px;backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom,rgba(8,8,12,.78),rgba(8,8,12,0));transition:.4s}
+nav .brand{font-weight:700;letter-spacing:.04em;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:9px}
+nav .brand .mk{width:22px;height:22px;border-radius:7px;background:var(--grad);display:inline-block;box-shadow:0 4px 14px rgba(167,139,250,.45)}
+nav .links{display:flex;gap:2px;margin-left:auto}
+nav .links a{font-size:13px;color:var(--ink-3);padding:8px 15px;border-radius:30px;transition:.25s;letter-spacing:.02em}
+nav .links a:hover{color:var(--ink);background:var(--panel-2)}
+@media(max-width:860px){nav .links{display:none}nav{padding:16px 22px}}
 
 /* layout */
-section{max-width:1180px;margin:0 auto;padding:96px 26px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--cyan);border:1px solid var(--line2);padding:6px 14px;border-radius:30px;background:var(--panel);margin-bottom:20px}
-.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.8s infinite}
-@keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
-h2.title{font-size:clamp(28px,4.4vw,46px);line-height:1.15;font-weight:850;letter-spacing:-.5px;margin-bottom:14px}
+section{max-width:var(--maxw);margin:0 auto;padding:132px 34px}
+@media(max-width:760px){section{padding:84px 22px}}
+
+/* section header system */
+.sec-head{margin-bottom:64px;max-width:780px}
+.kicker{display:flex;align-items:center;gap:14px;font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-3);margin-bottom:26px;font-weight:600}
+.kicker .idx{font-family:var(--mono);color:var(--a3);font-size:12px;letter-spacing:.05em}
+.kicker .rule{flex:0 0 46px;height:1px;background:linear-gradient(90deg,var(--a3),transparent)}
+h2.title{font-size:clamp(30px,4.6vw,50px);line-height:1.12;font-weight:800;letter-spacing:-.025em}
 h2.title .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{color:var(--muted);font-size:16.5px;max-width:760px;margin-bottom:40px}
+.lead{color:var(--ink-2);font-size:clamp(15.5px,1.5vw,17.5px);max-width:720px;margin-top:22px;line-height:1.8;font-weight:350}
+.lead em{font-family:var(--serif);font-style:italic;color:var(--ink);font-weight:600}
 
 /* reveal */
-.reveal{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.16,.8,.3,1),transform 1s cubic-bezier(.16,.8,.3,1)}
 .reveal.in{opacity:1;transform:none}
-.reveal[data-d="1"]{transition-delay:.08s}.reveal[data-d="2"]{transition-delay:.16s}
-.reveal[data-d="3"]{transition-delay:.24s}.reveal[data-d="4"]{transition-delay:.32s}
+.reveal[data-d="1"]{transition-delay:.09s}.reveal[data-d="2"]{transition-delay:.18s}
+.reveal[data-d="3"]{transition-delay:.27s}.reveal[data-d="4"]{transition-delay:.36s}
 
 /* HERO */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;max-width:none;padding:120px 26px 80px}
-#hero .wrap{max-width:1180px;margin:0 auto;width:100%;position:relative;z-index:2}
-#waveCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.55}
-.hero-tag{font-size:13px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:22px}
-#hero h1{font-size:clamp(38px,7vw,86px);line-height:1.04;font-weight:880;letter-spacing:-1.5px}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;max-width:none;padding:140px 34px 90px}
+#hero .wrap{max-width:var(--maxw);margin:0 auto;width:100%;position:relative;z-index:2}
+#waveCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.5}
+.hero-tag{display:inline-flex;align-items:center;gap:11px;font-size:12px;letter-spacing:.28em;color:var(--ink-2);text-transform:uppercase;
+  border:1px solid var(--hair);background:var(--panel);padding:9px 18px;border-radius:40px;margin-bottom:34px;font-weight:500}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--a1);box-shadow:0 0 10px var(--a1);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.3;transform:scale(.6)}}
+#hero h1{font-size:clamp(40px,7.2vw,88px);line-height:1.04;font-weight:850;letter-spacing:-.035em}
 #hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
-  background-size:200% auto;animation:shine 6s linear infinite}
-@keyframes shine{to{background-position:200% center}}
-#hero p.sub{margin-top:24px;font-size:clamp(16px,2vw,21px);color:var(--muted);max-width:680px}
-.hero-cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:40px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid var(--line2);background:var(--panel);color:#fff;transition:.25s}
-.btn.primary{background:var(--grad);border:none;box-shadow:0 8px 30px rgba(139,92,246,.4)}
-.btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(139,92,246,.45)}
-.btn .ic{font-size:17px}
-.hero-stats{margin-top:64px;display:flex;gap:38px;flex-wrap:wrap}
-.hero-stats .s .n{font-family:var(--mono);font-size:34px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-stats .s .l{font-size:13px;color:var(--muted)}
+  background-size:220% auto;animation:shine 9s linear infinite}
+#hero h1 .serif{font-family:var(--serif);font-weight:700;font-style:italic}
+@keyframes shine{to{background-position:220% center}}
+#hero p.sub{margin-top:30px;font-size:clamp(15.5px,1.9vw,20px);color:var(--ink-2);max-width:660px;line-height:1.75;font-weight:350}
+.hero-cta{margin-top:42px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:40px;font-size:14.5px;font-weight:600;
+  cursor:pointer;border:1px solid var(--hair-2);background:var(--panel);color:var(--ink);transition:.3s;letter-spacing:.01em}
+.btn.primary{background:var(--grad);border:none;color:#0b0b14;font-weight:700;box-shadow:0 10px 34px rgba(124,150,250,.35)}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary:hover{box-shadow:0 16px 40px rgba(124,150,250,.45)}
+.btn .ic{font-size:16px}
+.hero-stats{margin-top:74px;display:flex;gap:0;flex-wrap:wrap;border:1px solid var(--hair);border-radius:18px;background:var(--panel);overflow:hidden;width:fit-content;max-width:100%}
+.hero-stats .s{padding:22px 32px;border-right:1px solid var(--hair)}
+.hero-stats .s:last-child{border-right:none}
+.hero-stats .s .n{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+.hero-stats .s .l{font-size:12px;color:var(--ink-3);margin-top:2px;letter-spacing:.04em}
+@media(max-width:680px){.hero-stats .s{padding:16px 20px}.hero-stats .s .n{font-size:23px}}
+.scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:2;font-size:11px;letter-spacing:.24em;color:var(--ink-4);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-hint .line{width:1px;height:38px;background:linear-gradient(var(--a2),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-/* cards & grids */
-.grid{display:grid;gap:20px}
-.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px;position:relative;transition:.3s;overflow:hidden}
-.card:hover{border-color:var(--line2);background:var(--panel2);transform:translateY(-4px)}
-.card .k{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:10px}
-.card h3{font-size:19px;margin-bottom:10px;font-weight:750}
-.card p{color:var(--muted);font-size:14.5px}
-.card .glow{position:absolute;top:-40%;right:-30%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.25),transparent 70%);filter:blur(8px);opacity:0;transition:.4s}
-.card:hover .glow{opacity:1}
-.tag{display:inline-block;font-size:11.5px;font-family:var(--mono);padding:3px 9px;border-radius:7px;border:1px solid var(--line2);color:var(--muted);margin:3px 4px 0 0}
-.tag.good{color:var(--green);border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
-.tag.bad{color:var(--red);border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.08)}
-.tag.mid{color:var(--amber);border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+/* grids */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr}}
 
-/* tech accordion */
-.acc{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);margin-bottom:14px;transition:.3s}
-.acc:hover{border-color:var(--line2)}
-.acc .head{display:flex;align-items:center;gap:16px;padding:22px 24px;cursor:pointer}
-.acc .head .idx{font-family:var(--mono);font-size:13px;color:var(--violet);border:1px solid var(--line2);border-radius:9px;padding:4px 9px}
-.acc .head h3{font-size:18.5px;font-weight:750;flex:1}
-.acc .head .chev{transition:.3s;color:var(--muted)}
-.acc.open .head .chev{transform:rotate(180deg);color:var(--cyan)}
-.acc .body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.7,.2,1)}
-.acc .body .inner{padding:0 24px 24px 64px;color:var(--muted);font-size:14.5px}
-.acc .body .inner b{color:var(--text)}
-.acc .body .inner .li{display:flex;gap:10px;margin:9px 0}
-.acc .body .inner .li::before{content:"▹";color:var(--cyan);flex-shrink:0}
+/* card */
+.card{background:var(--panel);border:1px solid var(--hair);border-radius:var(--r);padding:30px;position:relative;transition:.4s cubic-bezier(.16,.8,.3,1);overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);opacity:0;transition:.4s}
+.card:hover{border-color:var(--hair-2);background:var(--panel-2);transform:translateY(-5px)}
+.card:hover::before{opacity:1}
+.card .k{font-family:var(--mono);font-size:11.5px;color:var(--a1);letter-spacing:.08em;margin-bottom:12px;text-transform:uppercase}
+.card h3{font-size:18.5px;margin-bottom:11px;font-weight:650;letter-spacing:-.01em}
+.card p{color:var(--ink-2);font-size:14.5px;font-weight:350;line-height:1.75}
 
-/* TABS */
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;border:1px solid var(--line);padding:6px;border-radius:16px;background:var(--panel);width:fit-content;max-width:100%}
-.tab{padding:11px 20px;border-radius:11px;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;transition:.25s;white-space:nowrap}
-.tab.active{color:#fff;background:var(--grad);box-shadow:0 6px 20px rgba(139,92,246,.35)}
-.tab .badge{font-family:var(--mono);font-size:11px;opacity:.7;margin-left:6px}
-.panel-eval{display:none;animation:fade .5s}
-.panel-eval.active{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1}}
+/* tags */
+.tag{display:inline-block;font-size:11px;font-family:var(--mono);padding:4px 10px;border-radius:8px;border:1px solid var(--hair-2);color:var(--ink-3);margin:4px 5px 0 0;letter-spacing:.02em}
 
-/* verdict bar (端到端 summary) */
-.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+/* accordion */
+.acc{border:1px solid var(--hair);border-radius:var(--r);overflow:hidden;background:var(--panel);margin-bottom:12px;transition:.35s}
+.acc:hover{border-color:var(--hair-2)}
+.acc.open{background:var(--panel-2)}
+.acc .head{display:flex;align-items:center;gap:20px;padding:26px 30px;cursor:pointer}
+.acc .head .idx{font-family:var(--mono);font-size:12.5px;color:var(--a2);border:1px solid var(--hair-2);border-radius:10px;padding:6px 11px;letter-spacing:.04em}
+.acc .head h3{font-size:18px;font-weight:650;flex:1;letter-spacing:-.01em}
+.acc .head .chev{transition:.4s;color:var(--ink-3);font-size:13px}
+.acc.open .head .chev{transform:rotate(180deg);color:var(--a1)}
+.acc .body{max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.16,.8,.3,1)}
+.acc .body .inner{padding:0 30px 28px 72px;color:var(--ink-2);font-size:14.5px;font-weight:350}
+.acc .body .inner b{color:var(--ink);font-weight:600}
+.acc .body .inner .li{display:flex;gap:12px;margin:12px 0;line-height:1.7}
+.acc .body .inner .li::before{content:"";flex:0 0 6px;height:6px;margin-top:10px;border-radius:50%;background:var(--a1);box-shadow:0 0 8px rgba(124,199,255,.6)}
+@media(max-width:680px){.acc .body .inner{padding:0 24px 24px 24px}.acc .head{padding:22px 22px;gap:14px}}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:36px;border:1px solid var(--hair);padding:6px;border-radius:16px;background:var(--panel);width:fit-content;max-width:100%}
+.tab{padding:12px 22px;border-radius:11px;font-size:14px;font-weight:600;color:var(--ink-3);cursor:pointer;transition:.3s;white-space:nowrap;letter-spacing:.01em}
+.tab.active{color:#0b0b14;background:var(--grad);box-shadow:0 8px 22px rgba(124,150,250,.3)}
+.tab .badge{font-family:var(--mono);font-size:10.5px;opacity:.65;margin-left:7px}
+.panel-eval{display:none}
+.panel-eval.active{display:block;animation:fade .55s cubic-bezier(.16,.8,.3,1)}
+@keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1}}
+
+/* verdicts */
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
 @media(max-width:900px){.verdicts{grid-template-columns:1fr}}
-.vd{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);position:relative}
-.vd .name{font-weight:800;font-size:17px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
-.vd .name .pin{width:9px;height:9px;border-radius:50%}
+.vd{border:1px solid var(--hair);border-radius:18px;padding:24px;background:var(--panel);transition:.3s}
+.vd:hover{border-color:var(--hair-2);background:var(--panel-2)}
+.vd .name{font-weight:750;font-size:16.5px;margin-bottom:14px;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
+.vd .name .pin{width:8px;height:8px;border-radius:50%}
 .vd ul{list-style:none;font-size:13.5px}
-.vd ul li{margin:7px 0;color:var(--muted);display:flex;gap:8px}
-.vd ul li .ico{flex-shrink:0;font-size:13px}
+.vd ul li{margin:9px 0;color:var(--ink-2);display:flex;gap:9px;font-weight:350}
+.vd ul li .ico{flex-shrink:0;font-size:12px;opacity:.9}
 
-/* AUDIO A/B compare */
-.ab{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0 8px}
+/* audio A/B */
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 6px}
 @media(max-width:760px){.ab{grid-template-columns:1fr}}
-.player{border:1px solid var(--line);border-radius:18px;padding:20px;background:linear-gradient(160deg,var(--panel2),var(--panel));position:relative;overflow:hidden}
-.player.eleven{box-shadow:inset 0 0 0 1px rgba(96,165,250,.16)}
-.player.minimax{box-shadow:inset 0 0 0 1px rgba(240,171,252,.16)}
-.player .ph{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.player .ph .logo{font-weight:800;font-size:15px}
-.player.eleven .ph .logo{color:var(--blue)}
-.player.minimax .ph .logo{color:var(--magenta)}
-.player .ph .ver{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line2);padding:2px 7px;border-radius:6px}
-.player .viz{height:64px;width:100%;display:block;border-radius:10px;background:rgba(0,0,0,.25);margin-bottom:14px}
+.player{border:1px solid var(--hair);border-radius:18px;padding:22px;background:var(--panel);position:relative;overflow:hidden;transition:.3s}
+.player:hover{border-color:var(--hair-2)}
+.player.eleven{box-shadow:inset 0 1px 0 rgba(124,199,255,.14)}
+.player.minimax{box-shadow:inset 0 1px 0 rgba(196,181,253,.16)}
+.player .ph{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.player .ph .logo{font-weight:750;font-size:14.5px;letter-spacing:-.01em}
+.player.eleven .ph .logo{color:var(--a1)}
+.player.minimax .ph .logo{color:#c4b5fd}
+.player .ph .ver{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);border:1px solid var(--hair-2);padding:2px 8px;border-radius:6px}
+.player .viz{height:60px;width:100%;display:block;border-radius:10px;background:rgba(0,0,0,.28);margin-bottom:15px}
 .player .ctl{display:flex;align-items:center;gap:14px}
-.player .play{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;display:grid;place-items:center;color:#fff;font-size:16px;transition:.2s}
-.player.eleven .play{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
-.player.minimax .play{background:linear-gradient(135deg,#d946ef,#f0abfc)}
-.player .play:hover{transform:scale(1.08)}
-.player .bar{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.12);cursor:pointer;position:relative}
-.player .bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:6px;background:var(--grad)}
-.player .time{font-family:var(--mono);font-size:11.5px;color:var(--muted);min-width:74px;text-align:right}
-.player .verdict{margin-top:16px;font-size:13px;padding:11px 13px;border-radius:11px;line-height:1.6}
-.player .verdict.bad{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.28)}
-.player .verdict.good{background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.26)}
-.player .verdict .hl{color:var(--red);font-weight:700}
-.player .verdict.good .hl{color:var(--green)}
-.testbox{border:1px dashed var(--line2);border-radius:14px;padding:16px 18px;background:rgba(0,0,0,.18);margin-bottom:6px}
-.testbox .lab{font-size:12px;font-family:var(--mono);color:var(--cyan);letter-spacing:1px;margin-bottom:8px}
-.testbox .q{font-size:13.5px;color:var(--muted);margin:4px 0}
+.player .play{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;display:grid;place-items:center;color:#0b0b14;font-size:14px;transition:.25s}
+.player.eleven .play{background:linear-gradient(135deg,#7cc7ff,#9fd6ff)}
+.player.minimax .play{background:linear-gradient(135deg,#a78bfa,#c4b5fd)}
+.player .play:hover{transform:scale(1.09)}
+.player .bar{flex:1;height:5px;border-radius:5px;background:rgba(255,255,255,.1);cursor:pointer;position:relative}
+.player .bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:5px;background:var(--grad)}
+.player .time{font-family:var(--mono);font-size:11px;color:var(--ink-3);min-width:78px;text-align:right}
+.player .verdict{margin-top:16px;font-size:12.8px;padding:12px 14px;border-radius:11px;line-height:1.65;font-weight:350}
+.player .verdict.bad{background:rgba(244,136,154,.08);border:1px solid rgba(244,136,154,.24)}
+.player .verdict.good{background:rgba(95,214,164,.07);border:1px solid rgba(95,214,164,.22)}
+.player .verdict .hl{color:var(--bad);font-weight:700}
+.player .verdict.good .hl{color:var(--good)}
+.testbox{border:1px solid var(--hair);border-radius:14px;padding:18px 20px;background:rgba(0,0,0,.16);margin-bottom:4px}
+.testbox .lab{font-size:11.5px;font-family:var(--mono);color:var(--a1);letter-spacing:.06em;margin-bottom:10px}
+.testbox .q{font-size:13px;color:var(--ink-3);margin:5px 0;font-weight:350}
 
-/* evidence screenshots */
-.shots{display:grid;gap:22px;grid-template-columns:repeat(2,1fr)}
+/* screenshots */
+.shots{display:grid;gap:20px;grid-template-columns:repeat(2,1fr)}
 @media(max-width:820px){.shots{grid-template-columns:1fr}}
-.shot{border:1px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden;transition:.3s;display:flex;flex-direction:column}
-.shot:hover{border-color:var(--line2);transform:translateY(-4px)}
-.shot .cap{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid var(--line)}
-.shot .cap .who{font-weight:750;font-size:15px}
-.shot .cap .verdict-tag{margin-left:auto;font-size:11px;font-family:var(--mono);padding:3px 10px;border-radius:20px}
-.shot .frame{padding:18px;display:grid;place-items:center;background:radial-gradient(circle at 50% 0%,rgba(139,92,246,.08),transparent 70%)}
-.browser{width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:#0d0d18}
-.browser .topbar{display:flex;gap:6px;padding:9px 12px;background:rgba(255,255,255,.04);align-items:center}
-.browser .topbar i{width:10px;height:10px;border-radius:50%;display:inline-block}
-.browser .topbar .u{margin-left:12px;font-size:11px;color:var(--muted);font-family:var(--mono)}
+.shot{border:1px solid var(--hair);border-radius:18px;background:var(--panel);overflow:hidden;transition:.4s cubic-bezier(.16,.8,.3,1);display:flex;flex-direction:column}
+.shot:hover{border-color:var(--hair-2);transform:translateY(-5px)}
+.shot .cap{display:flex;align-items:center;gap:10px;padding:17px 20px;border-bottom:1px solid var(--hair)}
+.shot .cap .who{font-weight:650;font-size:14.5px;letter-spacing:-.01em}
+.shot .cap .verdict-tag{margin-left:auto;font-size:10.5px;font-family:var(--mono);padding:4px 11px;border-radius:20px;letter-spacing:.03em}
+.shot .frame{padding:22px;display:grid;place-items:center;background:radial-gradient(circle at 50% 0%,rgba(167,139,250,.07),transparent 72%)}
+.browser{width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--hair-2);background:#0b0b12;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.browser .topbar{display:flex;gap:6px;padding:10px 13px;background:rgba(255,255,255,.03);align-items:center}
+.browser .topbar i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.browser .topbar .u{margin-left:13px;font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
 .browser img{width:100%;display:block;cursor:zoom-in}
-.phone{width:230px;max-width:78%;border-radius:26px;border:7px solid #15151f;box-shadow:0 18px 50px rgba(0,0,0,.5),inset 0 0 0 1px var(--line2);overflow:hidden;background:#000;position:relative}
-.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:70px;height:5px;border-radius:5px;background:#2a2a38;z-index:3}
+.phone{width:228px;max-width:78%;border-radius:30px;border:8px solid #121219;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 0 0 1px var(--hair-2);overflow:hidden;background:#000;position:relative}
+.phone::before{content:"";position:absolute;top:11px;left:50%;transform:translateX(-50%);width:64px;height:5px;border-radius:5px;background:#26262f;z-index:3}
 .phone img{width:100%;display:block;cursor:zoom-in}
-.shot .note{padding:14px 18px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);line-height:1.6}
-.shot .note .bc{color:var(--red);font-weight:700}
-.shot .note .gd{color:var(--green);font-weight:700}
+.shot .note{padding:16px 20px;font-size:13px;color:var(--ink-2);border-top:1px solid var(--hair);line-height:1.7;font-weight:350}
+.shot .note .bc{color:var(--bad);font-weight:650}
+.shot .note .gd{color:var(--good);font-weight:650}
 
 /* lightbox */
-#lb{position:fixed;inset:0;z-index:200;background:rgba(4,4,10,.92);backdrop-filter:blur(8px);display:none;place-items:center;padding:40px;cursor:zoom-out}
-#lb.on{display:grid;animation:fade .3s}
-#lb img{max-width:94vw;max-height:88vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid var(--line2)}
-#lb .x{position:absolute;top:22px;right:28px;font-size:30px;color:#fff;cursor:pointer;opacity:.8}
+#lb{position:fixed;inset:0;z-index:200;background:rgba(4,4,8,.94);backdrop-filter:blur(10px);display:none;place-items:center;padding:44px;cursor:zoom-out}
+#lb.on{display:grid;animation:fade .35s}
+#lb img{max-width:94vw;max-height:88vh;border-radius:14px;box-shadow:0 40px 90px rgba(0,0,0,.7);border:1px solid var(--hair-2)}
+#lb .x{position:absolute;top:24px;right:30px;font-size:28px;color:var(--ink);cursor:pointer;opacity:.7;transition:.2s}
+#lb .x:hover{opacity:1}
 
-/* scenario (module 3) */
-.scn{border:1px solid var(--line);border-radius:20px;padding:0;overflow:hidden;background:var(--panel);transition:.3s}
-.scn:hover{border-color:var(--line2);transform:translateY(-4px)}
-.scn .top{padding:22px 24px 16px;background:linear-gradient(160deg,rgba(139,92,246,.12),transparent)}
-.scn .top .emo{font-size:26px}
-.scn .top h3{font-size:18px;font-weight:780;margin:8px 0 4px}
-.scn .rows{padding:8px 24px 24px}
-.scn .row{padding:13px 0;border-top:1px solid var(--line);font-size:13.5px}
-.scn .row .l{font-family:var(--mono);font-size:11px;letter-spacing:1px;margin-bottom:5px}
-.scn .row.pain .l{color:var(--red)}.scn .row.data .l{color:var(--amber)}.scn .row.fix .l{color:var(--green)}
-.scn .row .t{color:var(--muted)}
+/* callout */
+.callout{border:1px solid var(--hair);border-left:2px solid var(--a1);background:var(--panel);padding:18px 22px;border-radius:0 14px 14px 0;margin:26px 0;font-size:14px;color:var(--ink-2);font-weight:350;line-height:1.75}
+.callout b{color:var(--ink);font-weight:600}
+.disclaimer{font-size:12px;color:var(--ink-3);opacity:.8;margin-top:10px;font-style:italic;font-family:var(--serif)}
+.linkpill{font-size:11.5px;font-family:var(--mono);color:var(--a1);border:1px solid var(--hair-2);padding:5px 12px;border-radius:20px;margin:4px 6px 0 0;display:inline-block;transition:.25s;letter-spacing:.02em}
+.linkpill:hover{background:var(--panel-2);color:var(--ink)}
 
-/* idea cards */
-.idea{border:1px solid var(--line);border-radius:20px;padding:28px;background:var(--panel);position:relative;overflow:hidden}
-.idea .em{font-size:30px;margin-bottom:14px;display:block}
-.idea h3{font-size:20px;margin-bottom:10px}
-.idea p{color:var(--muted);font-size:14.5px}
-/* mini DJ demo */
-.dj{margin-top:20px;border:1px solid var(--line2);border-radius:14px;padding:16px;background:rgba(0,0,0,.2)}
-.dj .knob{display:flex;align-items:center;gap:12px;margin:11px 0}
-.dj .knob label{font-size:12.5px;width:60px;color:var(--muted)}
-.dj .knob input{flex:1;accent-color:var(--violet)}
-.dj .knob .val{font-family:var(--mono);font-size:12px;width:42px;text-align:right;color:var(--cyan)}
-.dj .say{margin-top:10px;width:100%;justify-content:center}
+/* scenario */
+.scn{border:1px solid var(--hair);border-radius:var(--r);overflow:hidden;background:var(--panel);transition:.4s cubic-bezier(.16,.8,.3,1)}
+.scn:hover{border-color:var(--hair-2);transform:translateY(-5px)}
+.scn .top{padding:26px 26px 18px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--hair)}
+.scn .top .emo{width:46px;height:46px;flex-shrink:0;border-radius:13px;border:1px solid var(--hair-2);background:rgba(255,255,255,.03);display:grid;place-items:center;font-size:22px}
+.scn .top h3{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.scn .rows{padding:6px 26px 24px}
+.scn .row{padding:15px 0;border-top:1px solid var(--hair);font-size:13px}
+.scn .row:first-child{border-top:none}
+.scn .row .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;margin-bottom:6px;text-transform:uppercase}
+.scn .row.pain .l{color:var(--bad)}.scn .row.data .l{color:var(--warn)}.scn .row.fix .l{color:var(--good)}
+.scn .row .t{color:var(--ink-2);font-weight:350;line-height:1.7}
+.scn .row .t b{color:var(--ink);font-weight:600}
 
-footer{max-width:1180px;margin:40px auto 0;padding:60px 26px;border-top:1px solid var(--line);text-align:center}
-footer .big{font-size:clamp(22px,3.6vw,34px);font-weight:800;line-height:1.3;margin-bottom:18px}
+/* idea */
+.idea{border:1px solid var(--hair);border-radius:var(--r);padding:32px;background:var(--panel);position:relative;overflow:hidden;transition:.4s}
+.idea:hover{border-color:var(--hair-2);background:var(--panel-2)}
+.idea .em{width:52px;height:52px;border-radius:14px;border:1px solid var(--hair-2);background:rgba(255,255,255,.03);display:grid;place-items:center;font-size:24px;margin-bottom:18px}
+.idea h3{font-size:20px;margin-bottom:12px;font-weight:700;letter-spacing:-.01em}
+.idea p{color:var(--ink-2);font-size:14.5px;font-weight:350;line-height:1.75}
+.dj{margin-top:22px;border:1px solid var(--hair-2);border-radius:14px;padding:18px;background:rgba(0,0,0,.2)}
+.dj .knob{display:flex;align-items:center;gap:12px;margin:12px 0}
+.dj .knob label{font-size:12.5px;width:56px;color:var(--ink-3)}
+.dj .knob input{flex:1;accent-color:var(--a2);height:3px}
+.dj .knob .val{font-family:var(--mono);font-size:12px;width:42px;text-align:right;color:var(--a1)}
+.dj .say{margin-top:14px;width:100%;justify-content:center}
+
+footer{max-width:var(--maxw);margin:60px auto 0;padding:90px 34px 80px;border-top:1px solid var(--hair);text-align:center}
+footer .big{font-size:clamp(24px,3.8vw,40px);font-weight:800;line-height:1.28;margin-bottom:22px;letter-spacing:-.02em}
 footer .big .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-footer .m{color:var(--muted);font-size:14px}
+footer .big .serif{font-family:var(--serif);font-style:italic;font-weight:700}
+footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02em}
 
-/* sound toggle */
-#sfx{position:fixed;right:20px;bottom:20px;z-index:95;width:52px;height:52px;border-radius:50%;border:1px solid var(--line2);background:rgba(13,13,24,.8);backdrop-filter:blur(10px);cursor:pointer;display:grid;place-items:center;font-size:20px;transition:.25s}
-#sfx:hover{transform:scale(1.08);border-color:var(--cyan)}
-
-.callout{border-left:3px solid var(--cyan);background:var(--panel);padding:16px 20px;border-radius:0 12px 12px 0;margin:24px 0;font-size:14.5px;color:var(--muted)}
-.callout b{color:var(--text)}
-.disclaimer{font-size:12.5px;color:var(--muted);opacity:.7;margin-top:8px;font-style:italic}
-.linkpill{font-size:12px;font-family:var(--mono);color:var(--cyan);border:1px solid var(--line2);padding:4px 10px;border-radius:20px;margin:3px 5px 0 0;display:inline-block;transition:.2s}
-.linkpill:hover{background:var(--panel2);color:#fff}
+/* sfx */
+#sfx{position:fixed;right:22px;bottom:22px;z-index:95;width:50px;height:50px;border-radius:50%;border:1px solid var(--hair-2);background:rgba(12,12,18,.82);backdrop-filter:blur(12px);cursor:pointer;display:grid;place-items:center;font-size:18px;transition:.3s}
+#sfx:hover{transform:scale(1.08);border-color:var(--a1)}
 </style>
 </head>
 <body>
+<div class="grain"></div>
 <div id="prog"></div>
 <nav>
-  <span class="brand">◈ VOICE · 语音模型作品集</span>
+  <span class="brand"><span class="mk"></span>语音模型 · 评测与策略</span>
   <div class="links">
     <a href="#hero">封面</a>
     <a href="#tech">技术理解</a>
     <a href="#eval">实测评测</a>
-    <a href="#scenario">元宝调优</a>
+    <a href="#scenario">场景调优</a>
     <a href="#ideas">产品想法</a>
   </div>
 </nav>
 
-<!-- ============ HERO ============ -->
+<!-- HERO -->
 <header id="hero">
   <canvas id="waveCanvas"></canvas>
   <div class="wrap">
-    <div class="hero-tag">大模型策略产品 · 语音方向</div>
-    <h1>把<span class="g">语音效果</span>,<br>测成可量化的<span class="g">产品决策</span>。</h1>
-    <p class="sub">我亲手实测了 GPT-4o、元宝、豆包、ElevenLabs、MiniMax 的语音能力,从端到端对话、TTS 可控性到 ASR 鲁棒性,用边界 case 逼出每个模型的真实短板——并把它翻译成元宝可落地的调优策略。</p>
+    <div class="hero-tag"><span class="dot"></span>大模型策略产品 · 语音方向</div>
+    <h1>把<span class="g">语音效果</span>,<br>测成可量化的<span class="serif g">产品决策</span>。</h1>
+    <p class="sub">我亲手实测了 GPT-4o、元宝、豆包、ElevenLabs、MiniMax 的语音能力,从端到端对话、TTS 可控性到 ASR 鲁棒性,用边界 case 逼出每个模型的真实短板,并翻译成元宝可落地的调优策略。</p>
     <div class="hero-cta">
-      <button class="btn primary" onclick="speakIntro()"><span class="ic">🔊</span> 让作品开口介绍自己</button>
-      <a class="btn" href="#eval"><span class="ic">🎧</span> 直接听我的实测录音</a>
+      <button class="btn primary" onclick="speakIntro()"><span class="ic">◗</span> 让作品开口介绍自己</button>
+      <a class="btn" href="#eval"><span class="ic">♫</span> 直接听我的实测录音</a>
     </div>
     <div class="hero-stats">
       <div class="s"><div class="n" data-count="5">0</div><div class="l">实测语音产品</div></div>
@@ -260,13 +294,16 @@ footer .m{color:var(--muted);font-size:14px}
       <div class="s"><div class="n" data-count="4">0</div><div class="l">真实对比录音</div></div>
     </div>
   </div>
+  <div class="scroll-hint"><span>Scroll</span><span class="line"></span></div>
 </header>
 
-<!-- ============ MODULE 1: TECH ============ -->
+<!-- MODULE 1 -->
 <section id="tech">
-  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 01 · 技术理解</span></div>
-  <h2 class="title reveal" data-d="1">语音模型的<span class="g">前沿框架</span>,我是这样拆解的</h2>
-  <p class="lead reveal" data-d="2">不止会用产品,更理解底层。四条主线——端到端 Omni、TTS 演进、语音 Agent、全模态——展示我对模型架构的深度认知。点击展开。</p>
+  <div class="sec-head">
+    <div class="kicker reveal"><span class="idx">01</span><span class="rule"></span>技术理解</div>
+    <h2 class="title reveal" data-d="1">语音模型的<span class="g">前沿框架</span>,<br>我这样拆解</h2>
+    <p class="lead reveal" data-d="2">不止会用产品,更理解底层。四条主线——端到端 Omni、TTS 演进、语音 Agent、全模态——展示我对模型架构的<em>深度认知</em>。点击展开。</p>
+  </div>
 
   <div class="reveal" data-d="2">
     <div class="acc" onclick="toggleAcc(this)">
@@ -316,11 +353,13 @@ footer .m{color:var(--muted);font-size:14px}
   </div>
 </section>
 
-<!-- ============ MODULE 2: EVAL (CENTERPIECE) ============ -->
+<!-- MODULE 2 -->
 <section id="eval">
-  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 02 · 一手实测 · 核心</span></div>
-  <h2 class="title reveal" data-d="1">我亲手测了<span class="g">5 款产品</span>,每个结论都<span class="g">有录音有截图</span></h2>
-  <p class="lead reveal" data-d="2">用故意设计的边界 case——气声、结巴、中英混读、数字/版本号、停顿重音——逼出模型真实短板。下面每一条都来自我的真实评测,可试听、可放大。</p>
+  <div class="sec-head">
+    <div class="kicker reveal"><span class="idx">02</span><span class="rule"></span>一手实测 · 核心</div>
+    <h2 class="title reveal" data-d="1">我亲手测了 <span class="g">5 款产品</span>,<br>每个结论都<span class="serif g">有录音有截图</span></h2>
+    <p class="lead reveal" data-d="2">用故意设计的边界 case——气声、结巴、中英混读、数字/版本号、停顿重音——逼出模型真实短板。下面每一条都来自我的真实评测,<em>可试听、可放大</em>。</p>
+  </div>
 
   <div class="tabs reveal" data-d="2">
     <div class="tab active" onclick="switchTab(this,'p-e2e')">端到端对话<span class="badge">GPT·元宝·豆包</span></div>
@@ -329,25 +368,23 @@ footer .m{color:var(--muted);font-size:14px}
     <div class="tab" onclick="switchTab(this,'p-yb')">元宝功能专项</div>
   </div>
 
-  <!-- 端到端 -->
   <div class="panel-eval active" id="p-e2e">
     <div class="verdicts reveal">
-      <div class="vd"><div class="name"><span class="pin" style="background:var(--green)"></span>GPT-4o 语音</div>
-        <ul><li><span class="ico">✅</span>语音控制能力强,自动帮我处理口癖</li><li><span class="ico">⚠️</span>声音自然度差</li><li><span class="ico">⚠️</span>输出速度最慢</li></ul></div>
-      <div class="vd"><div class="name"><span class="pin" style="background:var(--pink)"></span>豆包语音</div>
-        <ul><li><span class="ico">✅</span>情感表达力强</li><li><span class="ico">✅</span>输出速度最快</li><li><span class="ico">⚠️</span>控制力弱</li></ul></div>
-      <div class="vd"><div class="name"><span class="pin" style="background:var(--cyan)"></span>元宝语音</div>
-        <ul><li><span class="ico">✅</span>输出速度适中</li><li><span class="ico">✅</span>记忆机制强</li><li><span class="ico">✅</span>意图理解能力强(能真听懂)</li></ul></div>
+      <div class="vd"><div class="name"><span class="pin" style="background:var(--good)"></span>GPT-4o 语音</div>
+        <ul><li><span class="ico">✓</span>语音控制能力强,自动处理口癖</li><li><span class="ico">·</span>声音自然度差</li><li><span class="ico">·</span>输出速度最慢</li></ul></div>
+      <div class="vd"><div class="name"><span class="pin" style="background:#f4889a"></span>豆包语音</div>
+        <ul><li><span class="ico">✓</span>情感表达力强</li><li><span class="ico">✓</span>输出速度最快</li><li><span class="ico">·</span>控制力弱</li></ul></div>
+      <div class="vd"><div class="name"><span class="pin" style="background:var(--a1)"></span>元宝语音</div>
+        <ul><li><span class="ico">✓</span>输出速度适中</li><li><span class="ico">✓</span>记忆机制强</li><li><span class="ico">✓</span>意图理解强(能真听懂)</li></ul></div>
     </div>
-
     <div class="shots reveal" data-d="1">
       <div class="shot">
-        <div class="cap"><span class="who">GPT-4o · 口癖去除</span><span class="verdict-tag" style="color:var(--green);background:rgba(52,211,153,.12)">控制力 强</span></div>
+        <div class="cap"><span class="who">GPT-4o · 口癖去除</span><span class="verdict-tag" style="color:var(--good);background:rgba(95,214,164,.12)">控制力 强</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">chatgpt voice</span></div><img src="assets/img/image1.png" alt="GPT-4o 口癖去除"/></div></div>
         <div class="note">指令含大量口头语时,GPT-4o <span class="gd">自动清理「嗯/那个/就是」</span>再作答,控制力最强——代价是自然度与速度。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">豆包 · 停顿指令测试</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">控制力 弱 · badcase</span></div>
+        <div class="cap"><span class="who">豆包 · 停顿指令测试</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">控制力 弱 · badcase</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao voice</span></div><img src="assets/img/image2.png" alt="豆包把停顿一下读出来"/></div></div>
         <div class="note">我要求「每点之间停顿一下」,豆包却把 <span class="bc">「停顿一下」四个字直接当文字念了出来</span>——典型的「控制指令被当成朗读内容」,印证其控制力短板。</div>
       </div>
@@ -356,11 +393,8 @@ footer .m{color:var(--muted);font-size:14px}
     <div class="reveal"><span class="linkpill">📎 豆包对话记录</span><span class="linkpill">📎 ChatGPT 对话记录</span><span class="linkpill">📎 元宝对话记录</span></div>
   </div>
 
-  <!-- TTS -->
   <div class="panel-eval" id="p-tts">
-    <div class="callout reveal"><b>一句话结论:</b>两家自然度都很高,真正拉开差距的是 <b style="color:var(--cyan)">数字与专业符号的读音</b>——也就是产品上线最高频的「念指标 / 念金额 / 念版本号」场景。</div>
-
-    <!-- 数字读音 -->
+    <div class="callout reveal"><b>一句话结论:</b>两家自然度都很高,真正拉开差距的是 <b style="color:var(--a1)">数字与专业符号的读音</b>——也就是产品上线最高频的「念指标 / 念金额 / 念版本号」场景。</div>
     <div class="reveal" data-d="1">
       <div class="testbox">
         <div class="lab">▣ 测试维度 01 · 数字读音(数字/日期/指标/缩写+百分比/电话/版本号)</div>
@@ -372,19 +406,17 @@ footer .m{color:var(--muted);font-size:14px}
           <div class="ph"><span class="logo">ElevenLabs</span><span class="ver">v3</span></div>
           <canvas class="viz"></canvas>
           <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
-          <div class="verdict bad">⚠️ badcase:把「<span class="hl">A/B 收益</span>」读成了「<span class="hl">A 斜杠 B</span>」。数字格式整体处理强,但惯用语/符号读法掌握一般。</div>
+          <div class="verdict bad">⚠ badcase:把「<span class="hl">A/B 收益</span>」读成了「<span class="hl">A 斜杠 B</span>」。数字格式整体处理强,但惯用语/符号读法掌握一般。</div>
         </div>
         <div class="player minimax" data-audio="assets/audio/minimax-number.mp3">
           <div class="ph"><span class="logo">MiniMax</span><span class="ver">2.8 HD</span></div>
           <canvas class="viz"></canvas>
           <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
-          <div class="verdict bad">⚠️ badcase:①「<span class="hl">2026 年</span>」读成「<span class="hl">两千零二十六年</span>」(应读年份「二〇二六」);②「<span class="hl">P95</span>」读成「<span class="hl">P 九十五</span>」。ITN 规整有短板。</div>
+          <div class="verdict bad">⚠ badcase:①「<span class="hl">2026 年</span>」读成「<span class="hl">两千零二十六年</span>」(应读「二〇二六」);②「<span class="hl">P95</span>」读成「<span class="hl">P 九十五</span>」。ITN 规整有短板。</div>
         </div>
       </div>
       <p class="disclaimer">评测意义:这些都是 ITN / 专业符号读音问题——直接命中语音助手「念金额、念指标、念版本号」最易翻车的场景。</p>
     </div>
-
-    <!-- 中英夹杂 -->
     <div class="reveal" data-d="2" style="margin-top:30px">
       <div class="testbox">
         <div class="lab">▣ 测试维度 02 · 中英夹杂</div>
@@ -396,79 +428,75 @@ footer .m{color:var(--muted);font-size:14px}
           <div class="ph"><span class="logo">ElevenLabs</span><span class="ver">v3</span></div>
           <canvas class="viz"></canvas>
           <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
-          <div class="verdict good">✅ 基本没问题,中英切换自然。</div>
+          <div class="verdict good">✓ 基本没问题,中英切换自然。</div>
         </div>
         <div class="player minimax" data-audio="assets/audio/minimax-mix.mp3">
           <div class="ph"><span class="logo">MiniMax</span><span class="ver">2.8 HD</span></div>
           <canvas class="viz"></canvas>
           <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
-          <div class="verdict good">✅ 基本没问题,中英切换自然。</div>
+          <div class="verdict good">✓ 基本没问题,中英切换自然。</div>
         </div>
       </div>
     </div>
-
     <div class="grid g2 reveal" style="margin-top:30px">
-      <div class="card"><div class="glow"></div><div class="k">测试维度 03 · 停顿与重音</div><h3>两家均 ✅ 基本没问题</h3><p>"先说结论:这个方案能做,但要控制风险。""这里最重要的不是音色,而是 turn-taking。" 长句节奏、分点停顿表现稳定。</p></div>
-      <div class="card"><div class="glow"></div><div class="k">测试维度 04 · 语言种类</div><h3>ElevenLabs 支持港普</h3><p>ElevenLabs 覆盖港式普通话等更多语种变体;MiniMax 该项未在本轮覆盖(诚实标注)。</p></div>
+      <div class="card"><div class="k">测试维度 03 · 停顿与重音</div><h3>两家均 ✓ 基本没问题</h3><p>"先说结论:这个方案能做,但要控制风险。""这里最重要的不是音色,而是 turn-taking。" 长句节奏、分点停顿表现稳定。</p></div>
+      <div class="card"><div class="k">测试维度 04 · 语言种类</div><h3>ElevenLabs 支持港普</h3><p>ElevenLabs 覆盖港式普通话等更多语种变体;MiniMax 该项未在本轮覆盖(诚实标注)。</p></div>
     </div>
   </div>
 
-  <!-- ASR -->
   <div class="panel-eval" id="p-asr">
     <div class="callout reveal"><b>评测重点:</b>对「非标准语音」的鲁棒性——气声、结巴、上下文、中英夹杂。这些才是真实用户最容易卡住的输入。</div>
     <div class="shots reveal" data-d="1">
       <div class="shot">
-        <div class="cap"><span class="who">气声识别 · 元宝 vs 豆包</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">共性短板</span></div>
+        <div class="cap"><span class="who">气声识别 · 元宝 vs 豆包</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">共性短板</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao · 气声</span></div><img src="assets/img/image3.png" alt="豆包气声识别失败"/></div></div>
         <div class="note">同样用气声(耳语)说话:<span class="bc">元宝完全听不见、无任何反应</span>;豆包能收到声音但<span class="bc">识别不出气声内容</span>。暴露 ASR 对低能量/耳语语音的盲区。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">中英夹杂 · 元宝(QLoRA 误读)</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">badcase</span></div>
+        <div class="cap"><span class="who">中英夹杂 · 元宝(QLoRA 误读)</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">badcase</span></div>
         <div class="frame"><div class="phone"><img src="assets/img/image7.png" alt="元宝把QLoRA读错"/></div></div>
         <div class="note">技术术语 <b>QLoRA</b> 被<span class="bc">读成「cue-ou-R-A」</span>逐字母乱读。中英混合 token 的发音歧义是跨产品共性问题。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">结巴(stutter)· 元宝</span><span class="verdict-tag" style="color:var(--amber);background:rgba(251,191,36,.12)">实测留证</span></div>
+        <div class="cap"><span class="who">结巴(stutter)· 元宝</span><span class="verdict-tag" style="color:var(--warn);background:rgba(240,194,119,.12)">实测留证</span></div>
         <div class="frame"><div class="phone"><img src="assets/img/image4.png" alt="元宝结巴识别"/></div></div>
         <div class="note">口吃/重复语流下的识别表现——元宝实测截图留证。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">结巴(stutter)· 豆包</span><span class="verdict-tag" style="color:var(--amber);background:rgba(251,191,36,.12)">实测留证</span></div>
+        <div class="cap"><span class="who">结巴(stutter)· 豆包</span><span class="verdict-tag" style="color:var(--warn);background:rgba(240,194,119,.12)">实测留证</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao · stutter</span></div><img src="assets/img/image5.png" alt="豆包结巴识别"/></div></div>
         <div class="note">同条件对照豆包的结巴识别处理。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">中英夹杂 · 豆包(QLoRA 误读)</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">共性 badcase</span></div>
+        <div class="cap"><span class="who">中英夹杂 · 豆包(QLoRA 误读)</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">共性 badcase</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao · 中英夹杂</span></div><img src="assets/img/image8.png" alt="豆包把QLoRA读错"/></div></div>
         <div class="note">豆包在回答语音中同样把 <b>QLoRA</b> <span class="bc">读成「cue-ou-R-A」</span>——证明这是技术范式的系统性短板,而非单家偶发。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">基于上下文的识别 · 元宝</span><span class="verdict-tag" style="color:var(--green);background:rgba(52,211,153,.12)">亮点</span></div>
+        <div class="cap"><span class="who">基于上下文的识别 · 元宝</span><span class="verdict-tag" style="color:var(--good);background:rgba(95,214,164,.12)">亮点</span></div>
         <div class="frame"><div class="phone"><img src="assets/img/image6.png" alt="元宝上下文识别"/></div></div>
         <div class="note">元宝能<span class="gd">结合上下文做语音识别与意图理解</span>,是其相对优势,呼应端到端环节「意图理解强」。</div>
       </div>
     </div>
   </div>
 
-  <!-- 元宝功能 -->
   <div class="panel-eval" id="p-yb">
     <div class="callout reveal">给本家产品既能夸(意图理解强)又能精准挑刺(昵称、气声)——正是岗位要的「高频使用、对效果敏感、有判断力」。</div>
     <div class="shots reveal" data-d="1">
       <div class="shot">
-        <div class="cap"><span class="who">会议转写 · 发言人昵称识别不当</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">badcase</span></div>
+        <div class="cap"><span class="who">会议转写 · 发言人昵称识别不当</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">badcase</span></div>
         <div class="frame"><div class="phone"><img src="assets/img/image9.png" alt="元宝发言人昵称识别不当"/></div></div>
         <div class="note"><span class="bc">发言人标签/昵称识别不恰当</span>。<b>调优指向:</b>昵称走专名词典 + 热词偏置 + 声纹注册,避免误称、误标。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">意图识别 & 上下文语音识别</span><span class="verdict-tag" style="color:var(--green);background:rgba(52,211,153,.12)">亮点</span></div>
+        <div class="cap"><span class="who">意图识别 & 上下文语音识别</span><span class="verdict-tag" style="color:var(--good);background:rgba(95,214,164,.12)">亮点</span></div>
         <div class="frame"><div class="phone"><img src="assets/img/image6.png" alt="元宝意图识别"/></div></div>
         <div class="note">元宝<span class="gd">意图识别与上下文语音识别能力强</span>,是值得保留与放大的产品优势。</div>
       </div>
     </div>
   </div>
 
-  <!-- 方法论 -->
-  <div class="reveal" style="margin-top:40px">
+  <div class="reveal" style="margin-top:42px">
     <div class="acc" onclick="toggleAcc(this)">
       <div class="head"><span class="idx">≡</span><h3>我的评测方法论(点击展开)</h3><span class="chev">▾</span></div>
       <div class="body"><div class="inner">
@@ -481,11 +509,13 @@ footer .m{color:var(--muted);font-size:14px}
   </div>
 </section>
 
-<!-- ============ MODULE 3: SCENARIO TUNING ============ -->
+<!-- MODULE 3 -->
 <section id="scenario">
-  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 03 · 元宝场景调优</span></div>
-  <h2 class="title reveal" data-d="1">从实测 badcase,到<span class="g">元宝的产品策略</span></h2>
-  <p class="lead reveal" data-d="2">评测不止为排名,而是为决策。我把每个场景拆成「最痛痛点 → 从什么数据挖掘 → 产品策略调优」三步,这是策略产品的核心能力。</p>
+  <div class="sec-head">
+    <div class="kicker reveal"><span class="idx">03</span><span class="rule"></span>元宝场景调优</div>
+    <h2 class="title reveal" data-d="1">从实测 badcase,<br>到<span class="g">元宝的产品策略</span></h2>
+    <p class="lead reveal" data-d="2">评测不止为排名,而是为决策。我把每个场景拆成「最痛痛点 → 从什么数据挖掘 → 产品策略调优」三步,这是策略产品的<em>核心能力</em>。</p>
+  </div>
 
   <div class="grid g3 reveal" data-d="2">
     <div class="scn">
@@ -539,69 +569,56 @@ footer .m{color:var(--muted);font-size:14px}
   </div>
 </section>
 
-<!-- ============ MODULE 4: IDEAS ============ -->
+<!-- MODULE 4 -->
 <section id="ideas">
-  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 04 · 产品想法</span></div>
-  <h2 class="title reveal" data-d="1">几个我想做的<span class="g">语音产品创意</span></h2>
-  <p class="lead reveal" data-d="2">对 AI 语音的好奇心与信念感,最终要落到「能不能想出别人没想到的产品形态」。</p>
+  <div class="sec-head">
+    <div class="kicker reveal"><span class="idx">04</span><span class="rule"></span>产品想法</div>
+    <h2 class="title reveal" data-d="1">几个我想做的<span class="g">语音产品创意</span></h2>
+    <p class="lead reveal" data-d="2">对 AI 语音的好奇心与信念感,最终要落到「能不能想出别人没想到的<em>产品形态</em>」。</p>
+  </div>
 
   <div class="grid g2 reveal" data-d="2">
     <div class="idea">
       <span class="em">🎛️</span>
       <h3>语音调试 DJ 台</h3>
-      <p>生成 TTS 时提供一排可拖动旋钮——音量、音色、强度、情绪、语速——<b style="color:var(--text)">边拖边实时听到变化</b>,像调音台一样所见即所得,把抽象的「参数调优」变成可玩的体验。下面是一个用浏览器原生语音做的极简原型:</p>
+      <p>生成 TTS 时提供一排可拖动旋钮——音量、音色、强度、情绪、语速——<b style="color:var(--ink)">边拖边实时听到变化</b>,像调音台一样所见即所得,把抽象的「参数调优」变成可玩的体验。下面是一个用浏览器原生语音做的极简原型:</p>
       <div class="dj">
         <div class="knob"><label>语速</label><input type="range" min="0.5" max="2" step="0.05" value="1" id="djRate"><span class="val" id="djRateV">1.0</span></div>
         <div class="knob"><label>音调</label><input type="range" min="0" max="2" step="0.05" value="1" id="djPitch"><span class="val" id="djPitchV">1.0</span></div>
         <div class="knob"><label>音量</label><input type="range" min="0" max="1" step="0.05" value="1" id="djVol"><span class="val" id="djVolV">1.0</span></div>
-        <button class="btn primary say" onclick="djSpeak()"><span class="ic">🎙️</span> 拖动后点我试听</button>
+        <button class="btn primary say" onclick="djSpeak()"><span class="ic">◗</span> 拖动后点我试听</button>
       </div>
     </div>
     <div class="idea">
       <span class="em">🎨</span>
       <h3>抽象 / 通感概念的语音具象化</h3>
-      <p>支持用<b style="color:var(--text)">通感、抽象语言</b>描述音色,例如「声音再 gay 一点」「声音像一块小蛋糕一样软软甜甜」「像深夜电台 DJ」「带点雨天的潮湿感」。</p>
-      <p style="margin-top:12px"><b style="color:var(--cyan)">技术落点:</b>自然语言 → 音色/情感 embedding 的映射(指令式音色生成,呼应 NaturalSpeech 的解耦表示、Hume 的情感控制)。</p>
-      <p style="margin-top:12px"><b style="color:var(--cyan)">为什么好:</b>普通用户不懂 pitch/temperature,但<b style="color:var(--text)">人人会用通感形容声音</b>——这是把专业能力产品化、平民化的关键洞察。</p>
-    </div>
-    <div class="idea">
-      <span class="em">🎚️</span>
-      <h3>情绪轨迹编辑器</h3>
-      <p>给一段长文本画一条「情绪曲线」(开心→紧张→释然),TTS 按曲线演绎,适合有声书与剧情类内容。</p>
-    </div>
-    <div class="idea">
-      <span class="em">🔁</span>
-      <h3>我的声音 · 风格迁移</h3>
-      <p>用自己的音色,一键切换「新闻播报 / 撒娇 / 严肃老板」等风格——音色不变、风格变。</p>
+      <p>支持用<b style="color:var(--ink)">通感、抽象语言</b>描述音色,例如「声音再 gay 一点」「声音像一块小蛋糕一样软软甜甜」「像深夜电台 DJ」「带点雨天的潮湿感」。</p>
+      <p style="margin-top:14px"><b style="color:var(--a1)">技术落点:</b>自然语言 → 音色/情感 embedding 的映射(指令式音色生成,呼应 NaturalSpeech 的解耦表示、Hume 的情感控制)。</p>
+      <p style="margin-top:14px"><b style="color:var(--a1)">为什么好:</b>普通用户不懂 pitch/temperature,但<b style="color:var(--ink)">人人会用通感形容声音</b>——这是把专业能力产品化、平民化的关键洞察。</p>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="reveal">
-    <div class="big">文字讲给眼睛,<span class="g">声音讲给耳朵</span>。<br>这正是语音岗最该有的作品形态。</div>
-    <div class="m">实测产品 · 边界 case 留证 · 评测方法论 · 场景调优策略 · 产品创意　|　为「元宝-大模型策略产品(语音)」而作</div>
+    <div class="big">文字讲给眼睛,<span class="serif g">声音讲给耳朵</span>。<br>这正是语音岗最该有的作品形态。</div>
+    <div class="m">实测产品 · 边界 case 留证 · 评测方法论 · 场景调优策略 · 产品创意　|　为「元宝 - 大模型策略产品(语音)」而作</div>
   </div>
 </footer>
 
 <button id="sfx" title="开/关 背景声效">🔇</button>
 <div id="lb"><span class="x">×</span><img src="" alt="放大查看"/></div>
-<audio id="speech-bus"></audio>
 
 <script>
-/* ---------- progress + nav ---------- */
 const prog=document.getElementById('prog');
 addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
 
-/* ---------- reveal ---------- */
 const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-/* ---------- counters ---------- */
 const cio=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.count;let n=0;const step=Math.max(1,t/30);const tk=()=>{n+=step;if(n>=t){el.textContent=t;}else{el.textContent=Math.floor(n);requestAnimationFrame(tk);}};tk();cio.unobserve(el);}}),{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
 
-/* ---------- accordion ---------- */
 function toggleAcc(el){
   const open=el.classList.contains('open');
   const body=el.querySelector('.body');
@@ -609,45 +626,42 @@ function toggleAcc(el){
   else{el.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}
 }
 
-/* ---------- tabs ---------- */
 function switchTab(tab,id){
   document.querySelectorAll('#eval .tab').forEach(t=>t.classList.remove('active'));
   tab.classList.add('active');
   document.querySelectorAll('.panel-eval').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  // re-trigger reveals inside
   document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('in'));
 }
 
-/* ---------- lightbox ---------- */
 const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
 document.querySelectorAll('.shot img').forEach(img=>img.addEventListener('click',()=>{lbImg.src=img.src;lb.classList.add('on');}));
 lb.addEventListener('click',()=>lb.classList.remove('on'));
 
-/* ---------- hero wave canvas ---------- */
+/* hero wave — refined, subtle */
 (function(){
   const c=document.getElementById('waveCanvas'),x=c.getContext('2d');let w,h,t=0;
   function rs(){w=c.width=c.offsetWidth*devicePixelRatio;h=c.height=c.offsetHeight*devicePixelRatio;}
   rs();addEventListener('resize',rs);
-  const cols=[[34,211,238],[139,92,246],[236,72,153]];
+  const cols=[[124,199,255],[167,139,250],[232,195,158]];
   function draw(){
-    x.clearRect(0,0,w,h);t+=0.006;
+    x.clearRect(0,0,w,h);t+=0.005;
     for(let k=0;k<3;k++){
       x.beginPath();
-      const amp=h*0.10*(1+k*0.25), yb=h*(0.5+k*0.04), ph=t*(1+k*0.4);
+      const amp=h*0.09*(1+k*0.22), yb=h*(0.52+k*0.035), ph=t*(1+k*0.4);
       for(let i=0;i<=w;i+=8){
-        const y=yb+Math.sin(i*0.004+ph)*amp*Math.sin(i*0.0009+t*0.7);
+        const y=yb+Math.sin(i*0.0038+ph)*amp*Math.sin(i*0.0008+t*0.6);
         i===0?x.moveTo(i,y):x.lineTo(i,y);
       }
       const[r,g,b]=cols[k];
-      x.strokeStyle=`rgba(${r},${g},${b},${0.18-k*0.03})`;x.lineWidth=2*devicePixelRatio;x.stroke();
+      x.strokeStyle=`rgba(${r},${g},${b},${0.14-k*0.025})`;x.lineWidth=1.4*devicePixelRatio;x.stroke();
     }
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-/* ---------- audio engine + custom players ---------- */
+/* audio engine */
 let AC=null; const analysers=new WeakMap(); let current=null;
 function ensureAC(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC;}
 function fmt(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),x=Math.floor(s%60);return m+':'+(x<10?'0':'')+x;}
@@ -659,8 +673,7 @@ document.querySelectorAll('.player').forEach(p=>{
   const vx=viz.getContext('2d');let raf=null;
   function sizeViz(){viz.width=viz.offsetWidth*devicePixelRatio;viz.height=viz.offsetHeight*devicePixelRatio;}
   sizeViz();addEventListener('resize',sizeViz);
-  const accent=p.classList.contains('eleven')?[96,165,250]:[240,171,252];
-
+  const accent=p.classList.contains('eleven')?[124,199,255]:[196,181,253];
   function connect(){
     const ac=ensureAC();if(!ac||analysers.has(audio))return;
     try{const src=ac.createMediaElementSource(audio);const an=ac.createAnalyser();an.fftSize=128;
@@ -671,20 +684,16 @@ document.querySelectorAll('.player').forEach(p=>{
     vx.clearRect(0,0,viz.width,viz.height);
     if(an){const n=an.frequencyBinCount,d=new Uint8Array(n);an.getByteFrequencyData(d);
       const bw=viz.width/n;
-      for(let i=0;i<n;i++){const bh=(d[i]/255)*viz.height*0.95;
-        const[r,g,b]=accent;vx.fillStyle=`rgba(${r},${g},${b},${0.35+d[i]/255*0.65})`;
-        vx.fillRect(i*bw,viz.height-bh,bw*0.7,bh);}
-    }else{ // idle flatline
-      vx.strokeStyle='rgba(255,255,255,.12)';vx.beginPath();vx.moveTo(0,viz.height/2);vx.lineTo(viz.width,viz.height/2);vx.stroke();
-    }
+      for(let i=0;i<n;i++){const bh=(d[i]/255)*viz.height*0.92;
+        const[r,g,b]=accent;vx.fillStyle=`rgba(${r},${g},${b},${0.3+d[i]/255*0.6})`;
+        vx.fillRect(i*bw,viz.height-bh,bw*0.66,bh);}
+    }else{vx.strokeStyle='rgba(255,255,255,.1)';vx.beginPath();vx.moveTo(0,viz.height/2);vx.lineTo(viz.width,viz.height/2);vx.stroke();}
     if(!audio.paused)raf=requestAnimationFrame(drawViz);
   }
   playBtn.addEventListener('click',()=>{
     ensureAC();connect();
-    if(audio.paused){
-      if(current&&current!==audio){current.pause();}
-      current=audio;audio.play();playBtn.textContent='❚❚';drawViz();
-    }else{audio.pause();playBtn.textContent='▶';}
+    if(audio.paused){if(current&&current!==audio){current.pause();}current=audio;audio.play();playBtn.textContent='❚❚';drawViz();}
+    else{audio.pause();playBtn.textContent='▶';}
   });
   audio.addEventListener('timeupdate',()=>{fill.style.width=(audio.currentTime/audio.duration*100||0)+'%';time.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);});
   audio.addEventListener('loadedmetadata',()=>{time.textContent='0:00 / '+fmt(audio.duration);});
@@ -694,7 +703,6 @@ document.querySelectorAll('.player').forEach(p=>{
   drawViz();
 });
 
-/* ---------- hero speech ---------- */
 function speakIntro(){
   if(!('speechSynthesis'in window)){alert('当前浏览器不支持语音合成,请用 Chrome/Edge 打开~');return;}
   speechSynthesis.cancel();
@@ -704,7 +712,6 @@ function speakIntro(){
 }
 if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=()=>{};
 
-/* ---------- DJ demo ---------- */
 const djRate=document.getElementById('djRate'),djPitch=document.getElementById('djPitch'),djVol=document.getElementById('djVol');
 function bindDJ(s,v){s.addEventListener('input',()=>document.getElementById(v).textContent=(+s.value).toFixed(1));}
 bindDJ(djRate,'djRateV');bindDJ(djPitch,'djPitchV');bindDJ(djVol,'djVolV');
@@ -717,23 +724,22 @@ function djSpeak(){
   speechSynthesis.speak(u);
 }
 
-/* ---------- ambient sfx toggle (idle hero hum via webaudio, off by default) ---------- */
 let ambient=null,ambGain=null,sfxOn=false;
 const sfxBtn=document.getElementById('sfx');
 sfxBtn.addEventListener('click',()=>{
   const ac=ensureAC();if(!ac)return;
   sfxOn=!sfxOn;
   if(sfxOn){
-    sfxBtn.textContent='🔊';sfxBtn.style.borderColor='var(--cyan)';
+    sfxBtn.textContent='🔊';sfxBtn.style.borderColor='var(--a1)';
     ambient=ac.createOscillator();ambGain=ac.createGain();
     const lfo=ac.createOscillator(),lfoG=ac.createGain();
     ambient.type='sine';ambient.frequency.value=110;
     lfo.frequency.value=0.15;lfoG.gain.value=6;lfo.connect(lfoG);lfoG.connect(ambient.frequency);
     ambGain.gain.value=0.0;ambient.connect(ambGain);ambGain.connect(ac.destination);
-    ambient.start();lfo.start();ambGain.gain.linearRampToValueAtTime(0.04,ac.currentTime+1.5);
+    ambient.start();lfo.start();ambGain.gain.linearRampToValueAtTime(0.035,ac.currentTime+1.5);
     ambient._lfo=lfo;
   }else{
-    sfxBtn.textContent='🔇';sfxBtn.style.borderColor='var(--line2)';
+    sfxBtn.textContent='🔇';sfxBtn.style.borderColor='var(--hair-2)';
     if(ambGain){ambGain.gain.linearRampToValueAtTime(0,ac.currentTime+0.6);}
     setTimeout(()=>{try{ambient.stop();ambient._lfo.stop();}catch(e){}},700);
   }
