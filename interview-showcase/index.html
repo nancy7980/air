@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>语音模型产品 · 评测与策略作品集</title>
+<style>
+:root{
+  --bg:#070710; --bg2:#0c0c18; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.07);
+  --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+  --cyan:#22d3ee; --violet:#8b5cf6; --pink:#ec4899; --magenta:#f0abfc;
+  --green:#34d399; --red:#fb7185; --amber:#fbbf24; --blue:#60a5fa;
+  --text:#eaeaf4; --muted:#9595ad;
+  --grad:linear-gradient(120deg,#22d3ee,#8b5cf6 55%,#ec4899);
+  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font); color:var(--text); background:var(--bg);
+  line-height:1.7; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2;
+  background:
+    radial-gradient(900px 600px at 12% -5%, rgba(139,92,246,.22), transparent 60%),
+    radial-gradient(800px 600px at 95% 8%, rgba(34,211,238,.16), transparent 60%),
+    radial-gradient(900px 700px at 50% 110%, rgba(236,72,153,.14), transparent 60%),
+    var(--bg);
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:-1; opacity:.5; pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:34px 34px; mask-image:radial-gradient(circle at 50% 30%,#000,transparent 85%);
+}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(139,92,246,.4)}
+
+/* progress + nav */
+#prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;background:var(--grad);box-shadow:0 0 14px rgba(139,92,246,.7)}
+nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;gap:18px;
+  padding:14px 26px;backdrop-filter:blur(14px);background:linear-gradient(to bottom,rgba(7,7,16,.85),rgba(7,7,16,0));
+  transition:background .3s}
+nav .brand{font-weight:800;letter-spacing:.5px;font-size:15px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+nav .links{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+nav .links a{font-size:13px;color:var(--muted);padding:6px 12px;border-radius:20px;transition:.2s;white-space:nowrap}
+nav .links a:hover{color:#fff;background:var(--panel2)}
+@media(max-width:820px){nav .links{display:none}}
+
+/* layout */
+section{max-width:1180px;margin:0 auto;padding:96px 26px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--cyan);border:1px solid var(--line2);padding:6px 14px;border-radius:30px;background:var(--panel);margin-bottom:20px}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
+h2.title{font-size:clamp(28px,4.4vw,46px);line-height:1.15;font-weight:850;letter-spacing:-.5px;margin-bottom:14px}
+h2.title .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:16.5px;max-width:760px;margin-bottom:40px}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}.reveal[data-d="2"]{transition-delay:.16s}
+.reveal[data-d="3"]{transition-delay:.24s}.reveal[data-d="4"]{transition-delay:.32s}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;max-width:none;padding:120px 26px 80px}
+#hero .wrap{max-width:1180px;margin:0 auto;width:100%;position:relative;z-index:2}
+#waveCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.55}
+.hero-tag{font-size:13px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:22px}
+#hero h1{font-size:clamp(38px,7vw,86px);line-height:1.04;font-weight:880;letter-spacing:-1.5px}
+#hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% auto;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+#hero p.sub{margin-top:24px;font-size:clamp(16px,2vw,21px);color:var(--muted);max-width:680px}
+.hero-cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:40px;font-size:15px;font-weight:600;cursor:pointer;border:1px solid var(--line2);background:var(--panel);color:#fff;transition:.25s}
+.btn.primary{background:var(--grad);border:none;box-shadow:0 8px 30px rgba(139,92,246,.4)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(139,92,246,.45)}
+.btn .ic{font-size:17px}
+.hero-stats{margin-top:64px;display:flex;gap:38px;flex-wrap:wrap}
+.hero-stats .s .n{font-family:var(--mono);font-size:34px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-stats .s .l{font-size:13px;color:var(--muted)}
+
+/* cards & grids */
+.grid{display:grid;gap:20px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px;position:relative;transition:.3s;overflow:hidden}
+.card:hover{border-color:var(--line2);background:var(--panel2);transform:translateY(-4px)}
+.card .k{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:10px}
+.card h3{font-size:19px;margin-bottom:10px;font-weight:750}
+.card p{color:var(--muted);font-size:14.5px}
+.card .glow{position:absolute;top:-40%;right:-30%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.25),transparent 70%);filter:blur(8px);opacity:0;transition:.4s}
+.card:hover .glow{opacity:1}
+.tag{display:inline-block;font-size:11.5px;font-family:var(--mono);padding:3px 9px;border-radius:7px;border:1px solid var(--line2);color:var(--muted);margin:3px 4px 0 0}
+.tag.good{color:var(--green);border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}
+.tag.bad{color:var(--red);border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.08)}
+.tag.mid{color:var(--amber);border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+
+/* tech accordion */
+.acc{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);margin-bottom:14px;transition:.3s}
+.acc:hover{border-color:var(--line2)}
+.acc .head{display:flex;align-items:center;gap:16px;padding:22px 24px;cursor:pointer}
+.acc .head .idx{font-family:var(--mono);font-size:13px;color:var(--violet);border:1px solid var(--line2);border-radius:9px;padding:4px 9px}
+.acc .head h3{font-size:18.5px;font-weight:750;flex:1}
+.acc .head .chev{transition:.3s;color:var(--muted)}
+.acc.open .head .chev{transform:rotate(180deg);color:var(--cyan)}
+.acc .body{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.7,.2,1)}
+.acc .body .inner{padding:0 24px 24px 64px;color:var(--muted);font-size:14.5px}
+.acc .body .inner b{color:var(--text)}
+.acc .body .inner .li{display:flex;gap:10px;margin:9px 0}
+.acc .body .inner .li::before{content:"▹";color:var(--cyan);flex-shrink:0}
+
+/* TABS */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;border:1px solid var(--line);padding:6px;border-radius:16px;background:var(--panel);width:fit-content;max-width:100%}
+.tab{padding:11px 20px;border-radius:11px;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;transition:.25s;white-space:nowrap}
+.tab.active{color:#fff;background:var(--grad);box-shadow:0 6px 20px rgba(139,92,246,.35)}
+.tab .badge{font-family:var(--mono);font-size:11px;opacity:.7;margin-left:6px}
+.panel-eval{display:none;animation:fade .5s}
+.panel-eval.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1}}
+
+/* verdict bar (端到端 summary) */
+.verdicts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+@media(max-width:900px){.verdicts{grid-template-columns:1fr}}
+.vd{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);position:relative}
+.vd .name{font-weight:800;font-size:17px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.vd .name .pin{width:9px;height:9px;border-radius:50%}
+.vd ul{list-style:none;font-size:13.5px}
+.vd ul li{margin:7px 0;color:var(--muted);display:flex;gap:8px}
+.vd ul li .ico{flex-shrink:0;font-size:13px}
+
+/* AUDIO A/B compare */
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0 8px}
+@media(max-width:760px){.ab{grid-template-columns:1fr}}
+.player{border:1px solid var(--line);border-radius:18px;padding:20px;background:linear-gradient(160deg,var(--panel2),var(--panel));position:relative;overflow:hidden}
+.player.eleven{box-shadow:inset 0 0 0 1px rgba(96,165,250,.16)}
+.player.minimax{box-shadow:inset 0 0 0 1px rgba(240,171,252,.16)}
+.player .ph{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.player .ph .logo{font-weight:800;font-size:15px}
+.player.eleven .ph .logo{color:var(--blue)}
+.player.minimax .ph .logo{color:var(--magenta)}
+.player .ph .ver{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line2);padding:2px 7px;border-radius:6px}
+.player .viz{height:64px;width:100%;display:block;border-radius:10px;background:rgba(0,0,0,.25);margin-bottom:14px}
+.player .ctl{display:flex;align-items:center;gap:14px}
+.player .play{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;display:grid;place-items:center;color:#fff;font-size:16px;transition:.2s}
+.player.eleven .play{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.player.minimax .play{background:linear-gradient(135deg,#d946ef,#f0abfc)}
+.player .play:hover{transform:scale(1.08)}
+.player .bar{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.12);cursor:pointer;position:relative}
+.player .bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:6px;background:var(--grad)}
+.player .time{font-family:var(--mono);font-size:11.5px;color:var(--muted);min-width:74px;text-align:right}
+.player .verdict{margin-top:16px;font-size:13px;padding:11px 13px;border-radius:11px;line-height:1.6}
+.player .verdict.bad{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.28)}
+.player .verdict.good{background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.26)}
+.player .verdict .hl{color:var(--red);font-weight:700}
+.player .verdict.good .hl{color:var(--green)}
+.testbox{border:1px dashed var(--line2);border-radius:14px;padding:16px 18px;background:rgba(0,0,0,.18);margin-bottom:6px}
+.testbox .lab{font-size:12px;font-family:var(--mono);color:var(--cyan);letter-spacing:1px;margin-bottom:8px}
+.testbox .q{font-size:13.5px;color:var(--muted);margin:4px 0}
+
+/* evidence screenshots */
+.shots{display:grid;gap:22px;grid-template-columns:repeat(2,1fr)}
+@media(max-width:820px){.shots{grid-template-columns:1fr}}
+.shot{border:1px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden;transition:.3s;display:flex;flex-direction:column}
+.shot:hover{border-color:var(--line2);transform:translateY(-4px)}
+.shot .cap{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid var(--line)}
+.shot .cap .who{font-weight:750;font-size:15px}
+.shot .cap .verdict-tag{margin-left:auto;font-size:11px;font-family:var(--mono);padding:3px 10px;border-radius:20px}
+.shot .frame{padding:18px;display:grid;place-items:center;background:radial-gradient(circle at 50% 0%,rgba(139,92,246,.08),transparent 70%)}
+.browser{width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line2);background:#0d0d18}
+.browser .topbar{display:flex;gap:6px;padding:9px 12px;background:rgba(255,255,255,.04);align-items:center}
+.browser .topbar i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.browser .topbar .u{margin-left:12px;font-size:11px;color:var(--muted);font-family:var(--mono)}
+.browser img{width:100%;display:block;cursor:zoom-in}
+.phone{width:230px;max-width:78%;border-radius:26px;border:7px solid #15151f;box-shadow:0 18px 50px rgba(0,0,0,.5),inset 0 0 0 1px var(--line2);overflow:hidden;background:#000;position:relative}
+.phone::before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:70px;height:5px;border-radius:5px;background:#2a2a38;z-index:3}
+.phone img{width:100%;display:block;cursor:zoom-in}
+.shot .note{padding:14px 18px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);line-height:1.6}
+.shot .note .bc{color:var(--red);font-weight:700}
+.shot .note .gd{color:var(--green);font-weight:700}
+
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:200;background:rgba(4,4,10,.92);backdrop-filter:blur(8px);display:none;place-items:center;padding:40px;cursor:zoom-out}
+#lb.on{display:grid;animation:fade .3s}
+#lb img{max-width:94vw;max-height:88vh;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid var(--line2)}
+#lb .x{position:absolute;top:22px;right:28px;font-size:30px;color:#fff;cursor:pointer;opacity:.8}
+
+/* scenario (module 3) */
+.scn{border:1px solid var(--line);border-radius:20px;padding:0;overflow:hidden;background:var(--panel);transition:.3s}
+.scn:hover{border-color:var(--line2);transform:translateY(-4px)}
+.scn .top{padding:22px 24px 16px;background:linear-gradient(160deg,rgba(139,92,246,.12),transparent)}
+.scn .top .emo{font-size:26px}
+.scn .top h3{font-size:18px;font-weight:780;margin:8px 0 4px}
+.scn .rows{padding:8px 24px 24px}
+.scn .row{padding:13px 0;border-top:1px solid var(--line);font-size:13.5px}
+.scn .row .l{font-family:var(--mono);font-size:11px;letter-spacing:1px;margin-bottom:5px}
+.scn .row.pain .l{color:var(--red)}.scn .row.data .l{color:var(--amber)}.scn .row.fix .l{color:var(--green)}
+.scn .row .t{color:var(--muted)}
+
+/* idea cards */
+.idea{border:1px solid var(--line);border-radius:20px;padding:28px;background:var(--panel);position:relative;overflow:hidden}
+.idea .em{font-size:30px;margin-bottom:14px;display:block}
+.idea h3{font-size:20px;margin-bottom:10px}
+.idea p{color:var(--muted);font-size:14.5px}
+/* mini DJ demo */
+.dj{margin-top:20px;border:1px solid var(--line2);border-radius:14px;padding:16px;background:rgba(0,0,0,.2)}
+.dj .knob{display:flex;align-items:center;gap:12px;margin:11px 0}
+.dj .knob label{font-size:12.5px;width:60px;color:var(--muted)}
+.dj .knob input{flex:1;accent-color:var(--violet)}
+.dj .knob .val{font-family:var(--mono);font-size:12px;width:42px;text-align:right;color:var(--cyan)}
+.dj .say{margin-top:10px;width:100%;justify-content:center}
+
+footer{max-width:1180px;margin:40px auto 0;padding:60px 26px;border-top:1px solid var(--line);text-align:center}
+footer .big{font-size:clamp(22px,3.6vw,34px);font-weight:800;line-height:1.3;margin-bottom:18px}
+footer .big .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+footer .m{color:var(--muted);font-size:14px}
+
+/* sound toggle */
+#sfx{position:fixed;right:20px;bottom:20px;z-index:95;width:52px;height:52px;border-radius:50%;border:1px solid var(--line2);background:rgba(13,13,24,.8);backdrop-filter:blur(10px);cursor:pointer;display:grid;place-items:center;font-size:20px;transition:.25s}
+#sfx:hover{transform:scale(1.08);border-color:var(--cyan)}
+
+.callout{border-left:3px solid var(--cyan);background:var(--panel);padding:16px 20px;border-radius:0 12px 12px 0;margin:24px 0;font-size:14.5px;color:var(--muted)}
+.callout b{color:var(--text)}
+.disclaimer{font-size:12.5px;color:var(--muted);opacity:.7;margin-top:8px;font-style:italic}
+.linkpill{font-size:12px;font-family:var(--mono);color:var(--cyan);border:1px solid var(--line2);padding:4px 10px;border-radius:20px;margin:3px 5px 0 0;display:inline-block;transition:.2s}
+.linkpill:hover{background:var(--panel2);color:#fff}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<nav>
+  <span class="brand">◈ VOICE · 语音模型作品集</span>
+  <div class="links">
+    <a href="#hero">封面</a>
+    <a href="#tech">技术理解</a>
+    <a href="#eval">实测评测</a>
+    <a href="#scenario">元宝调优</a>
+    <a href="#ideas">产品想法</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header id="hero">
+  <canvas id="waveCanvas"></canvas>
+  <div class="wrap">
+    <div class="hero-tag">大模型策略产品 · 语音方向</div>
+    <h1>把<span class="g">语音效果</span>,<br>测成可量化的<span class="g">产品决策</span>。</h1>
+    <p class="sub">我亲手实测了 GPT-4o、元宝、豆包、ElevenLabs、MiniMax 的语音能力,从端到端对话、TTS 可控性到 ASR 鲁棒性,用边界 case 逼出每个模型的真实短板——并把它翻译成元宝可落地的调优策略。</p>
+    <div class="hero-cta">
+      <button class="btn primary" onclick="speakIntro()"><span class="ic">🔊</span> 让作品开口介绍自己</button>
+      <a class="btn" href="#eval"><span class="ic">🎧</span> 直接听我的实测录音</a>
+    </div>
+    <div class="hero-stats">
+      <div class="s"><div class="n" data-count="5">0</div><div class="l">实测语音产品</div></div>
+      <div class="s"><div class="n" data-count="3">0</div><div class="l">评测维度体系</div></div>
+      <div class="s"><div class="n" data-count="9">0</div><div class="l">一手 badcase 留证</div></div>
+      <div class="s"><div class="n" data-count="4">0</div><div class="l">真实对比录音</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MODULE 1: TECH ============ -->
+<section id="tech">
+  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 01 · 技术理解</span></div>
+  <h2 class="title reveal" data-d="1">语音模型的<span class="g">前沿框架</span>,我是这样拆解的</h2>
+  <p class="lead reveal" data-d="2">不止会用产品,更理解底层。四条主线——端到端 Omni、TTS 演进、语音 Agent、全模态——展示我对模型架构的深度认知。点击展开。</p>
+
+  <div class="reveal" data-d="2">
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="head"><span class="idx">01</span><h3>端到端 / Omni 语音大模型 —— 以 Qwen-Omni 为例</h3><span class="chev">▾</span></div>
+      <div class="body"><div class="inner">
+        <div class="li"><span><b>Thinker–Talker 架构:</b> Thinker 负责理解与生成文本(承载语义/情感),Talker 同时吃「Thinker 的 hidden states(上下文语义/情感)」+「text token(读哪些字)」生成 speech token。<b>突破点:</b>传统 TTS 只看到「有哪些字」,看不到字背后的情绪语气;这套架构让发声同时拿到「读什么 + 什么情绪」。</span></div>
+        <div class="li"><span><b>TMRoPE:</b> 时间对齐的多模态位置编码,解决音视频对齐问题。</span></div>
+        <div class="li"><span><b>全流式:</b> 输入端 block-wise processing 分块处理,输出端 sliding-window DiT,边想边说、低延迟。</span></div>
+        <div class="li"><span><b>解决「文字快、语音慢」的漏读:</b> Adaptive rate 动态调节生成节奏(不再固定一块配 N 音素)、interleave 交织 text-audio-text-audio、alignment 严格保序。</span></div>
+        <div class="li"><span><b>混合 MoE 架构:</b> 应对长音频与长上下文的效率。</span></div>
+      </div></div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="head"><span class="idx">02</span><h3>TTS 技术演进 —— 从 Tacotron 到解耦表示</h3><span class="chev">▾</span></div>
+      <div class="body"><div class="inner">
+        <div class="li"><span><b>Tacotron:</b> 用 attention 预测梅尔频谱,同时做文本-语音对齐。</span></div>
+        <div class="li"><span><b>FastSpeech:</b> 自回归(串行、易错且传染)→ 非自回归(并行);duration 模型预测每个音素时长;variance adaptor 强化音量/强弱/时长控制。</span></div>
+        <div class="li"><span><b>VITS:</b> 同一文本可对应多种自然发音,自然度跃升。</span></div>
+        <div class="li"><span><b>VALL-E:</b> 不预测梅尔频谱,改预测 codec token,把 TTS 当语言模型做 → 开启零样本克隆。</span></div>
+        <div class="li"><span><b>新方向① Flow matching / Diffusion(Seed、Voicebox):</b> 去噪式逐步生成、Masked 遮挡补全适合编辑、非自回归。优势:逐步生成、可声音编辑、高自然度与情绪可控、多样性。</span></div>
+        <div class="li"><span><b>新方向② CosyVoice:</b> 用有语义的 supervised semantic token 替换无语义 codec token → 生成更稳、吞字更少。</span></div>
+        <div class="li"><span><b>新方向③ NaturalSpeech:</b> 把语音拆成内容 / 韵律 / 音色 / 声学细节子空间分别建模。</span></div>
+      </div></div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="head"><span class="idx">03</span><h3>语音 Agent —— 从「会说话」到「会办事」</h3><span class="chev">▾</span></div>
+      <div class="body"><div class="inner">
+        <div class="li"><span><b>级联 vs 端到端 Agent:</b> 级联(ASR→LLM 带工具/RAG/记忆→TTS)可控易接工具但延迟叠加;端到端低延迟、保留语气但可控性难。</span></div>
+        <div class="li"><span><b>全双工与轮次管理:</b> 从 VAD 判停的割裂,走向可随时打断(barge-in)、边听边想边说。</span></div>
+        <div class="li"><span><b>工具调用的「填充语」:</b> 查资料/调 API 的空档需要思考音过渡,否则用户以为卡了。</span></div>
+        <div class="li"><span><b>记忆与人格一致性:</b> 长期记忆 + 音色/人设跨会话不漂移。</span></div>
+        <div class="li"><span><b>核心挑战:</b> 打断检测、错误恢复、噪声串话稳健性、端到端延迟预算(回合 &lt;1s、打断 &lt;300ms)。</span></div>
+      </div></div>
+    </div>
+
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="head"><span class="idx">04</span><h3>全模态(Omni) —— 语音不再单独存在</h3><span class="chev">▾</span></div>
+      <div class="body"><div class="inner">
+        <div class="li"><span><b>统一表示与统一 backbone:</b> 文/音/图/视频统一 token 化、共享主干,实现 any-to-any。</span></div>
+        <div class="li"><span><b>音视频时间对齐:</b> 支撑「看着画面说话」。</span></div>
+        <div class="li"><span><b>能力跃迁:</b> 从「语音问答」到「视频通话式 AI」——看你的画面、听你的语气、用合适情绪回应。</span></div>
+        <div class="li"><span><b>趋势判断:</b> 多模态实时交互成为下一代入口;音画一体生成把「理解」与「生成」打通。</span></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODULE 2: EVAL (CENTERPIECE) ============ -->
+<section id="eval">
+  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 02 · 一手实测 · 核心</span></div>
+  <h2 class="title reveal" data-d="1">我亲手测了<span class="g">5 款产品</span>,每个结论都<span class="g">有录音有截图</span></h2>
+  <p class="lead reveal" data-d="2">用故意设计的边界 case——气声、结巴、中英混读、数字/版本号、停顿重音——逼出模型真实短板。下面每一条都来自我的真实评测,可试听、可放大。</p>
+
+  <div class="tabs reveal" data-d="2">
+    <div class="tab active" onclick="switchTab(this,'p-e2e')">端到端对话<span class="badge">GPT·元宝·豆包</span></div>
+    <div class="tab" onclick="switchTab(this,'p-tts')">TTS 合成<span class="badge">ElevenLabs·MiniMax</span></div>
+    <div class="tab" onclick="switchTab(this,'p-asr')">ASR 识别<span class="badge">元宝·豆包</span></div>
+    <div class="tab" onclick="switchTab(this,'p-yb')">元宝功能专项</div>
+  </div>
+
+  <!-- 端到端 -->
+  <div class="panel-eval active" id="p-e2e">
+    <div class="verdicts reveal">
+      <div class="vd"><div class="name"><span class="pin" style="background:var(--green)"></span>GPT-4o 语音</div>
+        <ul><li><span class="ico">✅</span>语音控制能力强,自动帮我处理口癖</li><li><span class="ico">⚠️</span>声音自然度差</li><li><span class="ico">⚠️</span>输出速度最慢</li></ul></div>
+      <div class="vd"><div class="name"><span class="pin" style="background:var(--pink)"></span>豆包语音</div>
+        <ul><li><span class="ico">✅</span>情感表达力强</li><li><span class="ico">✅</span>输出速度最快</li><li><span class="ico">⚠️</span>控制力弱</li></ul></div>
+      <div class="vd"><div class="name"><span class="pin" style="background:var(--cyan)"></span>元宝语音</div>
+        <ul><li><span class="ico">✅</span>输出速度适中</li><li><span class="ico">✅</span>记忆机制强</li><li><span class="ico">✅</span>意图理解能力强(能真听懂)</li></ul></div>
+    </div>
+
+    <div class="shots reveal" data-d="1">
+      <div class="shot">
+        <div class="cap"><span class="who">GPT-4o · 口癖去除</span><span class="verdict-tag" style="color:var(--green);background:rgba(52,211,153,.12)">控制力 强</span></div>
+        <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">chatgpt voice</span></div><img src="assets/img/image1.png" alt="GPT-4o 口癖去除"/></div></div>
+        <div class="note">指令含大量口头语时,GPT-4o <span class="gd">自动清理「嗯/那个/就是」</span>再作答,控制力最强——代价是自然度与速度。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">豆包 · 停顿指令测试</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">控制力 弱 · badcase</span></div>
+        <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao voice</span></div><img src="assets/img/image2.png" alt="豆包把停顿一下读出来"/></div></div>
+        <div class="note">我要求「每点之间停顿一下」,豆包却把 <span class="bc">「停顿一下」四个字直接当文字念了出来</span>——典型的「控制指令被当成朗读内容」,印证其控制力短板。</div>
+      </div>
+    </div>
+    <div class="callout reveal">💡 <b>评测洞察:</b>同一个「打断 / 停顿」边界 case,GPT 用控制力赢、豆包用「把指令读出来」输、元宝则在意图理解上最稳——一个 case 就把三家的能力梯度测了出来。</div>
+    <div class="reveal"><span class="linkpill">📎 豆包对话记录</span><span class="linkpill">📎 ChatGPT 对话记录</span><span class="linkpill">📎 元宝对话记录</span></div>
+  </div>
+
+  <!-- TTS -->
+  <div class="panel-eval" id="p-tts">
+    <div class="callout reveal"><b>一句话结论:</b>两家自然度都很高,真正拉开差距的是 <b style="color:var(--cyan)">数字与专业符号的读音</b>——也就是产品上线最高频的「念指标 / 念金额 / 念版本号」场景。</div>
+
+    <!-- 数字读音 -->
+    <div class="reveal" data-d="1">
+      <div class="testbox">
+        <div class="lab">▣ 测试维度 01 · 数字读音(数字/日期/指标/缩写+百分比/电话/版本号)</div>
+        <div class="q">"订单金额是 12,356.78 元,优惠券抵扣 128.5 元。"　"会议时间是 2026 年 6 月 18 日 19 点 30 分。"</div>
+        <div class="q">"P95 延迟从 1.8 秒下降到 1.2 秒。"　"DAU 提升 12.6%,A/B 收益提升 2.1%。"　"请拨打 400-888-1234。"　"模型版本从 v1.5 升级到 v2.0。"</div>
+      </div>
+      <div class="ab">
+        <div class="player eleven" data-audio="assets/audio/elevenlabs-number.mp3">
+          <div class="ph"><span class="logo">ElevenLabs</span><span class="ver">v3</span></div>
+          <canvas class="viz"></canvas>
+          <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
+          <div class="verdict bad">⚠️ badcase:把「<span class="hl">A/B 收益</span>」读成了「<span class="hl">A 斜杠 B</span>」。数字格式整体处理强,但惯用语/符号读法掌握一般。</div>
+        </div>
+        <div class="player minimax" data-audio="assets/audio/minimax-number.mp3">
+          <div class="ph"><span class="logo">MiniMax</span><span class="ver">2.8 HD</span></div>
+          <canvas class="viz"></canvas>
+          <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
+          <div class="verdict bad">⚠️ badcase:①「<span class="hl">2026 年</span>」读成「<span class="hl">两千零二十六年</span>」(应读年份「二〇二六」);②「<span class="hl">P95</span>」读成「<span class="hl">P 九十五</span>」。ITN 规整有短板。</div>
+        </div>
+      </div>
+      <p class="disclaimer">评测意义:这些都是 ITN / 专业符号读音问题——直接命中语音助手「念金额、念指标、念版本号」最易翻车的场景。</p>
+    </div>
+
+    <!-- 中英夹杂 -->
+    <div class="reveal" data-d="2" style="margin-top:30px">
+      <div class="testbox">
+        <div class="lab">▣ 测试维度 02 · 中英夹杂</div>
+        <div class="q">"请比较 Qwen-Omni、MiniMax Speech 和 ElevenLabs 的 TTS 表现。"　"打开 QQ 音乐,播放 Taylor Swift 的 Cruel Summer。"</div>
+        <div class="q">"这篇文章提到了 ASR、VAD、TTS 和 Tool Calling。"　"Hume EVI 更关注情绪感知。"</div>
+      </div>
+      <div class="ab">
+        <div class="player eleven" data-audio="assets/audio/elevenlabs-mix.mp3">
+          <div class="ph"><span class="logo">ElevenLabs</span><span class="ver">v3</span></div>
+          <canvas class="viz"></canvas>
+          <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
+          <div class="verdict good">✅ 基本没问题,中英切换自然。</div>
+        </div>
+        <div class="player minimax" data-audio="assets/audio/minimax-mix.mp3">
+          <div class="ph"><span class="logo">MiniMax</span><span class="ver">2.8 HD</span></div>
+          <canvas class="viz"></canvas>
+          <div class="ctl"><button class="play">▶</button><div class="bar"><div class="fill"></div></div><span class="time">0:00 / 0:00</span></div>
+          <div class="verdict good">✅ 基本没问题,中英切换自然。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2 reveal" style="margin-top:30px">
+      <div class="card"><div class="glow"></div><div class="k">测试维度 03 · 停顿与重音</div><h3>两家均 ✅ 基本没问题</h3><p>"先说结论:这个方案能做,但要控制风险。""这里最重要的不是音色,而是 turn-taking。" 长句节奏、分点停顿表现稳定。</p></div>
+      <div class="card"><div class="glow"></div><div class="k">测试维度 04 · 语言种类</div><h3>ElevenLabs 支持港普</h3><p>ElevenLabs 覆盖港式普通话等更多语种变体;MiniMax 该项未在本轮覆盖(诚实标注)。</p></div>
+    </div>
+  </div>
+
+  <!-- ASR -->
+  <div class="panel-eval" id="p-asr">
+    <div class="callout reveal"><b>评测重点:</b>对「非标准语音」的鲁棒性——气声、结巴、上下文、中英夹杂。这些才是真实用户最容易卡住的输入。</div>
+    <div class="shots reveal" data-d="1">
+      <div class="shot">
+        <div class="cap"><span class="who">气声识别 · 元宝 vs 豆包</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">共性短板</span></div>
+        <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao · 气声</span></div><img src="assets/img/image3.png" alt="豆包气声识别失败"/></div></div>
+        <div class="note">同样用气声(耳语)说话:<span class="bc">元宝完全听不见、无任何反应</span>;豆包能收到声音但<span class="bc">识别不出气声内容</span>。暴露 ASR 对低能量/耳语语音的盲区。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">中英夹杂 · 元宝(QLoRA 误读)</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">badcase</span></div>
+        <div class="frame"><div class="phone"><img src="assets/img/image7.png" alt="元宝把QLoRA读错"/></div></div>
+        <div class="note">技术术语 <b>QLoRA</b> 被<span class="bc">读成「cue-ou-R-A」</span>逐字母乱读。中英混合 token 的发音歧义是跨产品共性问题。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">结巴(stutter)· 元宝</span><span class="verdict-tag" style="color:var(--amber);background:rgba(251,191,36,.12)">实测留证</span></div>
+        <div class="frame"><div class="phone"><img src="assets/img/image4.png" alt="元宝结巴识别"/></div></div>
+        <div class="note">口吃/重复语流下的识别表现——元宝实测截图留证。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">结巴(stutter)· 豆包</span><span class="verdict-tag" style="color:var(--amber);background:rgba(251,191,36,.12)">实测留证</span></div>
+        <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao · stutter</span></div><img src="assets/img/image5.png" alt="豆包结巴识别"/></div></div>
+        <div class="note">同条件对照豆包的结巴识别处理。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">中英夹杂 · 豆包(QLoRA 误读)</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">共性 badcase</span></div>
+        <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao · 中英夹杂</span></div><img src="assets/img/image8.png" alt="豆包把QLoRA读错"/></div></div>
+        <div class="note">豆包在回答语音中同样把 <b>QLoRA</b> <span class="bc">读成「cue-ou-R-A」</span>——证明这是技术范式的系统性短板,而非单家偶发。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">基于上下文的识别 · 元宝</span><span class="verdict-tag" style="color:var(--green);background:rgba(52,211,153,.12)">亮点</span></div>
+        <div class="frame"><div class="phone"><img src="assets/img/image6.png" alt="元宝上下文识别"/></div></div>
+        <div class="note">元宝能<span class="gd">结合上下文做语音识别与意图理解</span>,是其相对优势,呼应端到端环节「意图理解强」。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 元宝功能 -->
+  <div class="panel-eval" id="p-yb">
+    <div class="callout reveal">给本家产品既能夸(意图理解强)又能精准挑刺(昵称、气声)——正是岗位要的「高频使用、对效果敏感、有判断力」。</div>
+    <div class="shots reveal" data-d="1">
+      <div class="shot">
+        <div class="cap"><span class="who">会议转写 · 发言人昵称识别不当</span><span class="verdict-tag" style="color:var(--red);background:rgba(251,113,133,.12)">badcase</span></div>
+        <div class="frame"><div class="phone"><img src="assets/img/image9.png" alt="元宝发言人昵称识别不当"/></div></div>
+        <div class="note"><span class="bc">发言人标签/昵称识别不恰当</span>。<b>调优指向:</b>昵称走专名词典 + 热词偏置 + 声纹注册,避免误称、误标。</div>
+      </div>
+      <div class="shot">
+        <div class="cap"><span class="who">意图识别 & 上下文语音识别</span><span class="verdict-tag" style="color:var(--green);background:rgba(52,211,153,.12)">亮点</span></div>
+        <div class="frame"><div class="phone"><img src="assets/img/image6.png" alt="元宝意图识别"/></div></div>
+        <div class="note">元宝<span class="gd">意图识别与上下文语音识别能力强</span>,是值得保留与放大的产品优势。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 方法论 -->
+  <div class="reveal" style="margin-top:40px">
+    <div class="acc" onclick="toggleAcc(this)">
+      <div class="head"><span class="idx">≡</span><h3>我的评测方法论(点击展开)</h3><span class="chev">▾</span></div>
+      <div class="body"><div class="inner">
+        <div class="li"><span><b>用例 = 故意设计的边界 case:</b>气声、结巴、中英混读、数字/版本号/百分号、停顿重音,专挑高频又易错的场景。</span></div>
+        <div class="li"><span><b>三类对象分层测:</b>端到端看控制/情感/速度/意图,TTS 看可控/准确,ASR 看鲁棒性。</span></div>
+        <div class="li"><span><b>一手留证:</b>每个结论都配录音 / 截图 / 对话原始链接,可复现、可追溯。</span></div>
+        <div class="li"><span><b>跨产品对照:</b>同一 case 横跨多家,既看单点优劣,也识别「QLoRA→cue-ou-R-A」这类系统性共性问题。</span></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODULE 3: SCENARIO TUNING ============ -->
+<section id="scenario">
+  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 03 · 元宝场景调优</span></div>
+  <h2 class="title reveal" data-d="1">从实测 badcase,到<span class="g">元宝的产品策略</span></h2>
+  <p class="lead reveal" data-d="2">评测不止为排名,而是为决策。我把每个场景拆成「最痛痛点 → 从什么数据挖掘 → 产品策略调优」三步,这是策略产品的核心能力。</p>
+
+  <div class="grid g3 reveal" data-d="2">
+    <div class="scn">
+      <div class="top"><span class="emo">🧒</span><h3>儿童教育 / 陪伴</h3></div>
+      <div class="rows">
+        <div class="row pain"><div class="l">最痛痛点</div><div class="t">儿童发音不标准、CER 高;对读错字、读太快极敏感(影响学习)。</div></div>
+        <div class="row data"><div class="l">从哪挖掘</div><div class="t">分年龄段 CER;古诗/拼音/字母读音准确率;家长纠错与差评关键词聚类。</div></div>
+        <div class="row fix"><div class="l">策略调优</div><div class="t">童声自适应 + 儿童语料微调;放慢默认语速、加强停顿;多音字走强受控发音词典;纠音反馈闭环。</div></div>
+      </div>
+    </div>
+    <div class="scn">
+      <div class="top"><span class="emo">🗣️</span><h3>多人会议 / 转写纪要</h3></div>
+      <div class="rows">
+        <div class="row pain"><div class="l">最痛痛点</div><div class="t">多人串话、分不清谁说的、<b>发言人昵称错乱</b>(我实测元宝命中)、专名记错。</div></div>
+        <div class="row data"><div class="l">从哪挖掘</div><div class="t">说话人归属错误率;专名/术语错误 Top 词;用户手动改纪要的高频位置。</div></div>
+        <div class="row fix"><div class="l">策略调优</div><div class="t">说话人分离 + 声纹注册;会议词表热词注入;ITN+标点+顺滑;自动抽取决议/待办。</div></div>
+      </div>
+    </div>
+    <div class="scn">
+      <div class="top"><span class="emo">💬</span><h3>情感陪伴 / 语音对话</h3></div>
+      <div class="rows">
+        <div class="row pain"><div class="l">最痛痛点</div><div class="t">听不出情绪、回应没共情、被打断后丢上下文、语气出戏。</div></div>
+        <div class="row data"><div class="l">从哪挖掘</div><div class="t">会话时长/多轮深度/次日留存;打断后上下文丢失率;回合延迟分布。</div></div>
+        <div class="row fix"><div class="l">策略调优</div><div class="t">情感自适应韵律;降首包与打断延迟;人设音色一致性 + 安全围栏;副语言增强真人感。</div></div>
+      </div>
+    </div>
+    <div class="scn">
+      <div class="top"><span class="emo">🔤</span><h3>技术术语 / 专名读音</h3></div>
+      <div class="rows">
+        <div class="row pain"><div class="l">最痛痛点</div><div class="t">我实测 <b>QLoRA→cue-ou-R-A</b>、A/B→A斜杠B、P95→P九十五——专业语境集体翻车。</div></div>
+        <div class="row data"><div class="l">从哪挖掘</div><div class="t">合成→ASR 回测 CER;专名/缩写/版本号读音错误 Top 榜。</div></div>
+        <div class="row fix"><div class="l">策略调优</div><div class="t">领域术语发音词典 + G2P 人工校准;符号读法规则(A/B、P95、v2.0);ITN 增强。</div></div>
+      </div>
+    </div>
+    <div class="scn">
+      <div class="top"><span class="emo">🤫</span><h3>气声 / 弱信号输入</h3></div>
+      <div class="rows">
+        <div class="row pain"><div class="l">最痛痛点</div><div class="t">我实测气声下元宝「无反应」、豆包「听见但识别不出」——深夜/不便大声场景失效。</div></div>
+        <div class="row data"><div class="l">从哪挖掘</div><div class="t">低能量语音成功率;无响应率;静音误判(VAD)率。</div></div>
+        <div class="row fix"><div class="l">策略调优</div><div class="t">耳语/低能量语音增强训练;VAD 灵敏度自适应;弱信号兜底提示。</div></div>
+      </div>
+    </div>
+    <div class="scn">
+      <div class="top"><span class="emo">🚗</span><h3>车载 / 老人 / 无障碍</h3></div>
+      <div class="rows">
+        <div class="row pain"><div class="l">最痛痛点</div><div class="t">车载噪声大、老人语速慢/方言重、需低延迟与弱网/离线。</div></div>
+        <div class="row data"><div class="l">从哪挖掘</div><div class="t">分人群 CER;噪声场景成功率;弱网超时率。</div></div>
+        <div class="row fix"><div class="l">策略调优</div><div class="t">端侧小模型/离线兜底;降噪;慢语速自适应;方言覆盖。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODULE 4: IDEAS ============ -->
+<section id="ideas">
+  <div class="reveal"><span class="eyebrow"><span class="dot"></span>Part 04 · 产品想法</span></div>
+  <h2 class="title reveal" data-d="1">几个我想做的<span class="g">语音产品创意</span></h2>
+  <p class="lead reveal" data-d="2">对 AI 语音的好奇心与信念感,最终要落到「能不能想出别人没想到的产品形态」。</p>
+
+  <div class="grid g2 reveal" data-d="2">
+    <div class="idea">
+      <span class="em">🎛️</span>
+      <h3>语音调试 DJ 台</h3>
+      <p>生成 TTS 时提供一排可拖动旋钮——音量、音色、强度、情绪、语速——<b style="color:var(--text)">边拖边实时听到变化</b>,像调音台一样所见即所得,把抽象的「参数调优」变成可玩的体验。下面是一个用浏览器原生语音做的极简原型:</p>
+      <div class="dj">
+        <div class="knob"><label>语速</label><input type="range" min="0.5" max="2" step="0.05" value="1" id="djRate"><span class="val" id="djRateV">1.0</span></div>
+        <div class="knob"><label>音调</label><input type="range" min="0" max="2" step="0.05" value="1" id="djPitch"><span class="val" id="djPitchV">1.0</span></div>
+        <div class="knob"><label>音量</label><input type="range" min="0" max="1" step="0.05" value="1" id="djVol"><span class="val" id="djVolV">1.0</span></div>
+        <button class="btn primary say" onclick="djSpeak()"><span class="ic">🎙️</span> 拖动后点我试听</button>
+      </div>
+    </div>
+    <div class="idea">
+      <span class="em">🎨</span>
+      <h3>抽象 / 通感概念的语音具象化</h3>
+      <p>支持用<b style="color:var(--text)">通感、抽象语言</b>描述音色,例如「声音再 gay 一点」「声音像一块小蛋糕一样软软甜甜」「像深夜电台 DJ」「带点雨天的潮湿感」。</p>
+      <p style="margin-top:12px"><b style="color:var(--cyan)">技术落点:</b>自然语言 → 音色/情感 embedding 的映射(指令式音色生成,呼应 NaturalSpeech 的解耦表示、Hume 的情感控制)。</p>
+      <p style="margin-top:12px"><b style="color:var(--cyan)">为什么好:</b>普通用户不懂 pitch/temperature,但<b style="color:var(--text)">人人会用通感形容声音</b>——这是把专业能力产品化、平民化的关键洞察。</p>
+    </div>
+    <div class="idea">
+      <span class="em">🎚️</span>
+      <h3>情绪轨迹编辑器</h3>
+      <p>给一段长文本画一条「情绪曲线」(开心→紧张→释然),TTS 按曲线演绎,适合有声书与剧情类内容。</p>
+    </div>
+    <div class="idea">
+      <span class="em">🔁</span>
+      <h3>我的声音 · 风格迁移</h3>
+      <p>用自己的音色,一键切换「新闻播报 / 撒娇 / 严肃老板」等风格——音色不变、风格变。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="reveal">
+    <div class="big">文字讲给眼睛,<span class="g">声音讲给耳朵</span>。<br>这正是语音岗最该有的作品形态。</div>
+    <div class="m">实测产品 · 边界 case 留证 · 评测方法论 · 场景调优策略 · 产品创意　|　为「元宝-大模型策略产品(语音)」而作</div>
+  </div>
+</footer>
+
+<button id="sfx" title="开/关 背景声效">🔇</button>
+<div id="lb"><span class="x">×</span><img src="" alt="放大查看"/></div>
+<audio id="speech-bus"></audio>
+
+<script>
+/* ---------- progress + nav ---------- */
+const prog=document.getElementById('prog');
+addEventListener('scroll',()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
+
+/* ---------- reveal ---------- */
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- counters ---------- */
+const cio=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.count;let n=0;const step=Math.max(1,t/30);const tk=()=>{n+=step;if(n>=t){el.textContent=t;}else{el.textContent=Math.floor(n);requestAnimationFrame(tk);}};tk();cio.unobserve(el);}}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+/* ---------- accordion ---------- */
+function toggleAcc(el){
+  const open=el.classList.contains('open');
+  const body=el.querySelector('.body');
+  if(open){el.classList.remove('open');body.style.maxHeight=null;}
+  else{el.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}
+}
+
+/* ---------- tabs ---------- */
+function switchTab(tab,id){
+  document.querySelectorAll('#eval .tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.panel-eval').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // re-trigger reveals inside
+  document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('in'));
+}
+
+/* ---------- lightbox ---------- */
+const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
+document.querySelectorAll('.shot img').forEach(img=>img.addEventListener('click',()=>{lbImg.src=img.src;lb.classList.add('on');}));
+lb.addEventListener('click',()=>lb.classList.remove('on'));
+
+/* ---------- hero wave canvas ---------- */
+(function(){
+  const c=document.getElementById('waveCanvas'),x=c.getContext('2d');let w,h,t=0;
+  function rs(){w=c.width=c.offsetWidth*devicePixelRatio;h=c.height=c.offsetHeight*devicePixelRatio;}
+  rs();addEventListener('resize',rs);
+  const cols=[[34,211,238],[139,92,246],[236,72,153]];
+  function draw(){
+    x.clearRect(0,0,w,h);t+=0.006;
+    for(let k=0;k<3;k++){
+      x.beginPath();
+      const amp=h*0.10*(1+k*0.25), yb=h*(0.5+k*0.04), ph=t*(1+k*0.4);
+      for(let i=0;i<=w;i+=8){
+        const y=yb+Math.sin(i*0.004+ph)*amp*Math.sin(i*0.0009+t*0.7);
+        i===0?x.moveTo(i,y):x.lineTo(i,y);
+      }
+      const[r,g,b]=cols[k];
+      x.strokeStyle=`rgba(${r},${g},${b},${0.18-k*0.03})`;x.lineWidth=2*devicePixelRatio;x.stroke();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ---------- audio engine + custom players ---------- */
+let AC=null; const analysers=new WeakMap(); let current=null;
+function ensureAC(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC;}
+function fmt(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),x=Math.floor(s%60);return m+':'+(x<10?'0':'')+x;}
+
+document.querySelectorAll('.player').forEach(p=>{
+  const audio=new Audio(p.dataset.audio);audio.preload='metadata';
+  const playBtn=p.querySelector('.play'),fill=p.querySelector('.fill'),time=p.querySelector('.time'),
+        bar=p.querySelector('.bar'),viz=p.querySelector('.viz');
+  const vx=viz.getContext('2d');let raf=null;
+  function sizeViz(){viz.width=viz.offsetWidth*devicePixelRatio;viz.height=viz.offsetHeight*devicePixelRatio;}
+  sizeViz();addEventListener('resize',sizeViz);
+  const accent=p.classList.contains('eleven')?[96,165,250]:[240,171,252];
+
+  function connect(){
+    const ac=ensureAC();if(!ac||analysers.has(audio))return;
+    try{const src=ac.createMediaElementSource(audio);const an=ac.createAnalyser();an.fftSize=128;
+      src.connect(an);an.connect(ac.destination);analysers.set(audio,an);}catch(e){}
+  }
+  function drawViz(){
+    const an=analysers.get(audio);
+    vx.clearRect(0,0,viz.width,viz.height);
+    if(an){const n=an.frequencyBinCount,d=new Uint8Array(n);an.getByteFrequencyData(d);
+      const bw=viz.width/n;
+      for(let i=0;i<n;i++){const bh=(d[i]/255)*viz.height*0.95;
+        const[r,g,b]=accent;vx.fillStyle=`rgba(${r},${g},${b},${0.35+d[i]/255*0.65})`;
+        vx.fillRect(i*bw,viz.height-bh,bw*0.7,bh);}
+    }else{ // idle flatline
+      vx.strokeStyle='rgba(255,255,255,.12)';vx.beginPath();vx.moveTo(0,viz.height/2);vx.lineTo(viz.width,viz.height/2);vx.stroke();
+    }
+    if(!audio.paused)raf=requestAnimationFrame(drawViz);
+  }
+  playBtn.addEventListener('click',()=>{
+    ensureAC();connect();
+    if(audio.paused){
+      if(current&&current!==audio){current.pause();}
+      current=audio;audio.play();playBtn.textContent='❚❚';drawViz();
+    }else{audio.pause();playBtn.textContent='▶';}
+  });
+  audio.addEventListener('timeupdate',()=>{fill.style.width=(audio.currentTime/audio.duration*100||0)+'%';time.textContent=fmt(audio.currentTime)+' / '+fmt(audio.duration);});
+  audio.addEventListener('loadedmetadata',()=>{time.textContent='0:00 / '+fmt(audio.duration);});
+  audio.addEventListener('ended',()=>{playBtn.textContent='▶';cancelAnimationFrame(raf);drawViz();});
+  audio.addEventListener('pause',()=>{playBtn.textContent='▶';});
+  bar.addEventListener('click',(e)=>{const r=bar.getBoundingClientRect();audio.currentTime=(e.clientX-r.left)/r.width*audio.duration;});
+  drawViz();
+});
+
+/* ---------- hero speech ---------- */
+function speakIntro(){
+  if(!('speechSynthesis'in window)){alert('当前浏览器不支持语音合成,请用 Chrome/Edge 打开~');return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance('你好,我是这个岗位的候选人。我亲手实测了元宝、豆包、GPT、ElevenLabs 和 MiniMax 的语音能力,用边界 case 找出每个模型的真实短板,并把它翻译成可落地的产品调优策略。接下来,请用耳朵听我的评测。');
+  const zh=speechSynthesis.getVoices().find(v=>/zh|Chinese|中文/i.test(v.lang+v.name));if(zh)u.voice=zh;
+  u.lang='zh-CN';u.rate=1.05;speechSynthesis.speak(u);
+}
+if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=()=>{};
+
+/* ---------- DJ demo ---------- */
+const djRate=document.getElementById('djRate'),djPitch=document.getElementById('djPitch'),djVol=document.getElementById('djVol');
+function bindDJ(s,v){s.addEventListener('input',()=>document.getElementById(v).textContent=(+s.value).toFixed(1));}
+bindDJ(djRate,'djRateV');bindDJ(djPitch,'djPitchV');bindDJ(djVol,'djVolV');
+function djSpeak(){
+  if(!('speechSynthesis'in window)){alert('当前浏览器不支持语音合成~');return;}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance('这是一段可以实时调音的语音,你可以拖动语速、音调和音量,马上听到变化。');
+  u.lang='zh-CN';u.rate=+djRate.value;u.pitch=+djPitch.value;u.volume=+djVol.value;
+  const zh=speechSynthesis.getVoices().find(v=>/zh|Chinese|中文/i.test(v.lang+v.name));if(zh)u.voice=zh;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- ambient sfx toggle (idle hero hum via webaudio, off by default) ---------- */
+let ambient=null,ambGain=null,sfxOn=false;
+const sfxBtn=document.getElementById('sfx');
+sfxBtn.addEventListener('click',()=>{
+  const ac=ensureAC();if(!ac)return;
+  sfxOn=!sfxOn;
+  if(sfxOn){
+    sfxBtn.textContent='🔊';sfxBtn.style.borderColor='var(--cyan)';
+    ambient=ac.createOscillator();ambGain=ac.createGain();
+    const lfo=ac.createOscillator(),lfoG=ac.createGain();
+    ambient.type='sine';ambient.frequency.value=110;
+    lfo.frequency.value=0.15;lfoG.gain.value=6;lfo.connect(lfoG);lfoG.connect(ambient.frequency);
+    ambGain.gain.value=0.0;ambient.connect(ambGain);ambGain.connect(ac.destination);
+    ambient.start();lfo.start();ambGain.gain.linearRampToValueAtTime(0.04,ac.currentTime+1.5);
+    ambient._lfo=lfo;
+  }else{
+    sfxBtn.textContent='🔇';sfxBtn.style.borderColor='var(--line2)';
+    if(ambGain){ambGain.gain.linearRampToValueAtTime(0,ac.currentTime+0.6);}
+    setTimeout(()=>{try{ambient.stop();ambient._lfo.stop();}catch(e){}},700);
+  }
+});
+</script>
+</body>
+</html>
