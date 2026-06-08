@@ -484,6 +484,8 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   </div>
 
   <div class="panel-eval active" id="p-e2e">
+    <div class="callout reveal"><b>评测框架:</b>端到端我按 5 个维度系统评测 —— ① 控制力(口癖 / 指令遵循) ② 打断与停顿 ③ 情感表达 ④ 输出速度 ⑤ 记忆与意图理解。先给三家总览与完整维度对照,标 <span style="color:var(--a3)">★</span> 的是附实测截图的重点 case。</div>
+
     <div class="verdicts reveal">
       <div class="vd"><div class="name"><span class="pin" style="background:var(--good)"></span>GPT-4o 语音</div>
         <ul><li><span class="ico">✓</span>语音控制能力强,自动处理口癖</li><li><span class="ico">·</span>声音自然度差</li><li><span class="ico">·</span>输出速度最慢</li></ul></div>
@@ -492,14 +494,27 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
       <div class="vd"><div class="name"><span class="pin" style="background:var(--a1)"></span>元宝语音</div>
         <ul><li><span class="ico">✓</span>输出速度适中</li><li><span class="ico">✓</span>记忆机制强</li><li><span class="ico">✓</span>意图理解强(能真听懂)</li></ul></div>
     </div>
-    <div class="shots reveal" data-d="1">
+
+    <div class="tablewrap reveal" data-d="1" style="--sa:var(--a1)"><div class="tablescroll"><table class="dtable">
+      <thead><tr><th>评测维度</th><th>GPT-4o</th><th>元宝</th><th>豆包</th></tr></thead>
+      <tbody>
+        <tr><td class="pain">控制力 · 口癖 / 指令遵循</td><td><b style="color:var(--good)">强</b>,自动清理口头语 <span style="color:var(--a3)">★</span></td><td>无此能力</td><td>弱</td></tr>
+        <tr><td class="pain">打断 · 停顿控制</td><td><b style="color:var(--good)">强</b>,可控语速 / 停顿</td><td>—</td><td><b style="color:var(--bad)">弱</b>,把「停顿一下」读出来 <span style="color:var(--a3)">★</span></td></tr>
+        <tr><td class="pain">情感表达</td><td>偏弱(自然度差)</td><td>适中</td><td><b style="color:var(--good)">最强</b></td></tr>
+        <tr><td class="pain">输出速度</td><td>最慢</td><td>适中</td><td><b style="color:var(--good)">最快</b></td></tr>
+        <tr><td class="pain">记忆 · 意图理解</td><td>中</td><td><b style="color:var(--good)">最强</b>(能真听懂)</td><td>中</td></tr>
+      </tbody>
+    </table></div></div>
+
+    <div class="reveal" data-d="2" style="margin:26px 0 4px;font-size:13px;color:var(--ink-3)">下面两张是矩阵中标 <span style="color:var(--a3)">★</span> 的重点 case,附实测截图佐证:</div>
+    <div class="shots reveal" data-d="2">
       <div class="shot">
-        <div class="cap"><span class="who">GPT-4o · 口癖去除</span><span class="verdict-tag" style="color:var(--good);background:rgba(95,214,164,.12)">控制力 强</span></div>
+        <div class="cap"><span class="who">GPT-4o · 口癖去除</span><span class="verdict-tag" style="color:var(--good);background:rgba(95,214,164,.12)">★ 重点 · 控制力</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">chatgpt voice</span></div><img src="assets/img/image1.png" alt="GPT-4o 口癖去除"/></div></div>
         <div class="note">指令含大量口头语时,GPT-4o <span class="gd">自动清理「嗯/那个/就是」</span>再作答,控制力最强——代价是自然度与速度。</div>
       </div>
       <div class="shot">
-        <div class="cap"><span class="who">豆包 · 停顿指令测试</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">控制力 弱 · badcase</span></div>
+        <div class="cap"><span class="who">豆包 · 停顿指令测试</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">★ 重点 · 打断/停顿</span></div>
         <div class="frame"><div class="browser"><div class="topbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="u">doubao voice</span></div><img src="assets/img/image2.png" alt="豆包把停顿一下读出来"/></div></div>
         <div class="note">我要求「每点之间停顿一下」,豆包却把 <span class="bc">「停顿一下」四个字直接当文字念了出来</span>——典型的「控制指令被当成朗读内容」,印证其控制力短板。</div>
       </div>
