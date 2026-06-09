@@ -508,6 +508,8 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 .archfig .af-img{padding:16px;background:radial-gradient(circle at 50% -10%,rgba(167,139,250,.07),transparent 70%)}
 .archfig img{width:100%;display:block;border-radius:10px;cursor:zoom-in;box-shadow:0 14px 40px rgba(0,0,0,.4);border:1px solid var(--hair-2)}
 .archfig .af-cap{padding:13px 20px;border-top:1px solid var(--hair);font-size:11.5px;color:var(--ink-3);text-align:center;line-height:1.6}
+.archfig.flat .af-img{display:flex;justify-content:center}
+.archfig.flat img{width:auto;max-width:100%}
 /* ===== future: ecosystem penetration demo ===== */
 .ecodemo{border:1px solid var(--hair);border-radius:18px;background:var(--panel);padding:22px;margin-bottom:18px}
 .ecocmds{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px}
@@ -601,6 +603,10 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
       <div class="pstage" onclick="pipeStage(this,'output')"><div class="pt">🔊 输出</div><div class="ps">audio out</div></div>
     </div>
     <div class="pipe-detail" id="pipeDetail"><b>点击上方任意环节查看说明。</b>　整条链路:用户说话 → VAD 判断说没说完 → ASR 转文字 → NLU/LLM 理解并生成回答 → TTS 合成语音 → 播放。其中 <b>TTS 是我主攻的方向</b>,点它展开技术演进深潜。</div>
+    <div class="archfig flat reveal" data-d="2" style="margin-top:14px">
+      <div class="af-head">语音助手 Pipeline 路线图<span>VAD → ASR → NLU/LLM → TTS · 点击放大</span></div>
+      <div class="af-img"><img style="max-height:340px" src="assets/img/pipeline-route.jpg" alt="语音助手 Pipeline 路线图" onclick="document.querySelector('#lb img').src=this.src;document.getElementById('lb').classList.add('on')"/></div>
+    </div>
     <div class="ttsdeep" id="ttsDeep"><div class="inner2">
       <div class="dh">▣ TTS 技术演进 · 从 Tacotron 到解耦表示</div>
       <div class="tline2"><span class="yr">2017 · Tacotron</span><span>用 attention 预测梅尔频谱,同时做文本-语音对齐。</span></div>
@@ -610,6 +616,10 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
       <div class="tline2"><span class="yr">2024+ · Flow / Diffusion</span><span>Seed、Voicebox:去噪逐步生成、Masked 可编辑、高自然度与情绪可控。</span></div>
       <div class="tline2"><span class="yr">2024+ · CosyVoice</span><span>用有语义的 supervised semantic token 替换 codec token → 更稳、吞字更少。</span></div>
       <div class="tline2"><span class="yr">2024+ · NaturalSpeech</span><span>把语音拆成 内容 / 韵律 / 音色 / 声学细节 子空间分别建模。</span></div>
+      <div class="archfig flat" style="margin-top:18px">
+        <div class="af-head">TTS 基础架构 + 演进路线全景<span>点击放大看细节</span></div>
+        <div class="af-img"><img style="max-height:540px" src="assets/img/tts-arch.jpg" alt="TTS 架构与演进图" onclick="document.querySelector('#lb img').src=this.src;document.getElementById('lb').classList.add('on')"/></div>
+      </div>
     </div></div>
   </div>
 
@@ -1397,7 +1407,7 @@ const pipeMap={
 function pipeStage(el,key){
  document.querySelectorAll('.pstage').forEach(s=>s.classList.remove('on'));el.classList.add('on');
  document.getElementById('pipeDetail').innerHTML=pipeMap[key];
- if(key==='tts'){const d=document.getElementById('ttsDeep');const open=d.style.maxHeight&&d.style.maxHeight!=='0px';d.style.maxHeight=open?'0px':d.scrollHeight+'px';}
+ if(key==='tts'){const d=document.getElementById('ttsDeep');const open=d.style.maxHeight&&d.style.maxHeight!=='0px';d.style.maxHeight=open?'0px':'2200px';}
 }
 const omniMap={
  tt:'<b>Thinker–Talker 架构</b> · Thinker 理解并生成文本（承载语义/情感），Talker 同时吃 Thinker 的 hidden states + text token 生成 speech token，让发声同时拿到「读什么 + 什么情绪」。',
