@@ -375,6 +375,96 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 .cmp-item .desc .bc{color:var(--bad);font-weight:650}.cmp-item .desc .gd{color:var(--good);font-weight:650}
 .cmp-concl{padding:14px 20px;border-top:1px solid var(--hair);font-size:13px;color:var(--ink-2);background:rgba(255,255,255,.02);line-height:1.7}
 .cmp-concl b{color:var(--ink)}
+/* ===== chapter covers ===== */
+.cover{min-height:86vh;display:flex;flex-direction:column;justify-content:center;max-width:var(--maxw);margin:0 auto;padding:80px 34px;position:relative}
+.cover .cv-no{font-family:var(--mono);font-size:clamp(64px,13vw,150px);font-weight:800;line-height:.9;color:transparent;-webkit-text-stroke:1.4px var(--hair-2);letter-spacing:-.03em}
+.cover .cv-en{font-family:var(--mono);font-size:12.5px;letter-spacing:.32em;color:var(--a1);margin:22px 0;text-transform:uppercase}
+.cover .cv-title{font-size:clamp(34px,6vw,66px);font-weight:850;letter-spacing:-.03em;line-height:1.12}
+.cover .cv-title .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cover .cv-lead{margin-top:24px;font-size:clamp(15px,1.7vw,18.5px);color:var(--ink-2);max-width:680px;font-weight:350;line-height:1.75}
+.cover .cv-rule{width:60px;height:2px;background:var(--grad);margin-top:34px;border-radius:2px}
+@media(max-width:760px){.cover{min-height:68vh;padding:60px 22px}}
+/* ===== tech routes ===== */
+.route{margin-bottom:36px}
+.route-label{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-family:var(--mono);letter-spacing:.06em;color:var(--a2);border:1px solid var(--hair-2);background:var(--panel);padding:7px 15px;border-radius:30px;margin-bottom:20px}
+.pipeline{display:flex;align-items:stretch;gap:5px;flex-wrap:wrap;border:1px solid var(--hair);border-radius:18px;padding:16px;background:var(--panel)}
+.pstage{flex:1;min-width:92px;border:1px solid var(--hair);border-radius:13px;padding:15px 10px;text-align:center;cursor:pointer;transition:.3s;background:rgba(255,255,255,.02)}
+.pstage:hover{border-color:var(--hair-2);background:var(--panel-2)}
+.pstage.on{border-color:var(--a1);background:rgba(124,199,255,.09)}
+.pstage .pt{font-weight:700;font-size:14px}
+.pstage .ps{font-size:10px;color:var(--ink-3);margin-top:3px;font-family:var(--mono)}
+.pstage.tts{flex:1.5;border-color:rgba(167,139,250,.5);background:linear-gradient(160deg,rgba(167,139,250,.18),rgba(124,199,255,.06));position:relative}
+.pstage.tts .pt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pstage.tts .badge2{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:9px;font-family:var(--mono);background:var(--grad);color:#0b0b14;padding:2px 9px;border-radius:20px;white-space:nowrap;font-weight:700}
+.parrow{display:flex;align-items:center;color:var(--ink-4);font-size:13px}
+@media(max-width:680px){.parrow{display:none}.pstage{min-width:44%}}
+.pipe-detail{margin-top:14px;border:1px solid var(--hair);border-radius:13px;padding:16px 18px;font-size:13.5px;color:var(--ink-2);line-height:1.7;background:rgba(0,0,0,.16)}
+.pipe-detail b{color:var(--ink)}
+.ttsdeep{max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.16,.8,.3,1)}
+.ttsdeep .inner2{padding-top:16px}
+.ttsdeep .dh{font-size:12.5px;color:var(--a2);font-family:var(--mono);letter-spacing:.06em;margin-bottom:12px}
+.tline2{display:flex;gap:14px;margin:11px 0;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+.tline2 .yr{flex:0 0 124px;font-family:var(--mono);font-size:12px;color:var(--a1)}
+.tline2 b{color:var(--ink)}
+@media(max-width:600px){.tline2{flex-direction:column;gap:2px}.tline2 .yr{flex:none}}
+.e2eflow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;border:1px solid var(--hair);border-radius:18px;padding:18px 14px;background:var(--panel);margin-bottom:18px}
+.eblk{flex:1;min-width:86px;border:1px solid var(--hair-2);border-radius:12px;padding:13px 9px;text-align:center;background:rgba(255,255,255,.02)}
+.eblk .et{font-weight:700;font-size:13px}.eblk .es{font-size:9.5px;color:var(--ink-3);margin-top:2px;font-family:var(--mono)}
+.eblk.think{border-color:rgba(124,199,255,.45);background:rgba(124,199,255,.07)}
+.eblk.talk{border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.08)}
+.eflow-arr{color:var(--a2);font-size:14px}
+@media(max-width:680px){.eflow-arr{display:none}.eblk{min-width:44%}}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+.chipx{border:1px solid var(--hair-2);background:var(--panel);border-radius:30px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:.25s}
+.chipx:hover{border-color:var(--a2)}
+.chipx.on{background:var(--grad);color:#0b0b14;border:1px solid transparent}
+.chip-detail{border:1px solid var(--hair);border-radius:13px;padding:16px 18px;font-size:13.5px;color:var(--ink-2);line-height:1.7;background:rgba(0,0,0,.16)}
+.chip-detail b{color:var(--ink)}
+.imgslot{margin-top:14px;border:1px dashed var(--hair-2);border-radius:13px;padding:22px;text-align:center;font-size:12.5px;color:var(--ink-3)}
+/* ===== future: agent vs assistant ===== */
+.vsgrid{display:grid;grid-template-columns:1fr auto 1fr;border:1px solid var(--hair);border-radius:18px;overflow:hidden;background:var(--panel)}
+@media(max-width:760px){.vsgrid{grid-template-columns:1fr}}
+.vscol{padding:24px}
+.vscol.old{background:rgba(255,255,255,.014)}
+.vscol.new{background:linear-gradient(160deg,rgba(167,139,250,.09),transparent)}
+.vscol .vh{font-weight:750;font-size:15.5px;margin-bottom:14px}
+.vscol.old .vh{color:var(--ink-3)}.vscol.new .vh{color:var(--a2)}
+.vsrow{font-size:13px;color:var(--ink-2);padding:11px 0;border-top:1px solid var(--hair);line-height:1.55}
+.vsrow .rl{font-size:9.5px;font-family:var(--mono);color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:3px}
+.vsmid{display:grid;place-items:center;border-left:1px solid var(--hair);border-right:1px solid var(--hair);padding:8px}
+.vsmid span{writing-mode:vertical-rl;font-family:var(--mono);font-size:11px;color:var(--a3);letter-spacing:.14em}
+@media(max-width:760px){.vsmid{border:none;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}.vsmid span{writing-mode:horizontal-tb}}
+.vsfoot{margin-top:20px;text-align:center;font-size:16px;font-weight:750}
+.vsfoot .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* ===== future: omni convergence ===== */
+.omni-flow{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;border:1px solid var(--hair);border-radius:18px;padding:30px 20px;background:var(--panel)}
+.omods{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.omods span{border:1px solid var(--hair-2);border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;text-align:center;background:rgba(255,255,255,.03)}
+.omods span:nth-child(1){color:#7cc7ff}.omods span:nth-child(2){color:#5fd6a4}.omods span:nth-child(3){color:#f0c277}.omods span:nth-child(4){color:#f4889a}
+.oarrow{position:relative;width:54px;height:2px;background:linear-gradient(90deg,var(--hair-2),var(--a2))}
+.oarrow::after{content:"";position:absolute;top:-2.5px;left:0;width:7px;height:7px;border-radius:50%;background:var(--a2);box-shadow:0 0 9px var(--a2);animation:oflow 1.7s linear infinite}
+@keyframes oflow{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:48px;opacity:0}}
+.ocore{border:1px solid rgba(167,139,250,.5);border-radius:14px;padding:18px 22px;text-align:center;font-weight:750;font-size:15px;background:radial-gradient(circle,rgba(167,139,250,.18),transparent);animation:opulse 2.6s ease-in-out infinite}
+.ocore small{display:block;font-size:9.5px;color:var(--ink-3);font-weight:400;font-family:var(--mono);margin-top:3px}
+@keyframes opulse{50%{box-shadow:0 0 0 7px rgba(167,139,250,.06)}}
+.oany{border:1px solid rgba(124,199,255,.45);border-radius:12px;padding:15px 18px;font-weight:700;font-size:14px;color:#7cc7ff;background:rgba(124,199,255,.06);text-align:center}
+@media(max-width:680px){.oarrow{transform:rotate(90deg)}}
+/* ===== scenario diagnostic chains ===== */
+.diaglist{margin-top:22px;border:1px solid var(--hair);border-radius:16px;overflow:hidden}
+.diag{display:grid;grid-template-columns:42px 1fr 18px 1.15fr 18px 1.3fr;gap:12px;align-items:center;padding:16px 18px;border-top:1px solid var(--hair);transition:.25s}
+.diag:first-child{border-top:none}
+.diag.ex{cursor:pointer}.diag.ex:hover{background:rgba(255,255,255,.025)}
+.diag .ic{width:36px;height:36px;color:var(--sa)}
+.diag .seg .lbl{font-size:9px;font-family:var(--mono);color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.diag .seg .v{font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.diag .seg.pain .v{color:var(--ink);font-weight:650;font-size:13.5px}
+.diag .seg.pain .v b{color:var(--bad)}
+.diag .arr{color:var(--ink-4);font-size:13px;text-align:center}
+.diag .extra{grid-column:1/-1;max-height:0;overflow:hidden;transition:max-height .4s;font-size:12.5px;color:var(--ink-2);line-height:1.6}
+.diag.open .extra{max-height:170px;margin-top:10px;padding-top:12px;border-top:1px dashed var(--hair-2)}
+.diag .extra b{color:var(--sa)}
+.diag .tag-more{font-size:9px;font-family:var(--mono);color:var(--sa);border:1px solid var(--hair-2);border-radius:20px;padding:2px 7px;margin-left:6px;white-space:nowrap}
+@media(max-width:720px){.diag{display:block}.diag .ic{float:left;margin:0 12px 6px 0}.diag .arr{display:none}.diag .seg{margin:7px 0}}
 </style>
 </head>
 <body>
@@ -412,67 +502,92 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   <div class="scroll-hint"><span>Scroll</span><span class="line"></span></div>
 </header>
 
+<!-- COVER 01 -->
+<section class="cover" id="cover-01">
+  <div class="cv-no reveal">01</div>
+  <div class="cv-en reveal" data-d="1">Technical Understanding</div>
+  <div class="cv-title reveal" data-d="1">语音技术<span class="g">体系认知</span></div>
+  <div class="cv-lead reveal" data-d="2">Pipeline & 端到端 —— 对语音模型核心框架与技术演进的系统理解。</div>
+  <div class="cv-rule reveal" data-d="3"></div>
+</section>
+
 <!-- MODULE 1 -->
 <section id="tech">
   <div class="sec-head">
-    <div class="kicker reveal"><span class="idx">01</span><span class="rule"></span>技术理解</div>
-    <h2 class="title reveal" data-d="1">语音模型的<span class="g">前沿框架</span>,<br>我这样拆解</h2>
-    <p class="lead reveal" data-d="2">不止会用产品,更理解底层。四条主线——端到端 Omni、TTS 演进、语音 Agent、全模态——展示我对模型架构的<em>深度认知</em>。点击展开。</p>
+    <div class="kicker reveal"><span class="idx">01</span><span class="rule"></span>语音技术体系认知</div>
+    <h2 class="title reveal" data-d="1">语音核心技术<span class="g">体系与演进</span></h2>
+    <p class="lead reveal" data-d="2">语音技术有两条主线:<em>传统级联 Pipeline</em> 与 <em>端到端融合</em>。下面分别拆解,重点落在我主攻的 <em>TTS</em>。</p>
   </div>
 
-  <div class="reveal" data-d="2">
-    <div class="acc" onclick="toggleAcc(this)">
-      <div class="head"><span class="idx">01</span><h3>端到端 / Omni 语音大模型 —— 以 Qwen-Omni 为例</h3><span class="chev">▾</span></div>
-      <div class="body"><div class="inner">
-        <div class="li"><span><b>Thinker–Talker 架构:</b> Thinker 负责理解与生成文本(承载语义/情感),Talker 同时吃「Thinker 的 hidden states(上下文语义/情感)」+「text token(读哪些字)」生成 speech token。<b>突破点:</b>传统 TTS 只看到「有哪些字」,看不到字背后的情绪语气;这套架构让发声同时拿到「读什么 + 什么情绪」。</span></div>
-        <div class="li"><span><b>TMRoPE:</b> 时间对齐的多模态位置编码,解决音视频对齐问题。</span></div>
-        <div class="li"><span><b>全流式:</b> 输入端 block-wise processing 分块处理,输出端 sliding-window DiT,边想边说、低延迟。</span></div>
-        <div class="li"><span><b>解决「文字快、语音慢」的漏读:</b> Adaptive rate 动态调节生成节奏(不再固定一块配 N 音素)、interleave 交织 text-audio-text-audio、alignment 严格保序。</span></div>
-        <div class="li"><span><b>混合 MoE 架构:</b> 应对长音频与长上下文的效率。</span></div>
-      </div></div>
+  <!-- 路线一 · pipeline -->
+  <div class="route reveal" data-d="1">
+    <div class="route-label">◷ 路线一 · 传统级联 Pipeline</div>
+    <div class="pipeline">
+      <div class="pstage" onclick="pipeStage(this,'input')"><div class="pt">🎙 输入</div><div class="ps">audio in</div></div>
+      <div class="parrow">→</div>
+      <div class="pstage" onclick="pipeStage(this,'vad')"><div class="pt">VAD</div><div class="ps">端点检测</div></div>
+      <div class="parrow">→</div>
+      <div class="pstage" onclick="pipeStage(this,'asr')"><div class="pt">ASR</div><div class="ps">语音转文字</div></div>
+      <div class="parrow">→</div>
+      <div class="pstage" onclick="pipeStage(this,'nlu')"><div class="pt">NLU / LLM</div><div class="ps">理解 + 生成</div></div>
+      <div class="parrow">→</div>
+      <div class="pstage tts" onclick="pipeStage(this,'tts')"><span class="badge2">点我展开深潜 ▾</span><div class="pt">TTS</div><div class="ps">文字转语音 · 重点</div></div>
+      <div class="parrow">→</div>
+      <div class="pstage" onclick="pipeStage(this,'output')"><div class="pt">🔊 输出</div><div class="ps">audio out</div></div>
     </div>
-
-    <div class="acc" onclick="toggleAcc(this)">
-      <div class="head"><span class="idx">02</span><h3>TTS 技术演进 —— 从 Tacotron 到解耦表示</h3><span class="chev">▾</span></div>
-      <div class="body"><div class="inner">
-        <div class="li"><span><b>Tacotron:</b> 用 attention 预测梅尔频谱,同时做文本-语音对齐。</span></div>
-        <div class="li"><span><b>FastSpeech:</b> 自回归(串行、易错且传染)→ 非自回归(并行);duration 模型预测每个音素时长;variance adaptor 强化音量/强弱/时长控制。</span></div>
-        <div class="li"><span><b>VITS:</b> 同一文本可对应多种自然发音,自然度跃升。</span></div>
-        <div class="li"><span><b>VALL-E:</b> 不预测梅尔频谱,改预测 codec token,把 TTS 当语言模型做 → 开启零样本克隆。</span></div>
-        <div class="li"><span><b>新方向① Flow matching / Diffusion(Seed、Voicebox):</b> 去噪式逐步生成、Masked 遮挡补全适合编辑、非自回归。优势:逐步生成、可声音编辑、高自然度与情绪可控、多样性。</span></div>
-        <div class="li"><span><b>新方向② CosyVoice:</b> 用有语义的 supervised semantic token 替换无语义 codec token → 生成更稳、吞字更少。</span></div>
-        <div class="li"><span><b>新方向③ NaturalSpeech:</b> 把语音拆成内容 / 韵律 / 音色 / 声学细节子空间分别建模。</span></div>
-      </div></div>
-    </div>
-
-    <div class="acc" onclick="toggleAcc(this)">
-      <div class="head"><span class="idx">03</span><h3>语音 Agent —— 从「会说话」到「会办事」</h3><span class="chev">▾</span></div>
-      <div class="body"><div class="inner">
-        <div class="li"><span><b>级联 vs 端到端 Agent:</b> 级联(ASR→LLM 带工具/RAG/记忆→TTS)可控易接工具但延迟叠加;端到端低延迟、保留语气但可控性难。</span></div>
-        <div class="li"><span><b>全双工与轮次管理:</b> 从 VAD 判停的割裂,走向可随时打断(barge-in)、边听边想边说。</span></div>
-        <div class="li"><span><b>工具调用的「填充语」:</b> 查资料/调 API 的空档需要思考音过渡,否则用户以为卡了。</span></div>
-        <div class="li"><span><b>记忆与人格一致性:</b> 长期记忆 + 音色/人设跨会话不漂移。</span></div>
-        <div class="li"><span><b>核心挑战:</b> 打断检测、错误恢复、噪声串话稳健性、端到端延迟预算(回合 &lt;1s、打断 &lt;300ms)。</span></div>
-      </div></div>
-    </div>
-
-    <div class="acc" onclick="toggleAcc(this)">
-      <div class="head"><span class="idx">04</span><h3>全模态(Omni) —— 语音不再单独存在</h3><span class="chev">▾</span></div>
-      <div class="body"><div class="inner">
-        <div class="li"><span><b>统一表示与统一 backbone:</b> 文/音/图/视频统一 token 化、共享主干,实现 any-to-any。</span></div>
-        <div class="li"><span><b>音视频时间对齐:</b> 支撑「看着画面说话」。</span></div>
-        <div class="li"><span><b>能力跃迁:</b> 从「语音问答」到「视频通话式 AI」——看你的画面、听你的语气、用合适情绪回应。</span></div>
-        <div class="li"><span><b>趋势判断:</b> 多模态实时交互成为下一代入口;音画一体生成把「理解」与「生成」打通。</span></div>
-      </div></div>
-    </div>
+    <div class="pipe-detail" id="pipeDetail"><b>点击上方任意环节查看说明。</b>　整条链路:用户说话 → VAD 判断说没说完 → ASR 转文字 → NLU/LLM 理解并生成回答 → TTS 合成语音 → 播放。其中 <b>TTS 是我主攻的方向</b>,点它展开技术演进深潜。</div>
+    <div class="ttsdeep" id="ttsDeep"><div class="inner2">
+      <div class="dh">▣ TTS 技术演进 · 从 Tacotron 到解耦表示</div>
+      <div class="tline2"><span class="yr">2017 · Tacotron</span><span>用 attention 预测梅尔频谱,同时做文本-语音对齐。</span></div>
+      <div class="tline2"><span class="yr">2019 · FastSpeech</span><span>自回归(串行易错)→ <b>非自回归</b>(并行);duration 模型预测音素时长;variance adaptor 控音量/强弱/时长。</span></div>
+      <div class="tline2"><span class="yr">2021 · VITS</span><span>同一文本可对应多种自然发音,<b>自然度跃升</b>。</span></div>
+      <div class="tline2"><span class="yr">2023 · VALL-E</span><span>不预测频谱,改预测 codec token,把 TTS 当语言模型做 → <b>开启零样本克隆</b>。</span></div>
+      <div class="tline2"><span class="yr">2024+ · Flow / Diffusion</span><span>Seed、Voicebox:去噪逐步生成、Masked 可编辑、高自然度与情绪可控。</span></div>
+      <div class="tline2"><span class="yr">2024+ · CosyVoice</span><span>用有语义的 supervised semantic token 替换 codec token → 更稳、吞字更少。</span></div>
+      <div class="tline2"><span class="yr">2024+ · NaturalSpeech</span><span>把语音拆成 内容 / 韵律 / 音色 / 声学细节 子空间分别建模。</span></div>
+    </div></div>
   </div>
+
+  <!-- 路线二 · 端到端 -->
+  <div class="route reveal" data-d="2">
+    <div class="route-label">⛬ 路线二 · 端到端融合(以 Qwen-Omni 为例)</div>
+    <div class="e2eflow">
+      <div class="eblk"><div class="et">输入</div><div class="es">文/音/图/视频</div></div>
+      <div class="eflow-arr">→</div>
+      <div class="eblk think"><div class="et">Thinker</div><div class="es">理解·生成文本</div></div>
+      <div class="eflow-arr">→</div>
+      <div class="eblk talk"><div class="et">Talker</div><div class="es">生成 speech token</div></div>
+      <div class="eflow-arr">→</div>
+      <div class="eblk"><div class="et">Codec / Vocoder</div><div class="es">token→波形</div></div>
+      <div class="eflow-arr">→</div>
+      <div class="eblk"><div class="et">🔊 输出</div><div class="es">低延迟流式</div></div>
+    </div>
+    <div class="chips">
+      <div class="chipx on" onclick="omniChip(this,'tt')">Thinker–Talker</div>
+      <div class="chipx" onclick="omniChip(this,'tmrope')">TMRoPE</div>
+      <div class="chipx" onclick="omniChip(this,'stream')">全流式</div>
+      <div class="chipx" onclick="omniChip(this,'rate')">漏读治理</div>
+      <div class="chipx" onclick="omniChip(this,'moe')">混合 MoE</div>
+    </div>
+    <div class="chip-detail" id="omniDetail"><b>Thinker–Talker 架构</b> · Thinker 理解并生成文本(承载语义/情感),Talker 同时吃 Thinker 的 hidden states + text token 生成 speech token,让发声同时拿到「读什么 + 什么情绪」——这是传统 TTS 做不到的。</div>
+    <div class="imgslot">📐 Qwen2.5-Omni 论文级架构图位 · 你把图片文件发我后嵌入此处</div>
+  </div>
+</section>
+
+<!-- COVER 02 -->
+<section class="cover" id="cover-02">
+  <div class="cv-no reveal">02</div>
+  <div class="cv-en reveal" data-d="1">Hands-on Evaluation</div>
+  <div class="cv-title reveal" data-d="1">主流语音产品<span class="g">实测评测</span></div>
+  <div class="cv-lead reveal" data-d="2">横向实测 GPT-4o、元宝、豆包、ElevenLabs、MiniMax 的端到端 / TTS / ASR 能力。</div>
+  <div class="cv-rule reveal" data-d="3"></div>
 </section>
 
 <!-- MODULE 2 -->
 <section id="eval">
   <div class="sec-head">
     <div class="kicker reveal"><span class="idx">02</span><span class="rule"></span>一手实测 · 核心</div>
-    <h2 class="title reveal" data-d="1">我亲手测了 <span class="g">5 款产品</span>,<br>每个结论都<span class="serif g">有录音有截图</span></h2>
+    <h2 class="title reveal" data-d="1">主流语音产品 · <span class="g">个人评测报告</span></h2>
     <p class="lead reveal" data-d="2">用故意设计的边界 case——气声、结巴、中英混读、数字/版本号、停顿重音——逼出模型真实短板。下面每一条都来自我的真实评测,<em>可试听、可放大</em>。</p>
   </div>
 
@@ -480,7 +595,7 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
     <div class="tab active" onclick="switchTab(this,'p-e2e')">端到端对话<span class="badge">GPT·元宝·豆包</span></div>
     <div class="tab" onclick="switchTab(this,'p-tts')">TTS 合成<span class="badge">ElevenLabs·MiniMax</span></div>
     <div class="tab" onclick="switchTab(this,'p-asr')">ASR 识别<span class="badge">元宝·豆包</span></div>
-    <div class="tab" onclick="switchTab(this,'p-yb')">元宝功能专项</div>
+    <div class="tab" onclick="switchTab(this,'p-yb')">其他语音功能</div>
   </div>
 
   <div class="panel-eval active" id="p-e2e">
@@ -524,6 +639,7 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   </div>
 
   <div class="panel-eval" id="p-tts">
+    <div class="callout reveal"><b>评测框架:</b>TTS 我按 3 个维度评测 —— ① 数字读音(ITN / 专业符号) ② 中英夹杂 ③ 停顿与重音。每个维度均附 ElevenLabs 与 MiniMax 的真实合成录音 <b style="color:var(--a1)">A/B 盲听对照</b>。</div>
     <div class="callout reveal"><b>一句话结论:</b>两家自然度都很高,真正拉开差距的是 <b style="color:var(--a1)">数字与专业符号的读音</b>——也就是产品上线最高频的「念指标 / 念金额 / 念版本号」场景。</div>
     <div class="reveal" data-d="1">
       <div class="testbox">
@@ -589,7 +705,6 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
         </div>
       </div>
     </div>
-    <div class="card reveal" data-d="2" style="margin-top:30px"><div class="k">测试维度 04 · 语言种类</div><h3>ElevenLabs 支持港普</h3><p>ElevenLabs 覆盖港式普通话等更多语种变体;MiniMax 该项未在本轮覆盖(诚实标注)。</p></div>
   </div>
 
   <div class="panel-eval" id="p-asr">
@@ -676,7 +791,6 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   </div>
 
   <div class="panel-eval" id="p-yb">
-    <div class="callout reveal">给本家产品既能夸(意图理解强)又能精准挑刺(昵称、气声)——正是岗位要的「高频使用、对效果敏感、有判断力」。</div>
     <div class="shots reveal" data-d="1">
       <div class="shot">
         <div class="cap"><span class="who">会议转写 · 发言人昵称识别不当</span><span class="verdict-tag" style="color:var(--bad);background:rgba(244,136,154,.12)">badcase</span></div>
@@ -691,24 +805,22 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
     </div>
   </div>
 
-  <div class="reveal" style="margin-top:42px">
-    <div class="acc" onclick="toggleAcc(this)">
-      <div class="head"><span class="idx">≡</span><h3>我的评测方法论(点击展开)</h3><span class="chev">▾</span></div>
-      <div class="body"><div class="inner">
-        <div class="li"><span><b>用例 = 故意设计的边界 case:</b>气声、结巴、中英混读、数字/版本号/百分号、停顿重音,专挑高频又易错的场景。</span></div>
-        <div class="li"><span><b>三类对象分层测:</b>端到端看控制/情感/速度/意图,TTS 看可控/准确,ASR 看鲁棒性。</span></div>
-        <div class="li"><span><b>一手留证:</b>每个结论都配录音 / 截图 / 对话原始链接,可复现、可追溯。</span></div>
-        <div class="li"><span><b>跨产品对照:</b>同一 case 横跨多家,既看单点优劣,也识别「QLoRA→cue-ou-R-A」这类系统性共性问题。</span></div>
-      </div></div>
-    </div>
-  </div>
+</section>
+
+<!-- COVER 03 -->
+<section class="cover" id="cover-03">
+  <div class="cv-no reveal">03</div>
+  <div class="cv-en reveal" data-d="1">Scenario Strategy</div>
+  <div class="cv-title reveal" data-d="1">元宝<span class="g">场景化产品策略</span></div>
+  <div class="cv-lead reveal" data-d="2">拆解多人会议、儿童教育、情感陪伴三大场景的痛点诊断与调优路径。</div>
+  <div class="cv-rule reveal" data-d="3"></div>
 </section>
 
 <!-- SCENE 1 · 多人会议 -->
 <section id="scn-meeting" class="scene scene-meeting">
   <div class="sec-head">
     <div class="kicker reveal"><span class="idx">03</span><span class="rule"></span>场景一 · 多人会议 / AI 录音笔 / 会议纪要</div>
-    <h2 class="title reveal" data-d="1">用户要的不是「能转写」,<br>而是<span class="g">能直接用的纪要</span></h2>
+    <h2 class="title reveal" data-d="1">多人会议场景 · <span class="g">痛点诊断与产品策略</span></h2>
     <p class="lead reveal" data-d="2">多人会议里真正影响信任的是<em>发言人识别、昵称命名、关键结论、待办归属</em>。我实测元宝命中了「发言人昵称不恰当」—— 拖动开关,看调优前后的转写对比。</p>
   </div>
 
@@ -747,23 +859,51 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
     </div>
   </div>
 
-  <div class="tablewrap reveal" data-d="2"><div class="tablescroll"><table class="dtable">
-    <thead><tr><th>痛点</th><th>可观察指标</th><th>调优方式</th><th>产品策略</th></tr></thead>
-    <tbody>
-      <tr><td class="pain">发言人昵称不恰当</td><td>speaker label correction rate、会后改名次数、删除发言人标签比例</td><td>说话人分离 + 联系人/会议成员匹配 + 用户确认反馈回流</td><td>会议开始时提示「是否使用通讯录/成员名」;会后一键批量改名</td></tr>
-      <tr><td class="pain">多说话人重叠</td><td>overlap speech miss rate、待办归属错误率</td><td>重叠语音检测、多通道音频优先、说话人置信度展示</td><td>低置信度发言用「可能是 A」并允许快速纠正</td></tr>
-      <tr><td class="pain">纪要像流水账</td><td>摘要编辑率、复制/导出率、待办采纳率</td><td>会议结构识别:议题、结论、风险、待办、负责人、截止时间</td><td>提供「面试复盘 / 项目会 / 需求评审 / 销售拜访」纪要模板</td></tr>
-      <tr><td class="pain">专业词识别错</td><td>domain entity error rate、手动修正热词数</td><td>会议标题、文档、日历、历史纪要作为 contextual bias</td><td>会前自动生成热词表:项目名、人名、指标、竞品</td></tr>
-      <tr><td class="pain">实时字幕不稳定</td><td>partial result flip rate、字幕延迟、关闭字幕率</td><td>partial/final 双层输出,延迟与准确率可配置</td><td>实时字幕优先「可读」,最终纪要优先「准确」</td></tr>
-    </tbody>
-  </table></div></div>
+  <div class="route-label reveal" data-d="2" style="margin:8px 0 0">诊断链路 · 痛点 → 指标 → 调优　<span style="color:var(--ink-4)">(点击每行展开产品策略)</span></div>
+  <div class="diaglist reveal" data-d="2">
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 3-4.6 5.5-4.6"/><path d="M15 9.4a2 2 0 1 1 2.8 1.9c-.7.4-1 .8-1 1.7"/><circle cx="16.8" cy="16.4" r=".5" fill="currentColor"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">发言人昵称不恰当</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">可观察指标</div><div class="v">speaker label correction rate、会后改名次数</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">说话人分离 + 成员匹配 + 反馈回流 <span class="tag-more">产品策略 ▾</span></div></div>
+      <div class="extra"><b>产品策略 ·</b> 会议开始时提示「是否使用通讯录 / 成员名」;会后支持一键批量改名。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="3"/><path d="M2.6 18.5c.6-3 2.8-4.5 5.4-4.5"/><circle cx="15" cy="9" r="3"/><path d="M11.6 19c.6-3 2.8-4.5 5.4-4.5"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">多说话人重叠</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">可观察指标</div><div class="v">overlap speech miss rate、待办归属错误率</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">重叠语音检测、多通道优先、置信度展示 <span class="tag-more">产品策略 ▾</span></div></div>
+      <div class="extra"><b>产品策略 ·</b> 低置信度发言用「可能是 A」并允许快速纠正。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">纪要像流水账</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">可观察指标</div><div class="v">摘要编辑率、复制/导出率、待办采纳率</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">结构识别:议题/结论/风险/待办/负责人 <span class="tag-more">产品策略 ▾</span></div></div>
+      <div class="extra"><b>产品策略 ·</b> 提供「面试复盘 / 项目会 / 需求评审 / 销售拜访」纪要模板。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 17 8.5 6l4.5 11M5.6 13h5.8"/><path d="M15 9.5l5 5M20 9.5l-5 5"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">专业词识别错</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">可观察指标</div><div class="v">domain entity error rate、手动修正热词数</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">标题/文档/日历/历史纪要作 contextual bias <span class="tag-more">产品策略 ▾</span></div></div>
+      <div class="extra"><b>产品策略 ·</b> 会前自动生成热词表:项目名、人名、指标、竞品。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M6.5 11h4M13 11h4M6.5 14.5h7"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">实时字幕不稳定</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">可观察指标</div><div class="v">partial result flip rate、字幕延迟</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">partial/final 双层输出,延迟与准确率可配 <span class="tag-more">产品策略 ▾</span></div></div>
+      <div class="extra"><b>产品策略 ·</b> 实时字幕优先「可读」,最终纪要优先「准确」。</div>
+    </div>
+  </div>
 </section>
 
 <!-- SCENE 2 · 儿童教育 -->
 <section id="scn-kids" class="scene scene-kids">
   <div class="sec-head">
     <div class="kicker reveal"><span class="idx">04</span><span class="rule"></span>场景二 · 儿童教育 / 朗读 / 1对1讲解</div>
-    <h2 class="title reveal" data-d="1">儿童不是「小号成年人」,<br><span class="g">纠错方式比识别率更重要</span></h2>
+    <h2 class="title reveal" data-d="1">儿童不是「小号成年人」<br>—— <span class="g">低龄用户的语音交互策略</span></h2>
     <p class="lead reveal" data-d="2">儿童发音不稳、易结巴重复。若用成人普通话标准直接评判,会「听不懂、纠错粗暴、过早打断」。<em>切换年龄档和纠错风格,体会同一句话的两种产品温度。</em></p>
   </div>
 
@@ -794,16 +934,44 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
     </div>
   </div>
 
-  <div class="tablewrap reveal" data-d="2"><div class="tablescroll"><table class="dtable">
-    <thead><tr><th>儿童场景痛点</th><th>数据指标</th><th>模型 / 策略调优</th><th>产品设计</th></tr></thead>
-    <tbody>
-      <tr><td class="pain">儿童发音不标准</td><td>phoneme / 声韵母错误率、误判率、重复朗读次数</td><td>儿童语音数据增强、音素级对齐、声母/韵母/声调级反馈</td><td>不说「读错了」,而说「这个字的声母再轻一点」</td></tr>
-      <tr><td class="pain">结巴 / 停顿被误判</td><td>抢答率、未完成句响应率、孩子重复「我还没说完」比例</td><td>儿童场景 endpoint delay 更长,结合语义判断是否说完</td><td>增加「我在听,你慢慢说」的轻反馈</td></tr>
-      <tr><td class="pain">挫败感强</td><td>中途退出率、负面情绪词、重复错误后的沉默时长</td><td>情绪识别 + 鼓励策略,降低纠错频率,先肯定再提示</td><td>纠错做成游戏化星星、关卡和小目标</td></tr>
-      <tr><td class="pain">讲解太成人化</td><td>追问率、换说法率、家长差评关键词</td><td>按年龄/年级调整词汇、句长、例子和语速</td><td>同一题提供「儿童版 / 家长版 / 老师版」讲解</td></tr>
-      <tr><td class="pain">安全与家长控制</td><td>敏感内容触发、深夜使用、陌生话题偏移</td><td>儿童模式、内容安全、时长管理、录音隐私</td><td>家长可查看学习摘要,而非完整隐私录音</td></tr>
-    </tbody>
-  </table></div></div>
+  <div class="route-label reveal" data-d="2" style="margin:8px 0 0">诊断链路 · 痛点 → 指标 → 调优　<span style="color:var(--ink-4)">(点击每行展开产品设计)</span></div>
+  <div class="diaglist reveal" data-d="2">
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12c2-2 5-2 8 0s6 2 8 0"/><path d="M4 8.5c2-1.2 4-1.2 6 0M14 15.5c2 1.2 4 1.2 6 0"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">儿童发音不标准</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">数据指标</div><div class="v">phoneme / 声韵母错误率、误判率</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">模型 / 策略调优</div><div class="v">儿童语音增强、音素级对齐、声韵调反馈 <span class="tag-more">产品设计 ▾</span></div></div>
+      <div class="extra"><b>产品设计 ·</b> 不说「读错了」,而说「这个字的声母再轻一点」。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3H9l-4 3z"/><circle cx="9" cy="10" r=".5" fill="currentColor"/><circle cx="12" cy="10" r=".5" fill="currentColor"/><circle cx="15" cy="10" r=".5" fill="currentColor"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">结巴 / 停顿被误判</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">数据指标</div><div class="v">抢答率、未完成句响应率</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">模型 / 策略调优</div><div class="v">endpoint delay 更长,结合语义判断说完没 <span class="tag-more">产品设计 ▾</span></div></div>
+      <div class="extra"><b>产品设计 ·</b> 增加「我在听,你慢慢说」的轻反馈。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 15.5c1.2-1.4 5.8-1.4 7 0"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">挫败感强</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">数据指标</div><div class="v">中途退出率、负面情绪词、沉默时长</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">模型 / 策略调优</div><div class="v">情绪识别 + 鼓励策略,先肯定再提示 <span class="tag-more">产品设计 ▾</span></div></div>
+      <div class="extra"><b>产品设计 ·</b> 纠错做成游戏化的星星、关卡和小目标。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 6c-2-1.5-5-1.5-7 0v12c2-1.5 5-1.5 7 0 2-1.5 5-1.5 7 0V6c-2-1.5-5-1.5-7 0z"/><path d="M12 6v12"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">讲解太成人化</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">数据指标</div><div class="v">追问率、换说法率、家长差评词</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">模型 / 策略调优</div><div class="v">按年龄/年级调词汇、句长、例子、语速 <span class="tag-more">产品设计 ▾</span></div></div>
+      <div class="extra"><b>产品设计 ·</b> 同一题提供「儿童版 / 家长版 / 老师版」讲解。</div>
+    </div>
+    <div class="diag ex" onclick="this.classList.toggle('open')">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">安全与家长控制</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">数据指标</div><div class="v">敏感内容触发、深夜使用、话题偏移</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">模型 / 策略调优</div><div class="v">儿童模式、内容安全、时长管理、录音隐私 <span class="tag-more">产品设计 ▾</span></div></div>
+      <div class="extra"><b>产品设计 ·</b> 家长可查看学习摘要,而非完整隐私录音。</div>
+    </div>
+  </div>
 
   <div class="callout reveal" data-d="2"><b>从数据中挖掘儿童读音痛点:</b>在儿童朗读日志里重点看三类信号 —— ① no-response / 「没听清」集中在哪些音素、词、年龄段;② 孩子重复朗读后仍失败的 case 是否集中在方言、鼻音、平翘舌、轻声;③ 模型是否过早打断导致挫败。<b>调优不是简单加数据,而是把声学、教学反馈和情绪策略一起调。</b></div>
 </section>
@@ -812,7 +980,7 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 <section id="scn-companion" class="scene scene-companion">
   <div class="sec-head">
     <div class="kicker reveal"><span class="idx">05</span><span class="rule"></span>场景三 · 陪伴 / 情绪对话 / 视频通话</div>
-    <h2 class="title reveal" data-d="1">陪伴的关键不是「有情绪」,<br>而是<span class="g">知道什么时候该收</span></h2>
+    <h2 class="title reveal" data-d="1">陪伴与情绪对话场景 · <br><span class="g">适度情感与轮次控制策略</span></h2>
     <p class="lead reveal" data-d="2">豆包情感强但控制弱(我实测它把元指令读了出来)。元宝做陪伴应<em>避免过度表演,强调稳定、可信、适度</em>。拖动滑块,找情绪的「黄金区间」。</p>
   </div>
 
@@ -836,22 +1004,49 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
     </div>
   </div>
 
-  <div class="tablewrap reveal" data-d="2"><div class="tablescroll"><table class="dtable">
-    <thead><tr><th>痛点</th><th>指标</th><th>调优方式</th></tr></thead>
-    <tbody>
-      <tr><td class="pain">抢话 / 冷场</td><td>barge-in failure、平均沉默时长、用户打断率</td><td>语义 endpointing + prosody turn-taking,陪伴场景增加 backchannel(嗯、我在听)</td></tr>
-      <tr><td class="pain">情绪不贴合</td><td>情绪匹配人工评分、负反馈关键词、对话时长变化</td><td>情绪识别只作辅助,不把情绪标签机械外显;回复「轻安慰、少说教」</td></tr>
-      <tr><td class="pain">声音表演过度</td><td>用户跳出率、关闭语音率、投诉「油腻 / 吵」</td><td>情绪强度默认低,允许用户调「更活泼 / 更沉稳」</td></tr>
-      <tr><td class="pain">视频理解错位</td><td>视觉问答错误率、时间定位错误、用户纠正率</td><td>音视频时间戳对齐,必要时复述确认「你指的是画面左侧这个吗」</td></tr>
-    </tbody>
-  </table></div></div>
+  <div class="route-label reveal" data-d="2" style="margin:8px 0 0">诊断链路 · 痛点 → 指标 → 调优方式</div>
+  <div class="diaglist reveal" data-d="2">
+    <div class="diag">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="11" height="8" rx="2.5"/><rect x="10" y="11" width="11" height="8" rx="2.5"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">抢话 / 冷场</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">指标</div><div class="v">barge-in failure、平均沉默时长、打断率</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">语义 endpointing + prosody turn-taking,加 backchannel(嗯、我在听)</div></div>
+    </div>
+    <div class="diag">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20S4 14.5 4 9a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 5.5-8 11-8 11z"/><path d="M12 7.5l-1.5 3 2.5 1.8-1.5 3"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">情绪不贴合</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">指标</div><div class="v">情绪匹配人工评分、负反馈词、对话时长</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">情绪识别只作辅助,不机械外显;回复「轻安慰、少说教」</div></div>
+    </div>
+    <div class="diag">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9v6h3l5 4V5L7 9z"/><path d="M15 9c1.2 1.5 1.2 4.5 0 6M17.5 7c2.2 2.5 2.2 7.5 0 10"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">声音表演过度</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">指标</div><div class="v">用户跳出率、关闭语音率、投诉「油腻 / 吵」</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">情绪强度默认低,允许用户调「更活泼 / 更沉稳」</div></div>
+    </div>
+    <div class="diag">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/><path d="M7 10l4 4M11 10l-4 4"/></svg>
+      <div class="seg pain"><div class="lbl">痛点</div><div class="v">视频理解错位</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">指标</div><div class="v">视觉问答错误率、时间定位错误、纠正率</div></div><div class="arr">→</div>
+      <div class="seg"><div class="lbl">调优方式</div><div class="v">音视频时间戳对齐,必要时复述确认「你指的是画面左侧这个吗」</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COVER 04 -->
+<section class="cover" id="cover-04">
+  <div class="cv-no reveal">04</div>
+  <div class="cv-en reveal" data-d="1">Product Vision</div>
+  <div class="cv-title reveal" data-d="1">语音产品<span class="g">创新构想</span></div>
+  <div class="cv-lead reveal" data-d="2">面向语音交互的前瞻性产品设计与能力延展。</div>
+  <div class="cv-rule reveal" data-d="3"></div>
 </section>
 
 <!-- MODULE 4 -->
 <section id="ideas">
   <div class="sec-head">
     <div class="kicker reveal"><span class="idx">06</span><span class="rule"></span>产品想法</div>
-    <h2 class="title reveal" data-d="1">几个我想做的<span class="g">语音产品创意</span></h2>
+    <h2 class="title reveal" data-d="1">语音产品 · <span class="g">个人创新构想</span></h2>
     <p class="lead reveal" data-d="2">对 AI 语音的好奇心与信念感,最终要落到「能不能想出别人没想到的<em>产品形态</em>」。</p>
   </div>
 
@@ -877,10 +1072,60 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   </div>
 </section>
 
+<!-- COVER 05 -->
+<section class="cover" id="cover-05">
+  <div class="cv-no reveal">05</div>
+  <div class="cv-en reveal" data-d="1">Future Directions</div>
+  <div class="cv-title reveal" data-d="1">语音技术的<span class="g">未来演进方向</span></div>
+  <div class="cv-lead reveal" data-d="2">语音 Agent 与全模态语音 —— 对下一代语音交互的技术判断。</div>
+  <div class="cv-rule reveal" data-d="3"></div>
+</section>
+
+<!-- FUTURE CHAPTER -->
+<section id="future" class="scene scene-companion">
+  <div class="sec-head">
+    <div class="kicker reveal"><span class="idx">05</span><span class="rule"></span>FUTURE · 未来演进</div>
+    <h2 class="title reveal" data-d="1">语音技术的<span class="g">未来演进方向</span></h2>
+    <p class="lead reveal" data-d="2">语音正从「一问一答的工具」走向「会办事的 Agent」与「any-to-any 的全模态」。这是我对<em>下一代语音交互</em>的判断。</p>
+  </div>
+
+  <div class="route-label reveal" style="margin-bottom:18px">① 语音 Agent · 从「会说话」到「会办事」</div>
+  <div class="vsgrid reveal" data-d="1">
+    <div class="vscol old">
+      <div class="vh">传统语音助手</div>
+      <div class="vsrow"><span class="rl">交互</span>一问一答,单轮被动</div>
+      <div class="vsrow"><span class="rl">能力</span>信息查询、设个闹钟</div>
+      <div class="vsrow"><span class="rl">记忆</span>几乎没有,聊完即忘</div>
+      <div class="vsrow"><span class="rl">主动性</span>等你开口,不会跟进</div>
+      <div class="vsrow"><span class="rl">失败时</span>「抱歉,我没听懂」</div>
+    </div>
+    <div class="vsmid"><span>增益 GAIN</span></div>
+    <div class="vscol new">
+      <div class="vh">语音 Agent</div>
+      <div class="vsrow"><span class="rl">交互</span>多轮主动,可随时打断</div>
+      <div class="vsrow"><span class="rl">能力</span>调用工具、跨 App 执行任务</div>
+      <div class="vsrow"><span class="rl">记忆</span>长期记忆 + 人设一致</div>
+      <div class="vsrow"><span class="rl">主动性</span>会追问、会主动提醒</div>
+      <div class="vsrow"><span class="rl">失败时</span>自我纠错、换路径重试</div>
+    </div>
+  </div>
+  <div class="vsfoot reveal">核心增益:<span class="g">从「会说话」→「会办事」</span></div>
+
+  <div class="route-label reveal" style="margin:42px 0 18px">② 全模态语音 · 迈向 any-to-any 统一建模</div>
+  <div class="omni-flow reveal" data-d="1">
+    <div class="omods"><span>文本</span><span>音频</span><span>图像</span><span>视频</span></div>
+    <div class="oarrow"></div>
+    <div class="ocore">统一模型<small>unified backbone</small></div>
+    <div class="oarrow"></div>
+    <div class="oany">any-to-any<br>输出</div>
+  </div>
+  <div class="callout reveal" style="margin-top:18px"><b>趋势判断:</b>四模态汇入统一模型,任意输入、任意输出。<b>「视频通话式 AI」</b> —— 能看你的画面、听你的语气、用合适情绪回应 —— 正在成为下一代交互入口(GPT-4o、Qwen-Omni、可灵「音画同出」已是雏形)。</div>
+</section>
+
 <footer>
   <div class="reveal">
-    <div class="big">文字讲给眼睛,<span class="serif g">声音讲给耳朵</span>。<br>这正是语音岗最该有的作品形态。</div>
-    <div class="m">实测产品 · 边界 case 留证 · 评测方法论 · 场景调优策略 · 产品创意　|　为「元宝 - 大模型策略产品(语音)」而作</div>
+    <div class="big">语音产品的价值,<br>既要<span class="serif g">被看见</span>,也要<span class="serif g">被听见</span>。</div>
+    <div class="m">技术体系认知 · 主流产品实测 · 场景化策略 · 创新构想 · 未来演进　|　为「元宝 · 大模型策略产品(语音方向)」而作</div>
   </div>
 </footer>
 
@@ -1062,6 +1307,29 @@ function kidsStyle(el,style){el.parentNode.querySelectorAll('.sty').forEach(b=>b
  }
  draw();
 })();
+
+/* ===== tech: pipeline + omni ===== */
+const pipeMap={
+ input:'<b>🎙 输入</b> · 用户说话，音频流进入系统。',
+ vad:'<b>VAD · 语音活动检测</b> · 判断「有没有人在说、什么时候说完」（端点检测），决定何时启动识别、何时该回应——直接影响打断与抢话体验。',
+ asr:'<b>ASR · 语音识别</b> · 把语音转成文字，含热词偏置、ITN 数字规整、顺滑去口癖。',
+ nlu:'<b>NLU / LLM</b> · 理解用户意图并生成回答内容，是「听懂」与「想清楚」的环节。',
+ tts:'<b>TTS · 语音合成（本作品核心方向）</b> · 把文字变成自然、有情绪的语音。上方 TTS 格已展开 / 收起它的技术演进深潜。',
+ output:'<b>🔊 输出</b> · 合成语音播放给用户，闭环完成。'
+};
+function pipeStage(el,key){
+ document.querySelectorAll('.pstage').forEach(s=>s.classList.remove('on'));el.classList.add('on');
+ document.getElementById('pipeDetail').innerHTML=pipeMap[key];
+ if(key==='tts'){const d=document.getElementById('ttsDeep');const open=d.style.maxHeight&&d.style.maxHeight!=='0px';d.style.maxHeight=open?'0px':d.scrollHeight+'px';}
+}
+const omniMap={
+ tt:'<b>Thinker–Talker 架构</b> · Thinker 理解并生成文本（承载语义/情感），Talker 同时吃 Thinker 的 hidden states + text token 生成 speech token，让发声同时拿到「读什么 + 什么情绪」。',
+ tmrope:'<b>TMRoPE</b> · 时间对齐的多模态位置编码，解决音视频对齐问题。',
+ stream:'<b>全流式</b> · 输入端 block-wise 分块处理，输出端 sliding-window DiT，边想边说、低延迟。',
+ rate:'<b>解决「文字快、语音慢」的漏读</b> · Adaptive rate 动态调节生成节奏、interleave 交织 text-audio、alignment 严格保序。',
+ moe:'<b>混合 MoE 架构</b> · 应对长音频与长上下文的效率。'
+};
+function omniChip(el,key){el.parentNode.querySelectorAll('.chipx').forEach(c=>c.classList.remove('on'));el.classList.add('on');document.getElementById('omniDetail').innerHTML=omniMap[key];}
 </script>
 </body>
 </html>
