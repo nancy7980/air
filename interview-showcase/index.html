@@ -465,6 +465,49 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 .diag .extra b{color:var(--sa)}
 .diag .tag-more{font-size:9px;font-family:var(--mono);color:var(--sa);border:1px solid var(--hair-2);border-radius:20px;padding:2px 7px;margin-left:6px;white-space:nowrap}
 @media(max-width:720px){.diag{display:block}.diag .ic{float:left;margin:0 12px 6px 0}.diag .arr{display:none}.diag .seg{margin:7px 0}}
+/* ===== Qwen-Omni native architecture diagram ===== */
+.archdiag{border:1px solid var(--hair);border-radius:18px;background:var(--panel);overflow:hidden;margin-top:16px}
+.ad-head{padding:15px 20px;border-bottom:1px solid var(--hair);font-size:13.5px;font-weight:700}
+.ad-head span{color:var(--ink-3);font-weight:400;font-size:11px;margin-left:8px;font-family:var(--mono)}
+.ad-body{padding:24px 18px;display:flex;flex-direction:column;align-items:center}
+.adrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;width:100%}
+.adbox{border:1px solid var(--hair-2);border-radius:12px;padding:11px 14px;text-align:center;background:rgba(255,255,255,.025);min-width:96px;transition:.25s}
+.adbox:hover{background:var(--panel-2)}
+.adbox .bt{font-weight:700;font-size:12.5px}
+.adbox .bs{font-size:9.5px;color:var(--ink-3);margin-top:2px;font-family:var(--mono);line-height:1.3}
+.in-text{border-color:rgba(124,199,255,.45)}.in-text .bt{color:#7cc7ff}
+.in-audio{border-color:rgba(95,214,164,.45)}.in-audio .bt{color:#5fd6a4}
+.in-img{border-color:rgba(240,194,119,.45)}.in-img .bt{color:#f0c277}
+.in-video{border-color:rgba(244,136,154,.45)}.in-video .bt{color:#f4889a}
+.adbar{width:100%;max-width:560px;border:1px solid rgba(167,139,250,.5);background:rgba(167,139,250,.08);border-radius:12px;padding:13px;text-align:center;font-weight:700;font-size:13px;color:#c4b5fd}
+.adbar .bs{font-weight:400;color:var(--ink-3);font-size:10px;font-family:var(--mono);margin-top:3px}
+.adbig{width:100%;max-width:560px;border:1px solid rgba(124,199,255,.5);background:linear-gradient(160deg,rgba(124,199,255,.1),transparent);border-radius:14px;padding:16px 18px}
+.adbig.talk{border-color:rgba(167,139,250,.5);background:linear-gradient(160deg,rgba(167,139,250,.12),transparent)}
+.adbig .bt{font-weight:750;font-size:14px}.adbig .bt small{font-weight:400;color:var(--ink-3);font-size:10.5px;font-family:var(--mono);margin-left:6px}
+.adbig .bl{font-size:11.5px;color:var(--ink-2);margin-top:6px;line-height:1.6}
+.addown{height:24px;width:2px;background:linear-gradient(var(--a2),var(--a1));position:relative;margin:7px 0}
+.addown::after{content:"▾";position:absolute;bottom:-7px;left:-5px;color:var(--a1);font-size:11px}
+.adlabel{font-size:10px;color:var(--ink-3);font-family:var(--mono);margin:3px 0;text-align:center}
+.thinkrow{display:flex;align-items:center;gap:14px;width:100%;max-width:760px;justify-content:center}
+.texttok{border:1px solid rgba(95,214,164,.4);background:rgba(95,214,164,.06);border-radius:12px;padding:12px;text-align:center;flex:0 0 152px}
+.texttok .tt{font-weight:700;color:#5fd6a4;font-size:12px}
+.texttok .seq{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);margin-top:5px;line-height:1.4}
+.vchain{display:flex;align-items:center;gap:6px;overflow-x:auto;width:100%;padding:4px 2px}
+.vstep{flex:0 0 auto;border:1px solid var(--hair-2);border-radius:10px;padding:9px 11px;text-align:center;background:rgba(255,255,255,.025);min-width:80px}
+.vstep .vt{font-weight:650;font-size:11px}.vstep .bs{font-size:9px;color:var(--ink-3);font-family:var(--mono);margin-top:2px}
+.vstep.wave{border-color:rgba(244,136,154,.5)}.vstep.wave .vt{color:#f4889a}
+.varr{color:var(--a2);flex:0 0 auto;font-size:13px}
+.adlegend{margin-top:20px;border-top:1px solid var(--hair);padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%}
+.li2{font-size:11.5px;color:var(--ink-2);display:flex;gap:8px;line-height:1.45}
+.li2::before{content:"◆";color:var(--a3);font-size:8px;margin-top:4px;flex:0 0 auto}
+.adfoot{padding:11px 20px;border-top:1px solid var(--hair);font-size:10.5px;color:var(--ink-4);text-align:center;font-style:italic}
+@media(max-width:680px){.adlegend{grid-template-columns:1fr}.thinkrow{flex-direction:column}}
+.archfig{margin-top:16px;border:1px solid var(--hair);border-radius:18px;overflow:hidden;background:var(--panel)}
+.archfig .af-head{padding:14px 20px;border-bottom:1px solid var(--hair);font-size:13px;font-weight:700}
+.archfig .af-head span{color:var(--ink-3);font-weight:400;font-size:11px;font-family:var(--mono);margin-left:8px}
+.archfig .af-img{padding:16px;background:radial-gradient(circle at 50% -10%,rgba(167,139,250,.07),transparent 70%)}
+.archfig img{width:100%;display:block;border-radius:10px;cursor:zoom-in;box-shadow:0 14px 40px rgba(0,0,0,.4);border:1px solid var(--hair-2)}
+.archfig .af-cap{padding:13px 20px;border-top:1px solid var(--hair);font-size:11.5px;color:var(--ink-3);text-align:center;line-height:1.6}
 </style>
 </head>
 <body>
@@ -570,7 +613,11 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
       <div class="chipx" onclick="omniChip(this,'moe')">混合 MoE</div>
     </div>
     <div class="chip-detail" id="omniDetail"><b>Thinker–Talker 架构</b> · Thinker 理解并生成文本(承载语义/情感),Talker 同时吃 Thinker 的 hidden states + text token 生成 speech token,让发声同时拿到「读什么 + 什么情绪」——这是传统 TTS 做不到的。</div>
-    <div class="imgslot">📐 Qwen2.5-Omni 论文级架构图位 · 你把图片文件发我后嵌入此处</div>
+    <div class="archfig reveal" data-d="2">
+      <div class="af-head">Qwen2.5-Omni · Thinker–Talker 端到端架构图<span>贴近论文版 · 点击放大</span></div>
+      <div class="af-img"><img src="assets/img/qwen-omni-arch.png" alt="Qwen2.5-Omni 架构图" onclick="document.querySelector('#lb img').src=this.src;document.getElementById('lb').classList.add('on')"/></div>
+      <div class="af-cap">四模态输入 → 编码 → TMRoPE 时间对齐 → Thinker(理解) → Talker(发声) → Codec / Vocoder → 波形输出　·　我对端到端架构的逐环节理解</div>
+    </div>
   </div>
 </section>
 
