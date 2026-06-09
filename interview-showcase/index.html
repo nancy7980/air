@@ -171,7 +171,7 @@ h2.title .g{background:var(--grad);-webkit-background-clip:text;background-clip:
 .player.eleven .ph .logo{color:var(--a1)}
 .player.minimax .ph .logo{color:#c4b5fd}
 .player .ph .ver{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);border:1px solid var(--hair-2);padding:2px 8px;border-radius:6px}
-.player .viz{height:60px;width:100%;display:block;border-radius:10px;background:rgba(0,0,0,.28);margin-bottom:15px}
+.player .viz{height:46px;width:100%;display:block;border-radius:10px;background:rgba(0,0,0,.28);margin-bottom:14px}
 .player .ctl{display:flex;align-items:center;gap:14px}
 .player .play{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;display:grid;place-items:center;color:#0b0b14;font-size:14px;transition:.25s}
 .player.eleven .play{background:linear-gradient(135deg,#7cc7ff,#9fd6ff)}
@@ -508,6 +508,28 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 .archfig .af-img{padding:16px;background:radial-gradient(circle at 50% -10%,rgba(167,139,250,.07),transparent 70%)}
 .archfig img{width:100%;display:block;border-radius:10px;cursor:zoom-in;box-shadow:0 14px 40px rgba(0,0,0,.4);border:1px solid var(--hair-2)}
 .archfig .af-cap{padding:13px 20px;border-top:1px solid var(--hair);font-size:11.5px;color:var(--ink-3);text-align:center;line-height:1.6}
+/* ===== future: ecosystem penetration demo ===== */
+.ecodemo{border:1px solid var(--hair);border-radius:18px;background:var(--panel);padding:22px;margin-bottom:18px}
+.ecocmds{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px}
+.ecocmd{border:1px solid var(--hair-2);background:rgba(255,255,255,.03);border-radius:30px;padding:9px 16px;font-size:13px;cursor:pointer;transition:.25s}
+.ecocmd:hover{border-color:var(--a2)}
+.ecocmd.on{background:var(--grad);color:#0b0b14;border-color:transparent;font-weight:650}
+.econodes{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;min-height:48px}
+.econode{flex:0 0 auto;border:1px solid var(--hair-2);border-radius:12px;padding:11px 15px;text-align:center;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.02);transition:.45s cubic-bezier(.16,.8,.3,1);opacity:.32}
+.econode.lit{opacity:1;border-color:rgba(124,199,255,.6);background:rgba(124,199,255,.12);box-shadow:0 0 20px rgba(124,199,255,.22);transform:translateY(-3px)}
+.econode.start.lit{border-color:rgba(167,139,250,.6);background:rgba(167,139,250,.14);box-shadow:0 0 20px rgba(167,139,250,.28)}
+.econ-arr{color:var(--ink-4);font-size:13px}
+.ecosteps{border:1px dashed var(--hair-2);border-radius:12px;padding:15px 17px;font-size:13px;color:var(--ink-2);line-height:1.95;min-height:44px;background:rgba(0,0,0,.16)}
+.ecosteps .stp{opacity:0;transform:translateX(-6px);transition:.4s}
+.ecosteps .stp.show{opacity:1;transform:none}
+.ecosteps b{color:var(--ink)}
+.dirgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:14px}
+.dircard{border:1px solid var(--hair);border-radius:14px;padding:17px;background:var(--panel);transition:.3s}
+.dircard:hover{border-color:var(--hair-2);transform:translateY(-3px);background:var(--panel-2)}
+.dircard .dn{font-size:10.5px;font-family:var(--mono);color:var(--a3);margin-bottom:8px;letter-spacing:.04em}
+.dircard .dt{font-weight:700;font-size:14.5px;margin-bottom:6px}
+.dircard .dd{font-size:12.5px;color:var(--ink-2);line-height:1.65}
+.dircard .dd em{color:var(--a1);font-style:normal;font-weight:600}
 </style>
 </head>
 <body>
@@ -1080,9 +1102,65 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   </div>
 </section>
 
-<!-- COVER 04 -->
+<!-- COVER 04 · Future -->
 <section class="cover" id="cover-04">
   <div class="cv-no reveal">04</div>
+  <div class="cv-en reveal" data-d="1">Future Directions</div>
+  <div class="cv-title reveal" data-d="1">语音技术的<span class="g">未来演进方向</span></div>
+  <div class="cv-lead reveal" data-d="2">以腾讯生态为护城河 —— 语音 Agent 的「深度」与全模态识别的「广度」。</div>
+  <div class="cv-rule reveal" data-d="3"></div>
+</section>
+
+<!-- FUTURE CHAPTER -->
+<section id="future" class="scene scene-companion">
+  <div class="sec-head">
+    <div class="kicker reveal"><span class="idx">04</span><span class="rule"></span>FUTURE · 未来演进</div>
+    <h2 class="title reveal" data-d="1">语音技术的<span class="g">未来演进方向</span></h2>
+    <p class="lead reveal" data-d="2">元宝的机会不在追平实时语音,而在把语音做成<em>穿透腾讯生态的统一交互层</em>:语音 Agent 解决「会办事的深度」,全模态识别解决「懂场景的广度」—— 两者的护城河,是别家拿不到的微信、会议、文档与关系链。</p>
+  </div>
+
+  <div class="route-label reveal" style="margin-bottom:16px">① 语音 Agent · 会办事的深度</div>
+  <div class="ecodemo reveal" data-d="1">
+    <div style="font-size:13px;color:var(--ink-2);margin-bottom:14px">点击一句指令,看语音如何<b style="color:var(--ink)">穿透腾讯生态</b>完成任务 —— 这是豆包 / Kimi 调不动的闭环:</div>
+    <div class="ecocmds">
+      <div class="ecocmd on" onclick="ecoCmd(this,'c1')">「把会议纪要发到项目群」</div>
+      <div class="ecocmd" onclick="ecoCmd(this,'c2')">「回复这条公众号文章」</div>
+      <div class="ecocmd" onclick="ecoCmd(this,'c3')">「订明天去上海的高铁」</div>
+    </div>
+    <div class="econodes" id="ecoNodes"></div>
+    <div class="ecosteps" id="ecoSteps"></div>
+  </div>
+  <div class="dirgrid reveal" data-d="2">
+    <div class="dircard"><div class="dn">方向 01</div><div class="dt">生态级任务执行</div><div class="dd">一句话打通 <em>微信 / 会议 / 文档 / 小程序</em>,语音成为腾讯生态的统一指令层。</div></div>
+    <div class="dircard"><div class="dn">方向 02</div><div class="dt">社交语境感知</div><div class="dd">合规接入关系链,助手懂「<em>张三是谁、上次聊到哪</em>」,从通用变「懂我」。</div></div>
+    <div class="dircard"><div class="dn">方向 03</div><div class="dt">主动协同</div><div class="dd">基于日程 / 会议 <em>主动跟进</em>,而非被动应答 —— 这才是「会办事」。</div></div>
+    <div class="dircard"><div class="dn">方向 04</div><div class="dt">声纹即身份</div><div class="dd">声纹绑定账号,做 <em>语音登录 / 支付确认 / 多成员区分</em>,接微信支付场景。</div></div>
+    <div class="dircard"><div class="dn">方向 05</div><div class="dt">端云协同</div><div class="dd">端侧负责唤醒与隐私识别、云端负责推理,<em>弱网与隐私场景</em>仍可用。</div></div>
+  </div>
+
+  <div class="route-label reveal" style="margin:42px 0 16px">② 全模态语音识别 · 懂场景的广度</div>
+  <div class="omni-flow reveal" data-d="1">
+    <div class="omods"><span>声音</span><span>口型 / 画面</span><span>屏幕上下文</span><span>生态热词</span></div>
+    <div class="oarrow"></div>
+    <div class="ocore">多模态识别引擎<small>recognition</small></div>
+    <div class="oarrow"></div>
+    <div class="oany">精准识别<br>谁说 · 说什么 · 怎么说</div>
+  </div>
+  <div class="dirgrid reveal" data-d="2">
+    <div class="dircard"><div class="dn">方向 01</div><div class="dt">视觉辅助识别</div><div class="dd">看口型 / 画面辅助 —— 治本我实测的 <em>气声听不见、多人重叠归属乱</em>。</div></div>
+    <div class="dircard"><div class="dn">方向 02</div><div class="dt">屏幕指代消解</div><div class="dd">看你的屏幕,把「<em>把这个总结一下</em>」里的「这个」对上内容。</div></div>
+    <div class="dircard"><div class="dn">方向 03</div><div class="dt">生态数据反哺</div><div class="dd">通讯录 / 群成员 / 文档术语做热词 —— 治本 <em>昵称错乱、QLoRA 读错</em>。</div></div>
+    <div class="dircard"><div class="dn">方向 04</div><div class="dt">会议级识别</div><div class="dd">音频 + 人脸 + 屏幕联合,声纹注册分清谁说,输出 <em>结构化纪要</em>。</div></div>
+    <div class="dircard"><div class="dn">方向 05</div><div class="dt">副语言识别</div><div class="dd">不止「说什么」,更识别 <em>情绪 / 语气 / 笑声</em>,驱动陪伴与客服策略。</div></div>
+    <div class="dircard"><div class="dn">方向 06</div><div class="dt">长尾鲁棒性</div><div class="dd">覆盖 <em>方言 / 老人 / 儿童 / 气声</em> —— 全模态不仅模态多,更是人群广。</div></div>
+  </div>
+
+  <div class="callout reveal" style="margin-top:30px"><b>一句话收束:</b>以腾讯生态为护城河,让语音 Agent <b style="color:var(--a2)">「会办事」</b>、让全模态识别 <b style="color:var(--a1)">「懂场景」</b> —— 前者是深度,后者是广度,二者都建立在别家拿不到的生态数据与关系链之上。</div>
+</section>
+
+<!-- COVER 05 · Product Vision -->
+<section class="cover" id="cover-05">
+  <div class="cv-no reveal">05</div>
   <div class="cv-en reveal" data-d="1">Product Vision</div>
   <div class="cv-title reveal" data-d="1">语音产品<span class="g">创新构想</span></div>
   <div class="cv-lead reveal" data-d="2">面向语音交互的前瞻性产品设计与能力延展。</div>
@@ -1092,7 +1170,7 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 <!-- MODULE 4 -->
 <section id="ideas">
   <div class="sec-head">
-    <div class="kicker reveal"><span class="idx">06</span><span class="rule"></span>产品想法</div>
+    <div class="kicker reveal"><span class="idx">05</span><span class="rule"></span>产品想法</div>
     <h2 class="title reveal" data-d="1">语音产品 · <span class="g">个人创新构想</span></h2>
     <p class="lead reveal" data-d="2">对 AI 语音的好奇心与信念感,最终要落到「能不能想出别人没想到的<em>产品形态</em>」。</p>
   </div>
@@ -1119,55 +1197,6 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
   </div>
 </section>
 
-<!-- COVER 05 -->
-<section class="cover" id="cover-05">
-  <div class="cv-no reveal">05</div>
-  <div class="cv-en reveal" data-d="1">Future Directions</div>
-  <div class="cv-title reveal" data-d="1">语音技术的<span class="g">未来演进方向</span></div>
-  <div class="cv-lead reveal" data-d="2">语音 Agent 与全模态语音 —— 对下一代语音交互的技术判断。</div>
-  <div class="cv-rule reveal" data-d="3"></div>
-</section>
-
-<!-- FUTURE CHAPTER -->
-<section id="future" class="scene scene-companion">
-  <div class="sec-head">
-    <div class="kicker reveal"><span class="idx">05</span><span class="rule"></span>FUTURE · 未来演进</div>
-    <h2 class="title reveal" data-d="1">语音技术的<span class="g">未来演进方向</span></h2>
-    <p class="lead reveal" data-d="2">语音正从「一问一答的工具」走向「会办事的 Agent」与「any-to-any 的全模态」。这是我对<em>下一代语音交互</em>的判断。</p>
-  </div>
-
-  <div class="route-label reveal" style="margin-bottom:18px">① 语音 Agent · 从「会说话」到「会办事」</div>
-  <div class="vsgrid reveal" data-d="1">
-    <div class="vscol old">
-      <div class="vh">传统语音助手</div>
-      <div class="vsrow"><span class="rl">交互</span>一问一答,单轮被动</div>
-      <div class="vsrow"><span class="rl">能力</span>信息查询、设个闹钟</div>
-      <div class="vsrow"><span class="rl">记忆</span>几乎没有,聊完即忘</div>
-      <div class="vsrow"><span class="rl">主动性</span>等你开口,不会跟进</div>
-      <div class="vsrow"><span class="rl">失败时</span>「抱歉,我没听懂」</div>
-    </div>
-    <div class="vsmid"><span>增益 GAIN</span></div>
-    <div class="vscol new">
-      <div class="vh">语音 Agent</div>
-      <div class="vsrow"><span class="rl">交互</span>多轮主动,可随时打断</div>
-      <div class="vsrow"><span class="rl">能力</span>调用工具、跨 App 执行任务</div>
-      <div class="vsrow"><span class="rl">记忆</span>长期记忆 + 人设一致</div>
-      <div class="vsrow"><span class="rl">主动性</span>会追问、会主动提醒</div>
-      <div class="vsrow"><span class="rl">失败时</span>自我纠错、换路径重试</div>
-    </div>
-  </div>
-  <div class="vsfoot reveal">核心增益:<span class="g">从「会说话」→「会办事」</span></div>
-
-  <div class="route-label reveal" style="margin:42px 0 18px">② 全模态语音 · 迈向 any-to-any 统一建模</div>
-  <div class="omni-flow reveal" data-d="1">
-    <div class="omods"><span>文本</span><span>音频</span><span>图像</span><span>视频</span></div>
-    <div class="oarrow"></div>
-    <div class="ocore">统一模型<small>unified backbone</small></div>
-    <div class="oarrow"></div>
-    <div class="oany">any-to-any<br>输出</div>
-  </div>
-  <div class="callout reveal" style="margin-top:18px"><b>趋势判断:</b>四模态汇入统一模型,任意输入、任意输出。<b>「视频通话式 AI」</b> —— 能看你的画面、听你的语气、用合适情绪回应 —— 正在成为下一代交互入口(GPT-4o、Qwen-Omni、可灵「音画同出」已是雏形)。</div>
-</section>
 
 <footer>
   <div class="reveal">
@@ -1202,6 +1231,7 @@ function switchTab(tab,id){
   document.querySelectorAll('.panel-eval').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('in'));
+  setTimeout(()=>{(window.__vizRedraws||[]).forEach(f=>f());},40);
 }
 
 const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
@@ -1242,7 +1272,7 @@ document.querySelectorAll('.player').forEach(p=>{
         bar=p.querySelector('.bar'),viz=p.querySelector('.viz');
   const vx=viz.getContext('2d');let raf=null;
   function sizeViz(){viz.width=viz.offsetWidth*devicePixelRatio;viz.height=viz.offsetHeight*devicePixelRatio;}
-  sizeViz();addEventListener('resize',sizeViz);
+  sizeViz();addEventListener('resize',()=>{sizeViz();if(audio.paused)drawViz();});
   const accent=p.classList.contains('eleven')?[124,199,255]:[196,181,253];
   function connect(){
     const ac=ensureAC();if(!ac||analysers.has(audio))return;
@@ -1257,7 +1287,7 @@ document.querySelectorAll('.player').forEach(p=>{
       for(let i=0;i<n;i++){const bh=(d[i]/255)*viz.height*0.92;
         const[r,g,b]=accent;vx.fillStyle=`rgba(${r},${g},${b},${0.3+d[i]/255*0.6})`;
         vx.fillRect(i*bw,viz.height-bh,bw*0.66,bh);}
-    }else{vx.strokeStyle='rgba(255,255,255,.1)';vx.beginPath();vx.moveTo(0,viz.height/2);vx.lineTo(viz.width,viz.height/2);vx.stroke();}
+    }else{const n=44,bw=viz.width/n,[r,g,b]=accent;for(let i=0;i<n;i++){const hh=(Math.sin(i*0.5)*0.5+0.5)*viz.height*0.5+viz.height*0.12;vx.fillStyle=`rgba(${r},${g},${b},0.2)`;vx.fillRect(i*bw,(viz.height-hh)/2,bw*0.5,hh);}}
     if(!audio.paused)raf=requestAnimationFrame(drawViz);
   }
   playBtn.addEventListener('click',()=>{
@@ -1270,7 +1300,7 @@ document.querySelectorAll('.player').forEach(p=>{
   audio.addEventListener('ended',()=>{playBtn.textContent='▶';cancelAnimationFrame(raf);drawViz();});
   audio.addEventListener('pause',()=>{playBtn.textContent='▶';});
   bar.addEventListener('click',(e)=>{const r=bar.getBoundingClientRect();audio.currentTime=(e.clientX-r.left)/r.width*audio.duration;});
-  drawViz();
+  (window.__vizRedraws=window.__vizRedraws||[]).push(()=>{sizeViz();drawViz();});drawViz();
 });
 
 function speakIntro(){
@@ -1377,6 +1407,25 @@ const omniMap={
  moe:'<b>混合 MoE 架构</b> · 应对长音频与长上下文的效率。'
 };
 function omniChip(el,key){el.parentNode.querySelectorAll('.chipx').forEach(c=>c.classList.remove('on'));el.classList.add('on');document.getElementById('omniDetail').innerHTML=omniMap[key];}
+
+/* ===== future: ecosystem penetration demo ===== */
+const ecoData={
+ c1:{nodes:['元宝','腾讯会议','腾讯文档','微信群'],steps:['<b>元宝</b> 解析语音意图','调 <b>腾讯会议</b> 取本场纪要','在 <b>腾讯文档</b> 生成结构化纪要','发到 <b>微信</b> 项目群']},
+ c2:{nodes:['元宝','微信','公众号'],steps:['<b>元宝</b> 理解「这条」= 当前屏幕文章','读取 <b>微信公众号</b> 上下文','生成并发送回复']},
+ c3:{nodes:['元宝','出行小程序','微信支付'],steps:['<b>元宝</b> 抽取 出发地 / 时间 / 目的地','唤起 <b>出行小程序</b> 查票','用 <b>微信支付</b>(声纹确认)下单']}
+};
+function ecoCmd(el,key){
+ document.querySelectorAll('.ecocmd').forEach(c=>c.classList.remove('on'));el.classList.add('on');
+ const d=ecoData[key],nodesEl=document.getElementById('ecoNodes'),stepsEl=document.getElementById('ecoSteps');
+ if(!nodesEl||!stepsEl)return;
+ let nh='';d.nodes.forEach((n,i)=>{nh+=`<div class="econode${i===0?' start':''}">${n}</div>`;if(i<d.nodes.length-1)nh+='<div class="econ-arr">→</div>';});
+ nodesEl.innerHTML=nh;
+ stepsEl.innerHTML=d.steps.map((s,i)=>`<div class="stp">${i+1}. ${s}</div>`).join('');
+ const nodes=nodesEl.querySelectorAll('.econode'),steps=stepsEl.querySelectorAll('.stp');
+ nodes.forEach((n,i)=>setTimeout(()=>n.classList.add('lit'),i*420+150));
+ steps.forEach((s,i)=>setTimeout(()=>s.classList.add('show'),i*420+150));
+}
+(function(){const f=document.querySelector('.ecocmd');if(f)ecoCmd(f,'c1');})();
 </script>
 </body>
 </html>
