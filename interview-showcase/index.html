@@ -506,7 +506,7 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 .archfig .af-head{padding:14px 20px;border-bottom:1px solid var(--hair);font-size:13px;font-weight:700}
 .archfig .af-head span{color:var(--ink-3);font-weight:400;font-size:11px;font-family:var(--mono);margin-left:8px}
 .archfig .af-img{padding:16px;background:radial-gradient(circle at 50% -10%,rgba(167,139,250,.07),transparent 70%)}
-.archfig img{width:100%;display:block;border-radius:10px;cursor:zoom-in;box-shadow:0 14px 40px rgba(0,0,0,.4);border:1px solid var(--hair-2)}
+.archfig img{width:100%;display:block;border-radius:10px;cursor:zoom-in;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 0 4px rgba(255,255,255,.05),0 16px 44px rgba(0,0,0,.5)}
 .archfig .af-cap{padding:13px 20px;border-top:1px solid var(--hair);font-size:11.5px;color:var(--ink-3);text-align:center;line-height:1.6}
 .archfig.flat .af-img{display:flex;justify-content:center}
 .archfig.flat img{width:auto;max-width:100%}
@@ -520,7 +520,9 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
 .econode{flex:0 0 auto;border:1px solid var(--hair-2);border-radius:12px;padding:11px 15px;text-align:center;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.02);transition:.45s cubic-bezier(.16,.8,.3,1);opacity:.32}
 .econode.lit{opacity:1;border-color:rgba(124,199,255,.6);background:rgba(124,199,255,.12);box-shadow:0 0 20px rgba(124,199,255,.22);transform:translateY(-3px)}
 .econode.start.lit{border-color:rgba(167,139,250,.6);background:rgba(167,139,250,.14);box-shadow:0 0 20px rgba(167,139,250,.28)}
-.econ-arr{color:var(--ink-4);font-size:13px}
+.econ-arr{position:relative;width:32px;height:2px;background:linear-gradient(90deg,var(--hair-2),var(--a1));flex:0 0 auto;border-radius:2px}
+.econ-arr::after{content:"";position:absolute;top:-2.5px;left:0;width:6px;height:6px;border-radius:50%;background:var(--a1);box-shadow:0 0 9px var(--a1);animation:ecoflow 1.6s linear infinite}
+@keyframes ecoflow{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:26px;opacity:0}}
 .ecosteps{border:1px dashed var(--hair-2);border-radius:12px;padding:15px 17px;font-size:13px;color:var(--ink-2);line-height:1.95;min-height:44px;background:rgba(0,0,0,.16)}
 .ecosteps .stp{opacity:0;transform:translateX(-6px);transition:.4s}
 .ecosteps .stp.show{opacity:1;transform:none}
@@ -604,7 +606,7 @@ footer .m{color:var(--ink-3);font-size:13.5px;font-weight:350;letter-spacing:.02
     <div class="pipe-detail" id="pipeDetail"><b>点击上方任意环节查看说明。</b>　整条链路:用户说话 → VAD 判断说没说完 → ASR 转文字 → NLU/LLM 理解并生成回答 → TTS 合成语音 → 播放。其中 <b>TTS 是我主攻的方向</b>,点它展开技术演进深潜。</div>
     <div class="archfig flat reveal" data-d="2" style="margin-top:14px">
       <div class="af-head">语音助手 Pipeline 路线图<span>VAD → ASR → NLU/LLM → TTS · 点击放大</span></div>
-      <div class="af-img"><img style="max-height:340px" src="assets/img/pipeline-route.jpg" alt="语音助手 Pipeline 路线图" onclick="document.querySelector('#lb img').src=this.src;document.getElementById('lb').classList.add('on')"/></div>
+      <div class="af-img"><img style="max-height:258px" src="assets/img/pipeline-route.jpg" alt="语音助手 Pipeline 路线图" onclick="document.querySelector('#lb img').src=this.src;document.getElementById('lb').classList.add('on')"/></div>
     </div>
     <div class="ttsdeep" id="ttsDeep"><div class="inner2">
       <div class="dh">▣ TTS 技术演进 · 从 Tacotron 到解耦表示</div>
@@ -1427,7 +1429,7 @@ function ecoCmd(el,key){
  document.querySelectorAll('.ecocmd').forEach(c=>c.classList.remove('on'));el.classList.add('on');
  const d=ecoData[key],nodesEl=document.getElementById('ecoNodes'),stepsEl=document.getElementById('ecoSteps');
  if(!nodesEl||!stepsEl)return;
- let nh='';d.nodes.forEach((n,i)=>{nh+=`<div class="econode${i===0?' start':''}">${n}</div>`;if(i<d.nodes.length-1)nh+='<div class="econ-arr">→</div>';});
+ let nh='';d.nodes.forEach((n,i)=>{nh+=`<div class="econode${i===0?' start':''}">${n}</div>`;if(i<d.nodes.length-1)nh+='<div class="econ-arr"></div>';});
  nodesEl.innerHTML=nh;
  stepsEl.innerHTML=d.steps.map((s,i)=>`<div class="stp">${i+1}. ${s}</div>`).join('');
  const nodes=nodesEl.querySelectorAll('.econode'),steps=stepsEl.querySelectorAll('.stp');
