@@ -1,747 +1,673 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>千问 AI 工具 Agent · 产品思维</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>从工具到出口 · AI 工具 Agent 的产品理解</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" />
+<style>
+/* ===========================================================
+   THEME TOKENS
+   =========================================================== */
+:root{
+  --bg:#07070d;
+  --bg-2:#0c0c16;
+  --ink:#f4f1ea;
+  --muted:#9a96a8;
+  --faint:#6c687a;
+  --accent:#ff6b2c;          /* signal orange */
+  --accent-2:#ffb347;        /* warm gold */
+  --qwen:#9b7bff;            /* 千问 purple */
+  --doubao:#27d0c0;          /* 豆包 teal */
+  --bad:#ff4d5e;            /* problem red */
+  --good:#3ddc97;           /* good green */
+  --line:rgba(255,255,255,.10);
+  --line-2:rgba(255,255,255,.18);
+  --glass:rgba(255,255,255,.045);
+  --glass-2:rgba(255,255,255,.07);
+  --font-disp:"Archivo Black","Noto Sans SC",sans-serif;
+  --font:"Space Grotesk","Noto Sans SC",sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --d:.7s;
+  /* viewport-base typography */
+  --title-size:clamp(1.6rem,5.4vw,4.2rem);
+  --h2-size:clamp(1.25rem,3.4vw,2.5rem);
+  --h3-size:clamp(1rem,2.2vw,1.6rem);
+  --body-size:clamp(.78rem,1.45vw,1.08rem);
+  --small-size:clamp(.66rem,1.05vw,.86rem);
+  --slide-padding:clamp(1.1rem,4vw,4rem);
+  --content-gap:clamp(.5rem,2vw,2rem);
+  --element-gap:clamp(.25rem,1vw,1rem);
+}
+*{margin:0;padding:0;box-sizing:border-box}
 
-  <!-- Fonts: Archivo Black (display/numbers) + Space Grotesk (latin body) + Noto Sans SC (Chinese) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" />
+/* viewport-base.css (verbatim core) */
+html,body{height:100%;overflow-x:hidden}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.slide{width:100vw;height:100vh;height:100dvh;overflow:hidden;scroll-snap-align:start;display:flex;flex-direction:column;position:relative}
+.slide-content{flex:1;display:flex;flex-direction:column;justify-content:center;max-height:100%;overflow:hidden;padding:var(--slide-padding);position:relative;z-index:2}
+.card,.container,.content-box{max-width:min(92vw,1100px);max-height:min(82vh,720px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:clamp(.5rem,1.5vw,1rem)}
+img,.image-container{max-width:100%;max-height:min(50vh,400px);object-fit:contain}
+@media (max-height:700px){:root{--slide-padding:clamp(.8rem,3vw,2rem);--content-gap:clamp(.4rem,1.5vw,1rem);--title-size:clamp(1.3rem,4.6vw,2.6rem);--h2-size:clamp(1.05rem,3vw,1.8rem)}}
+@media (max-height:600px){:root{--slide-padding:clamp(.5rem,2.5vw,1.4rem);--body-size:clamp(.7rem,1.2vw,.92rem)} .nav-dots,.hint,.decorative{display:none}}
+@media (max-width:680px){:root{--title-size:clamp(1.4rem,8vw,2.6rem)} .grid{grid-template-columns:1fr} .cols-2,.cols-3,.cols-4{grid-template-columns:1fr!important}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important} html{scroll-behavior:auto}}
 
-  <style>
-    /* ===========================================
-       THEME — Bold Signal (confident, bold, modern)
-       Edit these custom properties to retheme.
-       =========================================== */
-    :root {
-      --bg-primary: #1a1a1a;
-      --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-      --card-bg: #FF5722;            /* signal orange */
-      --card-bg-2: #ff7043;
-      --text-primary: #ffffff;
-      --text-secondary: #b8b3ad;
-      --text-on-card: #1a1a1a;
-      --line: rgba(255,255,255,0.12);
-      --line-strong: rgba(255,255,255,0.22);
-      --qwen: #7c5cff;               /* 千问 accent (purple) */
-      --doubao: #4dd0e1;             /* 豆包 accent (cyan) */
+/* ===========================================================
+   BASE
+   =========================================================== */
+body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;cursor:none}
+@media (pointer:coarse){body{cursor:auto}}
 
-      /* Fonts — Archivo Black for latin/numbers, Noto Sans SC carries Chinese weight */
-      --font-display: "Archivo Black", "Noto Sans SC", sans-serif;
-      --font-body: "Space Grotesk", "Noto Sans SC", sans-serif;
+/* animated aurora background (fixed) */
+.bg-fx{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-fx .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;mix-blend-mode:screen;animation:drift 22s var(--ease) infinite alternate}
+.blob.b1{width:46vw;height:46vw;background:radial-gradient(circle,#ff6b2c,transparent 65%);top:-10vw;left:-6vw}
+.blob.b2{width:40vw;height:40vw;background:radial-gradient(circle,#9b7bff,transparent 65%);bottom:-12vw;right:-6vw;animation-delay:-7s}
+.blob.b3{width:34vw;height:34vw;background:radial-gradient(circle,#27d0c0,transparent 65%);top:40%;left:55%;animation-delay:-13s;opacity:.35}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,4vh) scale(1.15)}100%{transform:translate(-4vw,-3vh) scale(.95)}}
+#particles{position:fixed;inset:0;z-index:1;pointer-events:none}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.4;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:54px 54px}
 
-      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-      --duration-normal: 0.6s;
-    }
+/* custom cursor */
+.cursor{position:fixed;top:0;left:0;width:26px;height:26px;border:1.5px solid var(--accent);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:99999;transition:width .2s,height .2s,background .2s,border-color .2s;mix-blend-mode:difference}
+.cursor.grow{width:54px;height:54px;background:rgba(255,107,44,.12)}
+.cursor-dot{position:fixed;top:0;left:0;width:5px;height:5px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:99999}
+@media (pointer:coarse){.cursor,.cursor-dot{display:none}}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ===========================================================
+   SHARED PIECES
+   =========================================================== */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:clamp(.6rem,2vh,1.5rem)}
+.kicker-num{font-family:var(--font-disp);font-size:clamp(1.1rem,2.8vw,2.1rem);background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.crumbs{display:flex;gap:clamp(.3rem,.9vw,.8rem);flex-wrap:wrap;justify-content:flex-end;font-size:var(--small-size);letter-spacing:.04em}
+.crumbs span{color:var(--faint)}
+.crumbs span.on{color:var(--accent);font-weight:700}
+.eyebrow{display:inline-flex;align-items:center;gap:.5em;font-size:var(--small-size);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:.7rem}
+.eyebrow::before{content:"";width:1.8em;height:2px;background:var(--accent)}
+h2.h{font-family:var(--font-disp);font-size:var(--h2-size);line-height:1.14;margin-bottom:clamp(.5rem,1.6vh,1.1rem);font-weight:900;letter-spacing:-.01em}
+.accent{color:var(--accent)}
+.grad{background:linear-gradient(110deg,var(--accent),var(--accent-2) 55%,var(--qwen));-webkit-background-clip:text;background-clip:text;color:transparent}
+strong{color:var(--ink);font-weight:700}
+.lead{font-size:var(--body-size);color:var(--muted);line-height:1.55;max-width:62ch}
 
-    /* --- viewport-base.css (verbatim) --- */
-    html, body { height: 100%; overflow-x: hidden; }
-    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-    .slide {
-      width: 100vw; height: 100vh; height: 100dvh;
-      overflow: hidden; scroll-snap-align: start;
-      display: flex; flex-direction: column; position: relative;
-    }
-    .slide-content {
-      flex: 1; display: flex; flex-direction: column; justify-content: center;
-      max-height: 100%; overflow: hidden; padding: var(--slide-padding);
-    }
-    :root {
-      --title-size: clamp(1.5rem, 5vw, 4rem);
-      --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
-      --h3-size: clamp(1rem, 2.5vw, 1.75rem);
-      --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
-      --small-size: clamp(0.65rem, 1vw, 0.875rem);
-      --slide-padding: clamp(1rem, 4vw, 4rem);
-      --content-gap: clamp(0.5rem, 2vw, 2rem);
-      --element-gap: clamp(0.25rem, 1vw, 1rem);
-    }
-    .card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
-    .feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
-    .feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: clamp(0.5rem, 1.5vw, 1rem); }
-    img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
-    @media (max-height: 700px) {
-      :root { --slide-padding: clamp(0.75rem, 3vw, 2rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); }
-    }
-    @media (max-height: 600px) {
-      :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem); --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem); --body-size: clamp(0.7rem, 1.2vw, 0.95rem); }
-      .nav-dots, .keyboard-hint, .decorative { display: none; }
-    }
-    @media (max-height: 500px) {
-      :root { --slide-padding: clamp(0.4rem, 2vw, 1rem); --title-size: clamp(1rem, 3.5vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem); --body-size: clamp(0.65rem, 1vw, 0.85rem); }
-    }
-    @media (max-width: 600px) {
-      :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
-      .grid { grid-template-columns: 1fr; }
-      .cols-2, .cols-3 { grid-template-columns: 1fr !important; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
-      html { scroll-behavior: auto; }
-    }
-    /* --- end viewport-base.css --- */
+.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(.6rem,1.8vw,1.4rem)}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.5rem,1.4vw,1.1rem)}
+.cols-4{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(.45rem,1.2vw,1rem)}
 
-    body {
-      background: var(--bg-gradient);
-      background-attachment: fixed;
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      -webkit-font-smoothing: antialiased;
-    }
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:clamp(.75rem,1.8vw,1.4rem);backdrop-filter:blur(8px);transition:transform .35s var(--ease),border-color .35s,background .35s,box-shadow .35s;position:relative;overflow:hidden}
+.glass:hover{border-color:var(--line-2);background:var(--glass-2);box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.glass h3{font-size:var(--h3-size);font-weight:700;line-height:1.2;margin-bottom:.4rem}
+.glass p,.glass li{font-size:var(--body-size);color:var(--muted);line-height:1.5}
+.glass .sub{font-size:var(--small-size);color:var(--faint)}
 
-    /* Subtle structural grid behind everything */
-    .slide::before {
-      content: "";
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
-      background-size: 64px 64px;
-      pointer-events: none;
-    }
+.tag{display:inline-block;font-size:var(--small-size);font-weight:700;letter-spacing:.05em;padding:.2em .8em;border-radius:999px;margin-bottom:.55rem}
+.tag.q{background:rgba(155,123,255,.16);color:#c2b0ff;border:1px solid rgba(155,123,255,.4)}
+.tag.d{background:rgba(39,208,192,.15);color:#84ede2;border:1px solid rgba(39,208,192,.42)}
+.tag.bad{background:rgba(255,77,94,.15);color:#ff9aa4;border:1px solid rgba(255,77,94,.42)}
+.tag.good{background:rgba(61,220,151,.14);color:#9af0c8;border:1px solid rgba(61,220,151,.4)}
+.tag.o{background:var(--accent);color:#1a1209}
 
-    /* ===========================================
-       SHARED LAYOUT PIECES
-       =========================================== */
-    .topbar {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 1rem; margin-bottom: clamp(0.6rem, 2vh, 1.6rem);
-    }
-    .slide-num {
-      font-family: var(--font-display);
-      font-size: clamp(1.4rem, 3.4vw, 2.6rem);
-      color: var(--card-bg); line-height: 1;
-    }
-    .breadcrumb {
-      display: flex; gap: clamp(0.35rem, 1vw, 0.9rem); flex-wrap: wrap;
-      justify-content: flex-end; font-size: var(--small-size);
-      letter-spacing: 0.04em; text-align: right;
-    }
-    .breadcrumb span { color: var(--text-secondary); opacity: 0.5; }
-    .breadcrumb span.active { color: var(--card-bg); opacity: 1; font-weight: 700; }
+ul.clean{list-style:none;display:flex;flex-direction:column;gap:clamp(.3rem,1vh,.65rem)}
+ul.clean li{font-size:var(--body-size);line-height:1.45;padding-left:1.15em;position:relative;color:var(--muted)}
+ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-weight:700}
+ul.clean li strong{color:var(--ink)}
 
-    .eyebrow {
-      display: inline-block; font-size: var(--small-size);
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--card-bg); font-weight: 700; margin-bottom: 0.5rem;
-    }
-    h2.slide-title {
-      font-family: var(--font-display);
-      font-size: var(--h2-size); line-height: 1.12;
-      margin-bottom: clamp(0.5rem, 1.6vh, 1.1rem); font-weight: 900;
-    }
-    h2.slide-title .accent { color: var(--card-bg); }
-    .lead { font-size: var(--body-size); color: var(--text-secondary); line-height: 1.5; max-width: 60ch; }
-    .accent { color: var(--card-bg); }
-    strong { color: var(--text-primary); font-weight: 700; }
+.note{margin-top:clamp(.5rem,1.5vh,1rem);font-size:var(--small-size);color:var(--muted);line-height:1.5;border-left:3px solid var(--accent);padding-left:.85rem}
 
-    .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.6rem, 1.8vw, 1.4rem); }
-    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.5rem, 1.4vw, 1.1rem); }
+table.mini{width:100%;border-collapse:collapse;font-size:var(--small-size)}
+table.mini th,table.mini td{text-align:left;padding:clamp(.3rem,.8vh,.55rem) clamp(.4rem,1vw,.75rem);border-bottom:1px solid var(--line);line-height:1.4}
+table.mini th{color:var(--accent);font-weight:700}
+table.mini td{color:var(--muted)}
+table.mini td strong{color:var(--ink)}
+table.mini tr:last-child td{border-bottom:none}
 
-    /* Cards */
-    .box {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: clamp(0.7rem, 1.8vw, 1.3rem);
-    }
-    .box h3 {
-      font-size: var(--h3-size); font-weight: 700; line-height: 1.2;
-      margin-bottom: 0.4rem;
-    }
-    .box p, .box li { font-size: var(--body-size); color: var(--text-secondary); line-height: 1.45; }
-    .box .tag {
-      display: inline-block; font-size: var(--small-size); font-weight: 700;
-      letter-spacing: 0.06em; padding: 0.18em 0.7em; border-radius: 999px;
-      margin-bottom: 0.5rem;
-    }
-    .tag.orange { background: var(--card-bg); color: var(--text-on-card); }
-    .tag.qwen { background: rgba(124,92,255,0.18); color: #b3a0ff; border: 1px solid rgba(124,92,255,0.4); }
-    .tag.doubao { background: rgba(77,208,225,0.16); color: #8fe6f0; border: 1px solid rgba(77,208,225,0.4); }
-    .box.orange-card { background: var(--card-bg); color: var(--text-on-card); border: none; }
-    .box.orange-card h3, .box.orange-card p, .box.orange-card li { color: var(--text-on-card); }
+/* ===========================================================
+   TITLE / SECTION
+   =========================================================== */
+.title-slide{justify-content:center}
+.title-slide .badge{display:inline-flex;align-items:center;gap:.6em;font-family:var(--font-disp);font-size:clamp(.7rem,1.5vw,1rem);letter-spacing:.12em;color:var(--accent);margin-bottom:clamp(.8rem,2vh,1.4rem)}
+.title-slide .badge::before{content:"";width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--qwen));box-shadow:0 0 26px rgba(255,107,44,.6)}
+.title-slide h1{font-family:var(--font-disp);font-size:var(--title-size);line-height:1.05;font-weight:900;max-width:20ch;letter-spacing:-.015em}
+.title-slide .subt{margin-top:clamp(.9rem,2.2vh,1.5rem);font-size:var(--body-size);color:var(--muted);max-width:54ch;line-height:1.55}
+.title-slide .sign{margin-top:clamp(1rem,2.6vh,2rem);font-size:var(--small-size);color:var(--faint);letter-spacing:.06em;border-top:1px solid var(--line);padding-top:.9rem;display:inline-block}
 
-    ul.clean { list-style: none; display: flex; flex-direction: column; gap: clamp(0.3rem, 1vh, 0.7rem); }
-    ul.clean li { font-size: var(--body-size); line-height: 1.4; padding-left: 1.1em; position: relative; color: var(--text-secondary); }
-    ul.clean li::before { content: "▸"; position: absolute; left: 0; color: var(--card-bg); font-weight: 700; }
-    ul.clean li strong { color: var(--text-primary); }
+.section-slide{justify-content:center}
+.section-slide .snum{font-family:var(--font-disp);font-size:clamp(5rem,22vw,18rem);line-height:.8;background:linear-gradient(160deg,var(--accent),var(--qwen));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 60px rgba(255,107,44,.2)}
+.section-slide h2{font-family:var(--font-disp);font-size:var(--title-size);margin-top:.1rem;font-weight:900}
+.section-slide .sd{margin-top:clamp(.5rem,1.5vh,1rem);font-size:var(--body-size);color:var(--muted);max-width:50ch;line-height:1.55}
 
-    /* Mini comparison table */
-    table.mini { width: 100%; border-collapse: collapse; font-size: var(--small-size); }
-    table.mini th, table.mini td { text-align: left; padding: clamp(0.3rem,0.8vh,0.6rem) clamp(0.4rem,1vw,0.8rem); border-bottom: 1px solid var(--line); line-height: 1.35; }
-    table.mini th { color: var(--card-bg); font-weight: 700; letter-spacing: 0.03em; }
-    table.mini td { color: var(--text-secondary); }
-    table.mini td strong { color: var(--text-primary); }
-    table.mini tr:last-child td { border-bottom: none; }
-    .col-qwen { color: #b3a0ff !important; }
-    .col-doubao { color: #8fe6f0 !important; }
+/* big punch */
+.punch{font-family:var(--font-disp);font-size:clamp(1.4rem,3.8vw,3.2rem);line-height:1.18;font-weight:900;max-width:24ch;letter-spacing:-.01em}
 
-    /* Phase timeline */
-    .phases { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(0.35rem, 1vw, 0.8rem); align-items: stretch; }
-    .phase { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-top: 3px solid var(--card-bg); border-radius: 10px; padding: clamp(0.5rem,1.2vw,0.9rem); display: flex; flex-direction: column; gap: 0.35rem; }
-    .phase .pnum { font-family: var(--font-display); font-size: clamp(0.7rem,1.4vw,0.95rem); color: var(--card-bg); }
-    .phase .ph { font-weight: 700; font-size: clamp(0.72rem,1.4vw,1rem); line-height: 1.2; }
-    .phase .pl { font-size: clamp(0.62rem,1vw,0.82rem); color: var(--text-secondary); line-height: 1.35; }
-    .phase .pl b { color: var(--text-primary); font-weight: 700; }
-    @media (max-width: 760px) { .phases { grid-template-columns: 1fr; } .cols-3 { grid-template-columns: 1fr; } }
+/* TOC */
+.toc{display:flex;flex-direction:column;gap:clamp(.5rem,1.6vh,1.1rem)}
+.toc-item{display:flex;align-items:center;gap:clamp(.8rem,2vw,1.6rem);padding:clamp(.6rem,1.5vh,1.1rem) clamp(.7rem,1.6vw,1.3rem);border:1px solid var(--line);border-radius:14px;background:var(--glass);transition:all .35s var(--ease);cursor:pointer}
+.toc-item:hover{border-color:var(--accent);transform:translateX(10px);background:var(--glass-2)}
+.toc-item .tn{font-family:var(--font-disp);font-size:clamp(1.1rem,3vw,2rem);color:var(--accent);min-width:1.8em}
+.toc-item .tt{font-size:clamp(.95rem,2vw,1.4rem);font-weight:700}
+.toc-item .td{font-size:var(--small-size);color:var(--faint)}
 
-    /* Score chips */
-    .scorewrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem,2vw,1.6rem); }
-    .scorecard { border-radius: 16px; padding: clamp(0.9rem,2.2vw,1.6rem); border: 1px solid var(--line); }
-    .scorecard .label { font-size: var(--small-size); letter-spacing: 0.06em; color: var(--text-secondary); }
-    .scorecard .vs { display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.4rem; flex-wrap: wrap; }
-    .scorecard .big { font-family: var(--font-display); font-size: clamp(1.6rem,4.5vw,3rem); line-height: 1; }
-    .scorecard .vlabel { font-size: var(--small-size); color: var(--text-secondary); }
+/* timeline (P3) */
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.5rem,1.4vw,1.2rem);position:relative;margin-top:.5rem}
+.tl-step{border:1px solid var(--line);border-radius:14px;padding:clamp(.7rem,1.6vw,1.2rem);background:var(--glass);position:relative;transition:transform .35s var(--ease),border-color .35s}
+.tl-step:hover{transform:translateY(-6px);border-color:var(--accent)}
+.tl-step .era{font-family:var(--font-disp);font-size:clamp(.85rem,1.8vw,1.25rem);margin-bottom:.3rem}
+.tl-step.s1 .era{color:var(--faint)} .tl-step.s2 .era{color:var(--accent-2)} .tl-step.s3 .era{color:var(--accent)}
+.tl-step .tech{font-size:var(--small-size);color:var(--ink);font-weight:600;margin-bottom:.5rem;letter-spacing:.02em}
+.tl-step .desc{font-size:var(--small-size);color:var(--muted);line-height:1.5}
+.tl-step.s3{border-color:rgba(255,107,44,.5);box-shadow:0 0 40px rgba(255,107,44,.12)}
+.tl-dot{position:absolute;top:50%;right:calc(-1 * clamp(.5rem,1.4vw,1.2rem) / 2 - 5px);width:10px;height:10px;border-radius:50%;background:var(--accent);transform:translateY(-50%);z-index:3}
+@media (max-width:680px){.timeline{grid-template-columns:1fr}.tl-dot{display:none}}
 
-    /* Title slide */
-    .title-slide { justify-content: center; align-items: flex-start; padding: var(--slide-padding); }
-    .title-slide .kicker { font-family: var(--font-display); color: var(--card-bg); font-size: clamp(0.8rem,1.6vw,1.1rem); letter-spacing: 0.1em; margin-bottom: clamp(0.6rem,1.6vh,1.2rem); }
-    .title-slide h1 { font-family: var(--font-display); font-size: var(--title-size); line-height: 1.04; font-weight: 900; max-width: 18ch; }
-    .title-slide h1 .accent { color: var(--card-bg); }
-    .title-slide .sub { margin-top: clamp(0.8rem,2vh,1.4rem); font-size: var(--body-size); color: var(--text-secondary); max-width: 52ch; line-height: 1.5; }
-    .title-slide .meta { margin-top: clamp(1rem,2.5vh,1.8rem); font-size: var(--small-size); color: var(--text-secondary); letter-spacing: 0.05em; }
+/* funnel (P12) */
+.funnel{display:flex;flex-direction:column;align-items:center;gap:clamp(.4rem,1.2vh,.9rem);margin-top:.6rem}
+.fl{width:100%;border-radius:10px;padding:clamp(.55rem,1.4vh,1rem) 1rem;text-align:center;color:#160d06;font-weight:700;transform-origin:center;transition:transform .8s var(--ease),opacity .8s;opacity:0;transform:scaleX(.2)}
+.slide.visible .fl{opacity:1;transform:scaleX(1)}
+.slide.visible .fl:nth-child(1){transition-delay:.1s}
+.slide.visible .fl:nth-child(2){transition-delay:.32s}
+.slide.visible .fl:nth-child(3){transition-delay:.54s}
+.fl .ft{font-size:clamp(.85rem,1.8vw,1.15rem)}
+.fl .fd{font-size:var(--small-size);font-weight:500;opacity:.85;margin-top:.15rem}
+.fl1{width:100%;background:linear-gradient(90deg,#ff4d5e,#ff7a4d)}
+.fl2{width:78%;background:linear-gradient(90deg,#ff8a3c,#ffb347)}
+.fl3{width:56%;background:linear-gradient(90deg,#ffc14d,#ffe08a)}
 
-    /* Section divider */
-    .divider { justify-content: center; }
-    .divider .dnum { font-family: var(--font-display); font-size: clamp(4rem, 18vw, 13rem); color: var(--card-bg); line-height: 0.85; }
-    .divider h2 { font-family: var(--font-display); font-size: var(--title-size); margin-top: 0.2rem; font-weight: 900; }
-    .divider .dsub { margin-top: clamp(0.5rem,1.5vh,1rem); font-size: var(--body-size); color: var(--text-secondary); max-width: 48ch; line-height: 1.5; }
+/* evidence screenshot frame */
+.shot{border-radius:12px;overflow:hidden;border:1px solid var(--line-2);background:#000;position:relative;cursor:zoom-in;transition:transform .35s var(--ease),box-shadow .35s}
+.shot:hover{transform:scale(1.02);box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.shot img{display:block;width:100%;height:auto;max-height:none}
+.shot .badge-x{position:absolute;top:8px;left:8px;font-size:var(--small-size);font-weight:700;padding:.2em .7em;border-radius:8px;z-index:2}
+.shot .zoom-ic{position:absolute;bottom:8px;right:8px;font-size:.8rem;color:#fff;background:rgba(0,0,0,.55);border-radius:6px;padding:.15em .45em;z-index:2}
+.callout{font-size:var(--small-size);line-height:1.45;color:var(--muted);margin-top:.5rem}
+.callout b{color:var(--bad)}
+.callout.ok b{color:var(--good)}
 
-    /* Big quote / punchline */
-    .punch { font-family: var(--font-display); font-size: clamp(1.3rem, 3.6vw, 3rem); line-height: 1.18; font-weight: 900; max-width: 22ch; }
-    .punch .accent { color: var(--card-bg); }
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:100000;background:rgba(5,5,9,.92);display:flex;align-items:center;justify-content:center;padding:4vw;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+.lightbox.on{opacity:1;pointer-events:auto}
+.lightbox img{max-width:94vw;max-height:88vh;border-radius:10px;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.lightbox .lb-close{position:absolute;top:3vh;right:3vw;font-size:2rem;color:#fff;cursor:pointer;line-height:1}
+.lightbox .lb-cap{position:absolute;bottom:3vh;left:0;right:0;text-align:center;color:var(--muted);font-size:var(--small-size)}
 
-    .footnote { margin-top: clamp(0.5rem,1.5vh,1rem); font-size: var(--small-size); color: var(--text-secondary); line-height: 1.45; border-left: 3px solid var(--card-bg); padding-left: 0.8rem; }
+/* keyword chips (P8) */
+.chips{display:flex;flex-wrap:wrap;gap:clamp(.4rem,1vw,.7rem);margin-top:.3rem}
+.chip{font-size:var(--body-size);font-weight:600;padding:.4em 1em;border-radius:999px;border:1px solid var(--accent);color:var(--accent-2);background:rgba(255,107,44,.08);opacity:0;transform:translateY(12px) scale(.9);animation:chipin .5s var(--ease) forwards}
+.slide.visible .chip{animation-play-state:running}
+@keyframes chipin{to{opacity:1;transform:translateY(0) scale(1)}}
 
-    /* ===========================================
-       ENTRANCE ANIMATIONS
-       =========================================== */
-    .reveal { opacity: 0; transform: translateY(28px); transition: opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
-    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
-    .slide.visible .reveal:nth-child(1) { transition-delay: 0.06s; }
-    .slide.visible .reveal:nth-child(2) { transition-delay: 0.14s; }
-    .slide.visible .reveal:nth-child(3) { transition-delay: 0.22s; }
-    .slide.visible .reveal:nth-child(4) { transition-delay: 0.30s; }
-    .slide.visible .reveal:nth-child(5) { transition-delay: 0.38s; }
-    .slide.visible .reveal:nth-child(6) { transition-delay: 0.46s; }
-    /* stagger helper for grid children */
-    .slide.visible .stagger > * { opacity: 0; transform: translateY(22px); animation: rise 0.6s var(--ease-out-expo) forwards; }
-    .slide.visible .stagger > *:nth-child(1) { animation-delay: 0.12s; }
-    .slide.visible .stagger > *:nth-child(2) { animation-delay: 0.22s; }
-    .slide.visible .stagger > *:nth-child(3) { animation-delay: 0.32s; }
-    .slide.visible .stagger > *:nth-child(4) { animation-delay: 0.42s; }
-    .slide.visible .stagger > *:nth-child(5) { animation-delay: 0.52s; }
-    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+/* arrow flow (P9/P16) */
+.flow{display:flex;align-items:center;gap:clamp(.5rem,1.4vw,1.1rem);flex-wrap:wrap}
+.flow .node{flex:1;min-width:120px;border:1px solid var(--line);border-radius:12px;padding:clamp(.6rem,1.4vw,1rem);background:var(--glass)}
+.flow .arr{font-size:1.4rem;color:var(--accent)}
 
-    /* ===========================================
-       CHROME: progress bar, nav dots, hint
-       =========================================== */
-    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--card-bg); z-index: 9000; transition: width 0.15s linear; }
-    .nav-dots { position: fixed; right: clamp(0.6rem,1.5vw,1.4rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.55rem; z-index: 9000; }
-    .nav-dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: rgba(255,255,255,0.25); cursor: pointer; padding: 0; transition: all 0.25s ease; }
-    .nav-dots button.active { background: var(--card-bg); transform: scale(1.5); }
-    .keyboard-hint { position: fixed; bottom: clamp(0.5rem,1.5vh,1rem); left: 50%; transform: translateX(-50%); font-size: var(--small-size); color: var(--text-secondary); opacity: 0.5; z-index: 9000; letter-spacing: 0.05em; }
+/* count number */
+.count{font-family:var(--font-disp)}
 
-    /* ===========================================
-       INLINE EDITING
-       =========================================== */
-    .edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
-    .edit-toggle { position: fixed; top: 1rem; left: 1rem; width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--card-bg); color: #fff; font-size: 1.1rem; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.2s ease; z-index: 10001; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
-    .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
-    .edit-toggle.active { background: #2e7d32; }
-    .edit-toggle:hover { transform: scale(1.08); }
-    .edit-banner { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) translateY(-120%); background: var(--card-bg); color: var(--text-on-card); font-size: var(--small-size); font-weight: 700; padding: 0.5rem 1rem; border-radius: 999px; z-index: 10001; transition: transform 0.3s var(--ease-out-expo); white-space: nowrap; }
-    .edit-banner.active { transform: translateX(-50%) translateY(0); }
-    body.edit-active [contenteditable] { outline: 1px dashed rgba(255,87,34,0.6); outline-offset: 3px; border-radius: 3px; }
-    body.edit-active [contenteditable]:focus { outline: 2px solid var(--card-bg); background: rgba(255,87,34,0.06); }
-  </style>
+/* reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity var(--d) var(--ease),transform var(--d) var(--ease)}
+.slide.visible .reveal{opacity:1;transform:translateY(0)}
+.slide.visible .reveal:nth-child(1){transition-delay:.05s}
+.slide.visible .reveal:nth-child(2){transition-delay:.13s}
+.slide.visible .reveal:nth-child(3){transition-delay:.21s}
+.slide.visible .reveal:nth-child(4){transition-delay:.29s}
+.slide.visible .reveal:nth-child(5){transition-delay:.37s}
+.slide.visible .reveal:nth-child(6){transition-delay:.45s}
+.slide.visible .stagger>*{opacity:0;transform:translateY(24px);animation:rise .6s var(--ease) forwards}
+.slide.visible .stagger>*:nth-child(1){animation-delay:.12s}
+.slide.visible .stagger>*:nth-child(2){animation-delay:.24s}
+.slide.visible .stagger>*:nth-child(3){animation-delay:.36s}
+.slide.visible .stagger>*:nth-child(4){animation-delay:.48s}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+/* chrome */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--qwen));z-index:9000;transition:width .15s linear;box-shadow:0 0 12px var(--accent)}
+.nav-dots{position:fixed;right:clamp(.6rem,1.5vw,1.3rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.5rem;z-index:9000}
+.nav-dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.22);cursor:pointer;padding:0;transition:all .25s}
+.nav-dots button.on{background:var(--accent);transform:scale(1.6);box-shadow:0 0 10px var(--accent)}
+.hint{position:fixed;bottom:clamp(.5rem,1.5vh,1rem);left:50%;transform:translateX(-50%);font-size:var(--small-size);color:var(--faint);z-index:9000;letter-spacing:.05em}
+</style>
 </head>
 <body>
-  <div class="progress-bar"></div>
-  <nav class="nav-dots" aria-label="幻灯片导航"></nav>
-  <div class="keyboard-hint">← → / 空格 翻页 · 按 E 编辑</div>
+<div class="bg-fx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<canvas id="particles"></canvas>
+<div class="grain"></div>
+<div class="progress"></div>
+<nav class="nav-dots" aria-label="导航"></nav>
+<div class="hint">↓ 滚动 / ← → 翻页 · 点击截图可放大</div>
+<div class="cursor"></div><div class="cursor-dot"></div>
+<div class="lightbox" id="lightbox"><span class="lb-close" id="lbClose">×</span><img id="lbImg" src="" alt="" /><div class="lb-cap" id="lbCap"></div></div>
 
-  <!-- Inline editing controls -->
-  <div class="edit-hotzone" title="编辑模式"></div>
-  <button class="edit-toggle" id="editToggle" title="编辑模式 (E)">✏️</button>
-  <div class="edit-banner" id="editBanner">编辑模式 · Ctrl+S 导出</div>
+<!-- P1 封面 -->
+<section class="slide title-slide">
+  <div class="slide-content">
+    <div class="badge reveal">QWEN · AI 工具 AGENT · 产品理解</div>
+    <h1 class="reveal">从工具到出口<br/><span class="grad">我对 AI 工具 Agent 的产品理解</span></h1>
+    <p class="subt reveal">AI 工具生态 · 竞品评测 · 千问业务思考 · 个人优势</p>
+    <span class="sign reveal">姓名 / 日期</span>
+  </div>
+</section>
 
-  <!-- ============ 01 · TITLE ============ -->
-  <section class="slide title-slide">
-    <div class="kicker reveal">QWEN · AI 工具 AGENT</div>
-    <h1 class="reveal" contenteditable="false">把模型能力，翻译成<span class="accent">用户可感知的完成度</span></h1>
-    <p class="sub reveal" contenteditable="false">一份关于千问 AI 工具 Agent 的产品思维拆解：从生态演进，到竞品评测，到业务方向，再到我对"AI 输出出口层"的判断。</p>
-    <p class="meta reveal" contenteditable="false">产品思维演示 · 2026</p>
-  </section>
-
-  <!-- ============ 02 · 开场立论 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">00</span>
-        <div class="breadcrumb"><span class="active">立论</span><span>生态</span><span>评测</span><span>业务</span><span>未来</span></div>
-      </div>
-      <div class="eyebrow reveal">开场立论</div>
-      <p class="punch reveal" contenteditable="false">竞争正从"谁的模型强"，<br/>转向<span class="accent">"谁能把能力变成完成度"</span>。</p>
-      <div class="footnote reveal" contenteditable="false">我对千问的判断：它最该做的不是"又一个 AI 工具"，而是 <strong>AI 输出的出口层</strong>——为每个回答自动匹配最佳的展示形式。这条主线贯穿全篇。</div>
+<!-- P2 目录 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="eyebrow reveal">CONTENTS · 目录</div>
+    <h2 class="h reveal">今天讲<span class="accent">四件事</span></h2>
+    <div class="toc stagger reveal">
+      <div class="toc-item"><span class="tn">01</span><div><div class="tt">AI 工具产品生态</div><div class="td">技术如何重写产品形态</div></div></div>
+      <div class="toc-item"><span class="tn">02</span><div><div class="tt">竞品评测报告</div><div class="td">一次 Agent 链路的拆解实验</div></div></div>
+      <div class="toc-item"><span class="tn">03</span><div><div class="tt">千问 × AI 工具</div><div class="td">优势与落地</div></div></div>
+      <div class="toc-item"><span class="tn">04</span><div><div class="tt">未来判断：Content Remix</div><div class="td">工具的消失</div></div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ============ 03 · SECTION 01 ============ -->
-  <section class="slide divider">
-    <div class="slide-content">
-      <div class="dnum reveal">01</div>
-      <h2 class="reveal" contenteditable="false">AI 工具产品生态</h2>
-      <p class="dsub reveal" contenteditable="false">演进过程 · 产品分类 · 竞品格局——先看清这条赛道的来路与版图。</p>
+<!-- Section 01 -->
+<section class="slide section-slide">
+  <div class="slide-content">
+    <div class="snum reveal">01</div>
+    <h2 class="reveal">AI 工具产品生态</h2>
+    <p class="sd reveal">技术如何重写产品形态——演进过程与竞品格局。</p>
+  </div>
+</section>
+
+<!-- P3 演进三阶段 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">01</span><div class="crumbs"><span class="on">生态</span><span>评测</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">演进过程 · 三个阶段</div>
+    <h2 class="h reveal">每一次技术跃迁，<span class="accent">都重写了一次产品形态</span></h2>
+    <div class="timeline stagger reveal">
+      <div class="tl-step s1"><div class="era">模板填充时代<span style="font-size:.7em;color:var(--faint)"> · 前 LLM</span></div><div class="tech">关键词匹配 + 素材库</div><div class="desc">本质是模板生意，AI 只是话术包装。</div><span class="tl-dot"></span></div>
+      <div class="tl-step s2"><div class="era">LLM 生成时代<span style="font-size:.7em;color:var(--faint)"> · 2023</span></div><div class="tech">大纲生成 → 套模板渲染</div><div class="desc">解决了"内容从哪来"，没解决"排版好不好看"。</div><span class="tl-dot"></span></div>
+      <div class="tl-step s3"><div class="era">Agent 时代<span style="font-size:.7em;color:var(--faint)"> · 2024 至今</span></div><div class="tech">规划 · 工具调用 · 代码排版 · 自检</div><div class="desc">从"填空题"变成"委托制作"。</div></div>
     </div>
-  </section>
+    <div class="note reveal">第三阶段是三个技术变量的叠加：<strong>推理模型</strong>解锁规划、<strong>多模态</strong>解锁自检、<strong>代码能力</strong>溢出到设计领域——绕过了模板。</div>
+  </div>
+</section>
 
-  <!-- ============ 04 · 演进过程 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">01</span>
-        <div class="breadcrumb"><span>立论</span><span class="active">生态</span><span>评测</span><span>业务</span><span>未来</span></div>
-      </div>
-      <div class="eyebrow reveal">演进过程 · 技术 ↔ 产品 双线</div>
-      <h2 class="slide-title reveal" contenteditable="false">每次产品形态跃迁，<span class="accent">都是一次模型能力解锁</span></h2>
-      <div class="phases stagger reveal">
-        <div class="phase"><span class="pnum">P0</span><span class="ph">功能工具</span><span class="pl"><b>小模型</b>单任务 · AI 是 SaaS 里的一个功能点（抠图/语法）</span></div>
-        <div class="phase"><span class="pnum">P1</span><span class="ph">对话/Copilot</span><span class="pl"><b>LLM 涌现</b> · 形态变成对话框，人在驾驶座做单步生成</span></div>
-        <div class="phase"><span class="pnum">P2</span><span class="ph">垂直工作流</span><span class="pl"><b>多模态/RAG</b> · 把对话封装成"完成一类任务"（AIPPT）</span></div>
-        <div class="phase"><span class="pnum">P3</span><span class="ph">Agent</span><span class="pl"><b>规划+工具+推理</b> · 给目标自主多步执行，从生成→完成任务</span></div>
-        <div class="phase"><span class="pnum">P4</span><span class="ph">多Agent/入口</span><span class="pl"><b>编排+MCP</b> · AI 从"工具"升维成"操作系统/入口"</span></div>
-      </div>
-      <div class="footnote reveal" contenteditable="false">类比自动驾驶：P1 是 L2 辅助（人随时接管）→ P3 Agent 是 L4（划定场景内自主）→ 现在都在冲 L5。<strong>模型能力的边界，决定产品自主性的边界。</strong></div>
+<!-- P6 竞品四股势力 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">02</span><div class="crumbs"><span class="on">生态</span><span>评测</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">竞品生态 · 四股势力</div>
+    <h2 class="h reveal">同一条赛道上，<span class="accent">四种打法</span></h2>
+    <div class="cols-4 stagger reveal">
+      <div class="glass tilt"><h3 style="font-size:var(--body-size)">传统办公厂商 AI 化</h3><p class="sub">WPS AI · Copilot · Canva</p><p style="margin-top:.4rem"><strong>资产</strong>：存量用户与格式心智</p><p><strong style="color:var(--bad)">软肋</strong>：AI 是补丁非原生</p></div>
+      <div class="glass tilt"><h3 style="font-size:var(--body-size)">AI 原生垂直工具</h3><p class="sub">Gamma · AiPPT</p><p style="margin-top:.4rem"><strong>资产</strong>：场景打磨深</p><p><strong style="color:var(--bad)">软肋</strong>：模型靠采购，易被降维</p></div>
+      <div class="glass tilt" style="border-color:rgba(155,123,255,.45)"><span class="tag q">千问在此</span><h3 style="font-size:var(--body-size)">大模型厂商通用助手</h3><p class="sub">Qwen · Kimi · 豆包</p><p style="margin-top:.4rem"><strong>资产</strong>：模型红利 + 流量入口</p><p><strong style="color:var(--bad)">软肋</strong>：场景纵深不足</p></div>
+      <div class="glass tilt"><h3 style="font-size:var(--body-size)">通用 Agent 平台</h3><p class="sub">Manus · GenSpark</p><p style="margin-top:.4rem"><strong>资产</strong>：链路最完整</p><p><strong style="color:var(--bad)">软肋</strong>：成本高、稳定性差</p></div>
     </div>
-  </section>
+    <div class="note reveal">千问在第三股势力中，但多了两张牌——<strong>开源生态</strong>与<strong>阿里云 B 端通道</strong>（详见第三部分）。</div>
+  </div>
+</section>
 
-  <!-- ============ 05 · 产品分类 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">02</span>
-        <div class="breadcrumb"><span>立论</span><span class="active">生态</span><span>评测</span><span>业务</span><span>未来</span></div>
-      </div>
-      <div class="eyebrow reveal">产品分类 · 两个维度看得更清</div>
-      <h2 class="slide-title reveal" contenteditable="false">交付物形态 <span class="accent">×</span> 自主性程度</h2>
-      <div class="cols-2 stagger reveal">
-        <div class="box">
-          <span class="tag orange">维度 A · 按交付物形态</span>
-          <ul class="clean">
-            <li><strong>演示类</strong> AIPPT（Gamma/美图/讯飞/千问）</li>
-            <li><strong>文本/文档</strong> 写作·改写·翻译·文档问答</li>
-            <li><strong>视觉/音视频</strong> 图像·设计·视频·AI 播客</li>
-            <li><strong>数据/代码</strong> BI 分析·AI 编程</li>
-            <li><strong>综合 Agent</strong> 通用任务·深度研究</li>
-          </ul>
-        </div>
-        <div class="box">
-          <span class="tag orange">维度 B · 按自主性程度</span>
-          <ul class="clean">
-            <li><strong>工具</strong> — 人主导，AI 执行单点</li>
-            <li><strong>Copilot</strong> — 人机协作，AI 建议</li>
-            <li><strong>Agent</strong> — AI 主导，自主多步</li>
-          </ul>
-          <p style="margin-top:0.7rem; font-size:var(--small-size); color:var(--text-primary);">同一种交付物（如 PPT），正沿自主性轴从"工具"迁向"Agent"——这就是当下 AIPPT 的真实战场。</p>
-        </div>
-      </div>
+<!-- Section 02 -->
+<section class="slide section-slide">
+  <div class="slide-content">
+    <div class="snum reveal">02</div>
+    <h2 class="reveal">竞品评测报告</h2>
+    <p class="sd reveal">一次 Agent 链路的拆解实验——链路评测 + 结果评测。</p>
+  </div>
+</section>
+
+<!-- P7 评测设计 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">03</span><div class="crumbs"><span>生态</span><span class="on">评测</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">评测设计</div>
+    <h2 class="h reveal">不测"哪家好看"，<span class="accent">测哪家的 Agent 真的在思考</span></h2>
+    <div class="cols-3 stagger reveal">
+      <div class="glass tilt"><span class="tag o">对象</span><p>Qwen / 豆包 / Kimi 等主流 AI PPT Agent。</p></div>
+      <div class="glass tilt"><span class="tag o">任务</span><p>同一指令，含<strong>明确硬约束</strong>与<strong>抽象风格要求</strong>。</p></div>
+      <div class="glass tilt"><span class="tag o">方法</span><p><strong>链路评测</strong>（看思考过程）+ <strong>结果评测</strong>（看交付质量）。</p></div>
     </div>
-  </section>
+    <div class="note reveal">下面先用三个维度拆"链路"，再回到"架构差异"，最后落到"生成结果"的逐层质检。</div>
+  </div>
+</section>
 
-  <!-- ============ 06 · 竞品生态 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">03</span>
-        <div class="breadcrumb"><span>立论</span><span class="active">生态</span><span>评测</span><span>业务</span><span>未来</span></div>
+<!-- P8 维度一 抽象意图转译 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">04</span><div class="crumbs"><span>生态</span><span class="on">评测·链路</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">链路维度一 · 抽象意图的转译能力</div>
+    <h2 class="h reveal">高级能力不是"听懂颜色"，<br/>而是把<span class="accent">抽象风格词转成可执行的视觉系统</span></h2>
+    <div class="cols-2 reveal" style="align-items:center">
+      <div class="glass" style="border-color:rgba(155,123,255,.4)">
+        <span class="tag q">用户输入</span>
+        <p style="font-size:var(--h3-size);color:var(--ink);font-weight:700">"落日飞车风格"</p>
+        <p class="sub" style="margin-top:.4rem">一个抽象到无法直接执行的风格词。</p>
       </div>
-      <div class="eyebrow reveal">竞品生态格局</div>
-      <h2 class="slide-title reveal" contenteditable="false">大厂打<span class="accent">全家桶</span>，垂直打<span class="accent">场景深度</span></h2>
-      <div class="cols-3 stagger reveal">
-        <div class="box"><h3>国际</h3><p>OpenAI · Gamma · Notion AI · Perplexity · Midjourney · Runway · NotebookLM</p></div>
-        <div class="box"><h3>国内大厂</h3><p>字节（豆包/即梦/扣子）· 阿里（通义千问/夸克）· 百度 · 腾讯 · Kimi · 智谱 · DeepSeek</p></div>
-        <div class="box"><h3>垂直玩家</h3><p>美图（AI 设计）· 讯飞（AIPPT/语音）· 秘塔（AI 搜索/文档）</p></div>
-      </div>
-      <div class="footnote reveal" contenteditable="false">格局洞察：胜负手不在模型分数，而在 <strong>"最后一公里的完成度"</strong>——能不能让普通用户拿到一个"可以直接用"的产物。</div>
-    </div>
-  </section>
-
-  <!-- ============ 07 · SECTION 02 ============ -->
-  <section class="slide divider">
-    <div class="slide-content">
-      <div class="dnum reveal">02</div>
-      <h2 class="reveal" contenteditable="false">竞品评测体验报告</h2>
-      <p class="dsub reveal" contenteditable="false">AIPPT Agent：千问 vs 豆包。两层评测——① Agent 链路（怎么"想"）② 生成结果（做得怎么样）。</p>
-    </div>
-  </section>
-
-  <!-- ============ 08 · Agent 链路评测 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">04</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
-      </div>
-      <div class="eyebrow reveal">① Agent 链路评测 · 看思考过程</div>
-      <h2 class="slide-title reveal" contenteditable="false">同一条带硬约束的 prompt，看 Agent 怎么<span class="accent">拆解与翻译</span></h2>
-      <div class="cols-3 stagger reveal">
-        <div class="box"><span class="tag qwen">千问亮点</span><h3>风格的翻译力</h3><p>"落日飞车"不是换配色，而是拆成夕阳/公路/复古相纸/暖棕/迷幻……<strong>抽象风格词 → 可执行视觉系统</strong>。</p></div>
-        <div class="box"><span class="tag doubao">豆包硬伤</span><h3>硬约束被违反</h3><p>要求 1–10 页却做成 11 页。页数/比例/风格都是<strong>硬约束</strong>，违反直接击穿信任——<strong>可靠 &gt; 惊艳</strong>。</p></div>
-        <div class="box"><span class="tag qwen">千问亮点</span><h3>反推真实目标</h3><p>它知道目标是"提升面试认知"，组织成 概念→拆解→表达→避坑；用建筑师/自动驾驶类比解释——<strong>从任务反推 JTBD</strong>。</p></div>
-      </div>
-      <div class="footnote reveal" contenteditable="false">方法一句话：观察任务拆解、对模糊需求的翻译、对硬约束的处理机制——这些决定了产物的上限与用户的信任。</div>
-    </div>
-  </section>
-
-  <!-- ============ 09 · Agent 架构对比 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">05</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
-      </div>
-      <div class="eyebrow reveal">Agent 架构设计的区别</div>
-      <h2 class="slide-title reveal" contenteditable="false">"快速出结果派" <span class="accent">vs</span> "推理严谨派"</h2>
-      <div class="box reveal" style="overflow:auto;">
-        <table class="mini">
-          <thead><tr><th>维度</th><th class="col-doubao">快速出结果派 · 豆包风格</th><th class="col-qwen">推理严谨派 · 千问风格</th></tr></thead>
-          <tbody>
-            <tr><td><strong>规划方式</strong></td><td>一次性大纲规划</td><td>边做边反思（ReAct 式追问）</td></tr>
-            <tr><td><strong>需求翻译</strong></td><td>字面理解</td><td>抽象词 → 可执行系统</td></tr>
-            <tr><td><strong>约束处理</strong></td><td>弱校验，易越界</td><td>硬约束进入校验环节</td></tr>
-            <tr><td><strong>交互节点</strong></td><td>直出，少回问</td><td>关键节点回问 / 确认大纲</td></tr>
-            <tr><td><strong>底层取向</strong></td><td>速度 / 惊艳优先</td><td>推理 / 完成度优先</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="footnote reveal" contenteditable="false">无绝对优劣：<strong>C 端尝鲜场景"惊艳"重要，B 端汇报场景"可靠"重要</strong>。架构哲学差异，本质是底层模型取向 + 产品价值观的差异。</div>
-    </div>
-  </section>
-
-  <!-- ============ 10 · 生成结果评测 ① ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">06</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
-      </div>
-      <div class="eyebrow reveal">② 生成结果评测 · 核心结论</div>
-      <h2 class="slide-title reveal" contenteditable="false">千问赢<span class="accent">内容逻辑</span>，豆包赢<span class="accent">视觉观感</span></h2>
-      <div class="scorewrap stagger reveal">
-        <div class="scorecard" style="border-top:3px solid var(--qwen);">
-          <span class="label">内容文字层（满分 100）</span>
-          <div class="vs"><span class="big col-qwen">76</span><span class="vlabel">千问</span><span class="big" style="color:var(--text-secondary)">66</span><span class="vlabel">豆包</span></div>
-          <p style="margin-top:0.5rem;font-size:var(--small-size);color:var(--text-secondary);">主线立得住、讲稿可用 → 千问领先</p>
-        </div>
-        <div class="scorecard" style="border-top:3px solid var(--doubao);">
-          <span class="label">设计渲染层（满分 100）</span>
-          <div class="vs"><span class="big col-doubao">82</span><span class="vlabel">豆包</span><span class="big" style="color:var(--text-secondary)">62</span><span class="vlabel">千问</span></div>
-          <p style="margin-top:0.5rem;font-size:var(--small-size);color:var(--text-secondary);">视觉统一、情绪完整 → 豆包领先</p>
+      <div class="glass">
+        <span class="tag good">Agent 拆解</span>
+        <div class="chips">
+          <span class="chip" style="animation-delay:.15s">夕阳</span>
+          <span class="chip" style="animation-delay:.25s">公路</span>
+          <span class="chip" style="animation-delay:.35s">复古相纸</span>
+          <span class="chip" style="animation-delay:.45s">暖棕</span>
+          <span class="chip" style="animation-delay:.55s">深紫</span>
+          <span class="chip" style="animation-delay:.65s">橘黄</span>
+          <span class="chip" style="animation-delay:.75s">松弛</span>
+          <span class="chip" style="animation-delay:.85s">迷幻</span>
+          <span class="chip" style="animation-delay:.95s">浪漫</span>
         </div>
       </div>
-      <div class="footnote reveal" contenteditable="false">一句话：<strong>豆包产出像"一份漂亮 PPT"，千问产出像"一份可继续产品化的认知底稿"</strong>。方法：对照成品逐页打分，不看辞藻，看能否直接交付、能否说服观众。</div>
     </div>
-  </section>
+    <div class="note reveal">这考察的是 Agent 的<strong>规划深度</strong>——动手前想了几层。</div>
+  </div>
+</section>
 
-  <!-- ============ 11 · 生成结果评测 ② ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">07</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
+<!-- P9 维度二 硬约束 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">05</span><div class="crumbs"><span>生态</span><span class="on">评测·链路</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">链路维度二 · 硬约束的遵守能力</div>
+    <h2 class="h reveal">软能力的缺陷用户会原谅，<br/><span class="accent">硬约束的违反直接摧毁信任</span></h2>
+    <div class="cols-2 reveal" style="align-items:stretch">
+      <div class="glass" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+        <p class="sub">用户要求</p>
+        <p class="count" style="font-size:clamp(2rem,7vw,4.5rem);color:var(--good)">1–10<span style="font-size:.4em;color:var(--muted)"> 页</span></p>
+        <p class="sub" style="margin-top:.6rem">豆包实际交付</p>
+        <p class="count" style="font-size:clamp(2rem,7vw,4.5rem);color:var(--bad)" data-count="11">11<span style="font-size:.4em;color:var(--muted)"> 页</span></p>
       </div>
-      <div class="eyebrow reveal">② 生成结果评测 · 维度拆解</div>
-      <h2 class="slide-title reveal" contenteditable="false">两种"好"，<span class="accent">各有所长与共同短板</span></h2>
-      <div class="cols-2 stagger reveal">
-        <div class="box"><span class="tag qwen">内容文字 · 千问赢</span><ul class="clean"><li>主线立得住：Agent = 意图→架构→视觉转译 闭环</li><li><strong>讲稿可用性 4.5/5</strong>，可直接讲</li><li>豆包：比喻多、论证密度不足（2.8/5）</li></ul></div>
-        <div class="box"><span class="tag doubao">画面/排版/设计 · 豆包赢</span><ul class="clean"><li>视觉层级 4.3 vs 3.2，焦点更清晰</li><li>信息密度/留白/导出质量均领先</li><li>千问偏讲义、正文长，焦点被淹没</li></ul></div>
-      </div>
-      <div class="box reveal" style="margin-top:0.6rem;">
-        <table class="mini">
-          <thead><tr><th>客观事实（PPTX 解析）</th><th class="col-qwen">千问</th><th class="col-doubao">豆包</th><th>解读</th></tr></thead>
-          <tbody>
-            <tr><td>页数</td><td>10</td><td>11</td><td>豆包越界</td></tr>
-            <tr><td>图片对象</td><td>7</td><td>26</td><td>豆包重视觉</td></tr>
-            <tr><td>文本对象</td><td>99</td><td>74</td><td>千问重文字</td></tr>
-            <tr><td>讲稿字数</td><td>~2517</td><td>~1151</td><td>千问像面试讲稿</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="footnote reveal" contenteditable="false">共同短板：配图多为装饰、<strong>缺解释型数据图表</strong>。结论：AIPPT 下一战场不是"更漂亮"，而是 <strong>可信 + 可交付 + 可复用</strong>。</div>
+      <div class="shot" data-cap="豆包实际交付 11 页（含结尾页），违反用户 1–10 页的硬约束"><span class="badge-x tag d">豆包 · 实际 11 页</span><img src="assets/doubao_full_11p.jpg" alt="豆包 11 页缩略图" loading="lazy"/><span class="zoom-ic">⤢ 放大</span></div>
     </div>
-  </section>
+    <div class="note reveal">页数 / 比例 / 语言 / 品牌元素是<strong>合同条款</strong>，不是参考建议。违反它，用户的感受是"它根本没在听我说话"。</div>
+  </div>
+</section>
 
-  <!-- ============ 12 · SECTION 03 ============ -->
-  <section class="slide divider">
-    <div class="slide-content">
-      <div class="dnum reveal">03</div>
-      <h2 class="reveal" contenteditable="false">千问 × AI 工具业务方向</h2>
-      <p class="dsub reveal" contenteditable="false">护城河不是"某个工具最强"，而是 场景 × 流量 × 数据 × 自研模型 的闭环。</p>
+<!-- P10 维度三 内容组织 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">06</span><div class="crumbs"><span>生态</span><span class="on">评测·链路</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">链路维度三 · 内容组织的目标对齐能力</div>
+    <h2 class="h reveal">优秀的 Agent 理解<span class="accent">"任务背后的任务"</span></h2>
+    <div class="cols-2 stagger reveal">
+      <div class="glass tilt"><span class="tag q">目标识别</span><p>它识别出 PPT 的真实用途是<strong>"帮用户提升面试认知"</strong>，而非"介绍一个概念"。</p></div>
+      <div class="glass tilt"><span class="tag q">叙事路径</span><div class="flow" style="margin-top:.3rem"><span class="node" style="font-size:var(--small-size)">概念理解</span><span class="arr">→</span><span class="node" style="font-size:var(--small-size)">能力拆解</span><span class="arr">→</span><span class="node" style="font-size:var(--small-size)">面试表达</span><span class="arr">→</span><span class="node" style="font-size:var(--small-size)">误区规避</span></div></div>
     </div>
-  </section>
+    <div class="glass reveal" style="margin-top:.7rem"><span class="tag q">苏格拉底式追问 · 落地为类比</span><p>智能管家（解释 Agent）· 建筑师 vs 砌砖工（解释内容规划）· 自动驾驶级别（解释能力边界）。</p></div>
+  </div>
+</section>
 
-  <!-- ============ 13 · 千问业务优势 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">08</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span>评测</span><span class="active">业务</span><span>未来</span></div>
+<!-- P11 架构差异 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">07</span><div class="crumbs"><span>生态</span><span class="on">评测·架构</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">从行为反推架构差异</div>
+    <h2 class="h reveal">架构的差异，<span class="accent">最终都会以用户可感知的方式暴露</span></h2>
+    <div class="cols-3 stagger reveal">
+      <div class="glass tilt"><h3 style="font-size:var(--body-size)">固定 Workflow</h3><p class="sub">大纲 → 配图 → 渲染，步骤写死</p><p style="margin-top:.4rem"><strong>快、稳</strong>，但不会变通，违反约束也不自知。</p></div>
+      <div class="glass tilt"><h3 style="font-size:var(--body-size)">ReAct 单 Agent</h3><p class="sub">边想边做、回头检查</p><p style="margin-top:.4rem"><strong>灵活</strong>，但慢、贵、偶尔不稳定。</p></div>
+      <div class="glass tilt" style="border-color:rgba(255,107,44,.5)"><h3 style="font-size:var(--body-size)">规划-执行分离 · 多 Agent</h3><p class="sub">内容规划 / 设计系统 / 质检分工</p><p style="margin-top:.4rem"><strong>上限最高</strong>，工程复杂度也最高。</p></div>
+    </div>
+    <div class="note reveal">豆包页数超标，大概率说明链路里缺少<strong>"交付前对照原始需求"的质检环节</strong>。</div>
+  </div>
+</section>
+
+<!-- 生成结果评测 · 标准 (P12) -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">08</span><div class="crumbs"><span>生态</span><span class="on">评测·结果</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">生成结果评测 · 评测标准</div>
+    <h2 class="h reveal">模拟用户真实容忍度：<span class="accent">先排除硬伤，再谈审美</span></h2>
+    <div class="cols-2 reveal" style="align-items:center">
+      <div class="funnel">
+        <div class="fl fl1"><div class="ft">硬伤项 · 一票否决</div><div class="fd">文字溢出 / 图文遮挡 / 信息错误</div></div>
+        <div class="fl fl2"><div class="ft">专业项</div><div class="fd">信息层级 / 每页一个重点 / 图表选型</div></div>
+        <div class="fl fl3"><div class="ft">惊喜项</div><div class="fd">风格统一性 / 设计细节</div></div>
       </div>
-      <div class="eyebrow reveal">千问做 AI 工具产品的业务优势</div>
-      <h2 class="slide-title reveal" contenteditable="false">五个别人难复制的<span class="accent">结构性优势</span></h2>
-      <div class="cols-3 stagger reveal">
-        <div class="box"><h3>① 模型自研</h3><p>模型-产品一体化，能针对场景微调、成本可控、端到端可控。</p></div>
-        <div class="box"><h3>② 生态数据</h3><p>电商·钉钉·阿里云·本地生活，海量真实业务场景与高质量数据。</p></div>
-        <div class="box"><h3>③ B/C 双通道</h3><p>钉钉(办公)·阿里云/百炼(开发者)·夸克(C端)·通义App(大众)。</p></div>
-        <div class="box"><h3>④ 基础设施</h3><p>阿里云算力，规模化部署的成本优势。</p></div>
-        <div class="box"><h3>⑤ 开源生态</h3><p>Qwen 全球开源开发者生态，反哺能力迭代与口碑。</p></div>
-        <div class="box orange-card"><h3>护城河</h3><p>不是单点工具最强，而是 <strong>场景×流量×数据×模型</strong> 的闭环。</p></div>
+      <div>
+        <p class="lead reveal" style="margin-bottom:.6rem">在"硬伤"之上，再用三层标准逐项打分：</p>
+        <ul class="clean reveal">
+          <li><strong style="color:var(--accent)">RAG 事实层</strong>：事实准确性 · Refusal 质量 · 引用准确</li>
+          <li><strong style="color:var(--accent)">内容层</strong>：观点质量 · 论证密度</li>
+          <li><strong style="color:var(--accent)">设计层</strong>：视觉层级 · 信息密度 · 留白与可读性</li>
+        </ul>
       </div>
     </div>
-  </section>
+    <div class="note reveal">下面用千问与豆包的实测页面，逐层 show 我遇到的具体 case。</div>
+  </div>
+</section>
 
-  <!-- ============ 14 · 落地场景 ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">09</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span>评测</span><span class="active">业务</span><span>未来</span></div>
+<!-- Case A: RAG 事实准确性 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">09</span><div class="crumbs"><span>生态</span><span class="on">评测·结果</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">RAG 事实层 · ① 事实准确性</div>
+    <h2 class="h reveal">用于专业场景，<span class="accent">一个过时数字就足以崩塌信任</span></h2>
+    <div class="cols-2 stagger reveal">
+      <div>
+        <div class="shot" data-cap="豆包 P5：标题拼写错误 copiloto；logo 渲染成 Qwe；写 Qwen 支持 32K Token（已过时）"><span class="badge-x tag d">豆包 · P5</span><img src="assets/doubao_p5_copiloto.jpg" alt="豆包 copiloto"/><span class="zoom-ic">⤢</span></div>
+        <p class="callout"><b>问题：</b>标题拼写错误 <b>copiloto</b> · logo 截断成 <b>Qwe</b> · 写"Qwen 支持 <b>32K Token</b>"——已过时且错误（主流为 128K~1M）。</p>
       </div>
-      <div class="eyebrow reveal">具体落地场景 · 在什么场景下如何结合</div>
-      <h2 class="slide-title reveal" contenteditable="false">直接嵌入用户<span class="accent">已有工作流</span></h2>
-      <div class="box reveal" style="overflow:auto;">
-        <table class="mini">
-          <thead><tr><th>场景入口</th><th>用户</th><th>AI 工具如何嵌入</th></tr></thead>
-          <tbody>
-            <tr><td><strong>夸克</strong></td><td>学生/年轻人</td><td>搜索+学习+文档+网盘 → 天然的 AIPPT/AI 写作/AI 学习入口</td></tr>
-            <tr><td><strong>钉钉</strong></td><td>企业办公</td><td>AI 写文档/做汇报 PPT/会议纪要/数据分析——B 端高频刚需</td></tr>
-            <tr><td><strong>淘宝/天猫</strong></td><td>电商商家</td><td>AI 生成商品详情/营销文案/主图/短视频——内容生产工业化</td></tr>
-            <tr><td><strong>阿里云/百炼</strong></td><td>开发者/企业</td><td>把模型能力 API 化，提供 Agent 构建平台</td></tr>
-            <tr><td><strong>通义 App</strong></td><td>C 端大众</td><td>通用助手入口</td></tr>
-          </tbody>
-        </table>
+      <div>
+        <div class="shot" data-cap="千问 P8：写 128K 超长上下文 + 多模态 Qwen-VL，与现状一致"><span class="badge-x tag q">千问 · P8</span><img src="assets/qwen_p8_table.jpg" alt="千问 128K 表格"/><span class="zoom-ic">⤢</span></div>
+        <p class="callout ok">千问写 <b>128K</b> 上下文与多模态 <b>Qwen-VL</b>，与现状一致——事实层更可信。</p>
       </div>
-      <div class="footnote reveal" contenteditable="false">结合逻辑：阿里最大的优势是 AI 工具能<strong>不必单独打开</strong>，就嵌进用户已有流程——这正好引出我对未来的判断。</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ============ 15 · SECTION 04 ============ -->
-  <section class="slide divider">
-    <div class="slide-content">
-      <div class="dnum reveal">04</div>
-      <h2 class="reveal" contenteditable="false">我对未来的看法</h2>
-      <p class="dsub reveal" contenteditable="false">AI 工具的终局，不是一个个孤立的工具，而是 AI 输出的"出口层"。</p>
+<!-- Case B: RAG Refusal + 引用 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">10</span><div class="crumbs"><span>生态</span><span class="on">评测·结果</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">RAG 事实层 · ② Refusal 质量 & ③ 引用准确</div>
+    <h2 class="h reveal">会"划边界、不乱引"的 Agent，<span class="accent">才敢被信任</span></h2>
+    <div class="cols-2 stagger reveal">
+      <div>
+        <div class="shot" data-cap="千问 P9：主动给出误区一/二/三 + L2.5 级辅助智能的能力边界声明"><span class="badge-x tag q">千问 · P9</span><img src="assets/qwen_p9_limits.jpg" alt="千问能力边界"/><span class="zoom-ic">⤢</span></div>
+        <p class="callout ok">千问主动声明<b>能力边界</b>：误区一/二/三 + "L2.5 级辅助智能"——有 Refusal / 不确定性表达。</p>
+      </div>
+      <div>
+        <div class="shot" data-cap="豆包 P7：通篇只夸不拒；6小时→20分钟、25,500美元/年、70-95% 等数字无来源"><span class="badge-x tag d">豆包 · P7</span><img src="assets/doubao_p7_business.jpg" alt="豆包商业数字"/><span class="zoom-ic">⤢</span></div>
+        <p class="callout">豆包<b>通篇只夸不拒</b>；引用 <b>25,500 美元/年</b>、<b>70-95%</b>、<b>6 小时→20 分钟</b>等数字均<b>无来源</b>，伪造引用风险更高。</p>
+      </div>
     </div>
-  </section>
+    <div class="note reveal">两者都没有真正的页码/段落引用，但豆包的"无源数字"在专业评审场景里风险最大。</div>
+  </div>
+</section>
 
-  <!-- ============ 16 · Content Remix ============ -->
-  <section class="slide">
-    <div class="slide-content">
-      <div class="topbar reveal">
-        <span class="slide-num">10</span>
-        <div class="breadcrumb"><span>立论</span><span>生态</span><span>评测</span><span>业务</span><span class="active">未来</span></div>
+<!-- Case C: 内容层 + 设计层 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">11</span><div class="crumbs"><span>生态</span><span class="on">评测·结果</span><span>业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">内容层 & 设计层 · 没有全能选手</div>
+    <h2 class="h reveal">内容<span class="accent">千问赢</span>，设计<span style="color:var(--doubao)">豆包赢</span></h2>
+    <div class="cols-2 stagger reveal">
+      <div>
+        <div class="shot" data-cap="豆包 P3：飞行家 / 魔力 / 飞行 等比喻反复出现，论证密度不足"><span class="badge-x tag d">豆包 · P3</span><img src="assets/doubao_p3_metaphor.jpg" alt="豆包比喻"/><span class="zoom-ic">⤢</span></div>
+        <p class="callout"><b>内容层：</b>豆包"飞行家 / 魔力 / 飞行"等比喻重复多，论证密度不足；<span style="color:var(--good)">千问观点讲解更清晰</span>。</p>
       </div>
-      <div class="eyebrow reveal">Content Remix · 从工具层升维到出口层</div>
-      <h2 class="slide-title reveal" contenteditable="false">一次理解，<span class="accent">多形态输出</span></h2>
-      <div class="cols-2 stagger reveal">
-        <div class="box"><span class="tag" style="background:rgba(255,255,255,0.1);color:#fff;">痛点 · 工具孤岛</span><p>做 PPT 去 A、做播客去 B、写文档换 C。需求与工具靠<strong>手动匹配</strong>，依赖用户"想起来"。<strong>工具是名词，需求是动词——名词永远追不上动词。</strong></p></div>
-        <div class="box orange-card"><span class="tag" style="background:#1a1a1a;color:#fff;">主张 · 出口层</span><p>AI 识别意图 → 自动匹配最佳交付形态：<strong>展示/汇报→PPT·网页；通勤了解→AI 播客；对外传播→海报</strong>。同一内容按场景 remix 成不同形态。</p></div>
+      <div>
+        <div class="shot" data-cap="千问 P8：信息塞入过多，字体与排版偏密，可读性下降"><span class="badge-x tag q">千问 · P8</span><img src="assets/qwen_p8_table.jpg" alt="千问信息密度"/><span class="zoom-ic">⤢</span></div>
+        <p class="callout"><b>设计层：</b>千问<b>信息过载</b>、字号排版不合理、可读性差；<span style="color:var(--doubao)">豆包视觉层级 / 留白更合理，并用 icon 填充空白增可读性</span>。</p>
       </div>
-      <div class="cols-3 stagger reveal" style="margin-top:0.6rem;">
-        <div class="box"><h3 style="font-size:var(--body-size);">模型侧</h3><p>多模态成熟，生成新形态的边际成本趋零。</p></div>
-        <div class="box"><h3 style="font-size:var(--body-size);">用户侧</h3><p>要的从不是工具，是"把表达做完"(JTBD)。</p></div>
-        <div class="box"><h3 style="font-size:var(--body-size);">产品侧</h3><p>从"用户找工具"→"AI 主动匹配形态"。</p></div>
-      </div>
-      <div class="footnote reveal" contenteditable="false">对千问的意义：通义有对话入口 + 最全的下游形态能力，最适合做"出口层"——从 <strong>AI 助手 → AI 生产力出口</strong>。边界：警惕"过度主动"，需轻量意图识别 + 一键确认，可解释、可撤销。</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ============ 17 · 收尾 ============ -->
-  <section class="slide title-slide">
-    <div class="kicker reveal">回到立论</div>
-    <h1 class="reveal" contenteditable="false">让通义回答完问题后，<br/><span class="accent">顺手把"最佳展示物"也给你</span></h1>
-    <p class="sub reveal" contenteditable="false">AI 工具产品的下一步，不是更漂亮，而是可信、可交付、可复用；不是更多孤立工具，而是一个理解意图的输出出口。</p>
-    <p class="meta reveal" contenteditable="false">感谢观看 · Q&amp;A</p>
-  </section>
+<!-- P13 预留 AI 文档评测 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="eyebrow reveal">预留 · 评测体系可复用</div>
+    <h2 class="h reveal">AI 文档评测 <span class="accent">（规划中）</span></h2>
+    <p class="lead reveal">评测框架同源——<strong>链路能力</strong>（理解 / 检索 / 推理）+ <strong>交付质量</strong>（准确 / 结构 / 可用）。同一套方法论，可平移到文档阅读、研报、问答等场景。</p>
+    <div class="cols-3 stagger reveal" style="margin-top:1rem">
+      <div class="glass"><h3 style="font-size:var(--body-size);color:var(--faint)">链路评测</h3><p>检索召回 · 多文档冲突识别 · 拒答质量</p></div>
+      <div class="glass"><h3 style="font-size:var(--body-size);color:var(--faint)">结果评测</h3><p>事实一致性 · 引用可溯源 · 结构化交付</p></div>
+      <div class="glass" style="border-style:dashed"><h3 style="font-size:var(--body-size);color:var(--faint)">待补充</h3><p>各家实测 case 与截图</p></div>
+    </div>
+  </div>
+</section>
 
-  <script>
-    /* ===========================================
-       SLIDE PRESENTATION CONTROLLER
-       Handles: scroll-snap nav, keyboard, touch, wheel,
-       progress bar, nav dots, intersection-based reveals.
-       =========================================== */
-    class SlidePresentation {
-      constructor() {
-        this.slides = Array.from(document.querySelectorAll('.slide'));
-        this.currentSlide = 0;
-        this.isAnimating = false;
-        this.progressBar = document.querySelector('.progress-bar');
-        this.navDotsContainer = document.querySelector('.nav-dots');
-        this.setupIntersectionObserver();
-        this.setupKeyboardNav();
-        this.setupTouchNav();
-        this.setupWheelNav();
-        this.setupNavDots();
-        this.updateProgress();
-      }
+<!-- Section 03 -->
+<section class="slide section-slide">
+  <div class="slide-content">
+    <div class="snum reveal">03</div>
+    <h2 class="reveal">千问 × AI 工具</h2>
+    <p class="sd reveal">优势与落地——四张牌，每一张都能兑换成产品力。</p>
+  </div>
+</section>
 
-      setupIntersectionObserver() {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              const idx = this.slides.indexOf(entry.target);
-              if (idx !== -1) { this.currentSlide = idx; this.updateProgress(); this.updateDots(); }
-            }
-          });
-        }, { threshold: 0.55 });
-        this.slides.forEach((s) => observer.observe(s));
-      }
+<!-- P14 千问业务优势 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">12</span><div class="crumbs"><span>生态</span><span>评测</span><span class="on">业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">千问的业务优势</div>
+    <h2 class="h reveal">四张牌，<span class="accent">每一张都直接兑换成 AI 工具的产品力</span></h2>
+    <div class="cols-4 stagger reveal">
+      <div class="glass tilt"><span class="tag o">①</span><h3 style="font-size:var(--body-size)">模型矩阵完整</h3><p class="sub">文本+文生图+语音+视频全自有</p><p style="margin-top:.4rem"><strong>配图不依赖图库版权</strong></p></div>
+      <div class="glass tilt"><span class="tag o">②</span><h3 style="font-size:var(--body-size)">代码能力领先</h3><p class="sub">Agent 时代排版 = 代码生成</p><p style="margin-top:.4rem"><strong>代码强 = 排版上限高</strong></p></div>
+      <div class="glass tilt"><span class="tag o">③</span><h3 style="font-size:var(--body-size)">开源生态心智</h3><p class="sub">全球开发者基础</p><p style="margin-top:.4rem"><strong>二次开发反哺工具生态</strong></p></div>
+      <div class="glass tilt"><span class="tag o">④</span><h3 style="font-size:var(--body-size)">阿里系场景纵深</h3><p class="sub">钉钉 / 夸克 / 阿里云 / 电商</p><p style="margin-top:.4rem"><strong>独立公司没有的入口</strong></p></div>
+    </div>
+  </div>
+</section>
 
-      goTo(index) {
-        if (index < 0 || index >= this.slides.length) return;
-        this.slides[index].scrollIntoView({ behavior: 'smooth' });
-      }
+<!-- P15 落地场景 -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">13</span><div class="crumbs"><span>生态</span><span>评测</span><span class="on">业务</span><span>未来</span></div></div>
+    <div class="eyebrow reveal">落地场景 · 按入口组织</div>
+    <h2 class="h reveal">把能力嵌进<span class="accent">用户已有的工作流</span></h2>
+    <div class="glass reveal" style="overflow:auto">
+      <table class="mini">
+        <thead><tr><th>入口</th><th>场景</th><th>关键优势</th></tr></thead>
+        <tbody>
+          <tr><td><strong>夸克</strong></td><td>学生答辩、求职作品集</td><td>高频刚需，适合拉新</td></tr>
+          <tr><td><strong>钉钉</strong></td><td>周报、述职、项目汇报</td><td>文档上下文现成，"读完周报直接出汇报"</td></tr>
+          <tr><td><strong>阿里云 API</strong></td><td>企业内训、销售方案批量定制</td><td>B 端规模化</td></tr>
+          <tr><td><strong>电商商家工具</strong></td><td>详情页、直播间素材</td><td>批量、快、合规</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note reveal">每个入口都对应一类现成的<strong>上下文与流量</strong>——这正是"通用助手"补齐"场景纵深"的路径。</div>
+  </div>
+</section>
 
-      setupKeyboardNav() {
-        document.addEventListener('keydown', (e) => {
-          // don't hijack keys while editing text
-          if (e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true') return;
-          if (['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)) { e.preventDefault(); this.goTo(this.currentSlide + 1); }
-          else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); this.goTo(this.currentSlide - 1); }
-          else if (e.key === 'Home') { e.preventDefault(); this.goTo(0); }
-          else if (e.key === 'End') { e.preventDefault(); this.goTo(this.slides.length - 1); }
-        });
-      }
+<!-- Section 04 -->
+<section class="slide section-slide">
+  <div class="slide-content">
+    <div class="snum reveal">04</div>
+    <h2 class="reveal">未来判断</h2>
+    <p class="sd reveal">Content Remix——工具的消失。</p>
+  </div>
+</section>
 
-      setupTouchNav() {
-        let startY = 0;
-        document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
-        document.addEventListener('touchend', (e) => {
-          const dy = startY - e.changedTouches[0].clientY;
-          if (Math.abs(dy) > 60) this.goTo(this.currentSlide + (dy > 0 ? 1 : -1));
-        }, { passive: true });
-      }
+<!-- P16 Content Remix -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="topbar reveal"><span class="kicker-num">14</span><div class="crumbs"><span>生态</span><span>评测</span><span>业务</span><span class="on">未来</span></div></div>
+    <div class="eyebrow reveal">未来判断 · Content Remix</div>
+    <p class="punch reveal">AI 工具的终局不是更多垂直工具，而是<span class="grad">工具的消失</span>——它会成为 AI 回答的"渲染层"。</p>
+    <div class="cols-2 stagger reveal" style="margin-top:.9rem">
+      <div class="glass"><span class="tag" style="background:var(--glass-2);color:var(--muted)">现在</span><p>有需求 → 想起某个工具 → 打开它<br/><span class="sub">（用户自己做"需求到工具"的匹配）</span></p></div>
+      <div class="glass" style="border-color:rgba(255,107,44,.5)"><span class="tag o">未来</span><p>AI 识别意图带<strong>展示/汇报/传播</strong>属性 → 自动选择最佳形态<br/><span class="sub">PPT / 网页 / 播客 / 信息图</span></p></div>
+    </div>
+    <div class="note reveal">类比：<strong>浏览器渲染 HTML，未来的 AI 助手渲染"意图"。</strong>佐证：NotebookLM 的音频概览——用户没要播客，产品主动 remix，成了爆点。</div>
+  </div>
+</section>
 
-      setupWheelNav() {
-        let lock = false;
-        document.addEventListener('wheel', (e) => {
-          if (lock) return;
-          if (Math.abs(e.deltaY) < 25) return;
-          lock = true;
-          this.goTo(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
-          setTimeout(() => { lock = false; }, 800);
-        }, { passive: true });
-      }
+<!-- 收尾 -->
+<section class="slide title-slide">
+  <div class="slide-content">
+    <div class="badge reveal">回到立论</div>
+    <h1 class="reveal">让通义回答完问题后，<br/><span class="grad">顺手把"最佳展示物"也给你</span></h1>
+    <p class="subt reveal">从工具到出口：不是更漂亮，而是可信、可交付、可复用；不是更多孤立工具，而是一个理解意图的渲染层。</p>
+    <span class="sign reveal">感谢观看 · Q&amp;A</span>
+  </div>
+</section>
 
-      setupNavDots() {
-        // Clear first so re-opening an exported copy never duplicates dots.
-        this.navDotsContainer.innerHTML = '';
-        this.slides.forEach((_, i) => {
-          const b = document.createElement('button');
-          b.setAttribute('aria-label', '跳到第 ' + (i + 1) + ' 页');
-          if (i === 0) b.classList.add('active');
-          b.addEventListener('click', () => this.goTo(i));
-          this.navDotsContainer.appendChild(b);
-        });
-      }
+<script>
+/* ===========================================================
+   CONTROLLER
+   =========================================================== */
+class Deck{
+  constructor(){
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.cur=0;
+    this.progress=document.querySelector('.progress');
+    this.dots=document.querySelector('.nav-dots');
+    this.observe();this.keys();this.touch();this.wheel();this.buildDots();this.update();
+  }
+  observe(){
+    const io=new IntersectionObserver(es=>{es.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');
+        const i=this.slides.indexOf(e.target);if(i>-1){this.cur=i;this.update();}
+        e.target.querySelectorAll('[data-count]').forEach(el=>this.count(el));
+      }})},{threshold:.55});
+    this.slides.forEach(s=>io.observe(s));
+  }
+  count(el){
+    if(el._done)return;el._done=true;
+    const target=+el.getAttribute('data-count');let n=0;const dur=900,t0=performance.now();
+    const suffix=el.innerHTML.replace(/^\d+/,'');
+    const tick=now=>{const p=Math.min(1,(now-t0)/dur);n=Math.round(target*(1-Math.pow(1-p,3)));el.innerHTML=n+suffix.replace(/^[\d]*/,'');if(p<1)requestAnimationFrame(tick);};
+    el.innerHTML='0'+suffix.replace(/^[\d]*/,'');requestAnimationFrame(tick);
+  }
+  go(i){if(i<0||i>=this.slides.length)return;this.slides[i].scrollIntoView({behavior:'smooth'});}
+  keys(){document.addEventListener('keydown',e=>{
+    if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();this.go(this.cur+1);}
+    else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();this.go(this.cur-1);}
+    else if(e.key==='Home'){e.preventDefault();this.go(0);}
+    else if(e.key==='End'){e.preventDefault();this.go(this.slides.length-1);}
+  });}
+  touch(){let y=0;document.addEventListener('touchstart',e=>y=e.touches[0].clientY,{passive:true});
+    document.addEventListener('touchend',e=>{const d=y-e.changedTouches[0].clientY;if(Math.abs(d)>55)this.go(this.cur+(d>0?1:-1));},{passive:true});}
+  wheel(){let lock=false;document.addEventListener('wheel',e=>{if(lock||Math.abs(e.deltaY)<24)return;lock=true;this.go(this.cur+(e.deltaY>0?1:-1));setTimeout(()=>lock=false,780);},{passive:true});}
+  buildDots(){this.dots.innerHTML='';this.slides.forEach((_,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','第'+(i+1)+'页');if(i===0)b.classList.add('on');b.onclick=()=>this.go(i);this.dots.appendChild(b);});}
+  update(){const p=this.slides.length>1?this.cur/(this.slides.length-1)*100:0;this.progress.style.width=p+'%';
+    this.dots.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===this.cur));}
+}
 
-      updateDots() {
-        this.navDotsContainer.querySelectorAll('button').forEach((b, i) => {
-          b.classList.toggle('active', i === this.currentSlide);
-        });
-      }
+/* ===== particles ===== */
+(function(){
+  const c=document.getElementById('particles'),x=c.getContext('2d');let w,h,ps;
+  function size(){w=c.width=innerWidth;h=c.height=innerHeight;}
+  function init(){ps=[...Array(Math.min(60,Math.floor(w*h/26000)))].map(()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.6+.4}));}
+  function loop(){x.clearRect(0,0,w,h);
+    for(const p of ps){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fillStyle='rgba(255,150,90,.5)';x.fill();}
+    for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){const a=ps[i],b=ps[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+      if(d<120){x.strokeStyle='rgba(255,120,70,'+(.12*(1-d/120))+')';x.lineWidth=.6;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}}
+    requestAnimationFrame(loop);}
+  size();init();loop();addEventListener('resize',()=>{size();init();});
+})();
 
-      updateProgress() {
-        const pct = this.slides.length > 1 ? (this.currentSlide / (this.slides.length - 1)) * 100 : 0;
-        this.progressBar.style.width = pct + '%';
-      }
-    }
+/* ===== custom cursor ===== */
+(function(){
+  if(matchMedia('(pointer:coarse)').matches)return;
+  const ring=document.querySelector('.cursor'),dot=document.querySelector('.cursor-dot');
+  let rx=0,ry=0,mx=0,my=0;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+  (function r(){rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(r);})();
+  const grow=()=>ring.classList.add('grow'),shrink=()=>ring.classList.remove('grow');
+  document.addEventListener('mouseover',e=>{if(e.target.closest('.glass,.toc-item,.shot,button,.tilt'))grow();});
+  document.addEventListener('mouseout',e=>{if(e.target.closest('.glass,.toc-item,.shot,button,.tilt'))shrink();});
+})();
 
-    /* ===========================================
-       INLINE EDITOR (opt-in)
-       Toggle with the ✏️ button, the top-left hotzone, or "E".
-       Ctrl/Cmd+S exports a clean copy (edit state stripped).
-       =========================================== */
-    class InlineEditor {
-      constructor() {
-        this.isActive = false;
-        this.editables = Array.from(document.querySelectorAll('h1, h2, h3, p, li, td, th, .punch, .kicker, .eyebrow, .dsub, .sub, .meta, .footnote'))
-          .filter(el => !el.closest('.nav-dots') && !el.closest('.keyboard-hint') && !el.closest('.edit-banner'));
-        this.banner = document.getElementById('editBanner');
-        this.toggleBtn = document.getElementById('editToggle');
-      }
-      toggleEditMode() {
-        this.isActive = !this.isActive;
-        document.body.classList.toggle('edit-active', this.isActive);
-        this.toggleBtn.classList.toggle('active', this.isActive);
-        this.banner.classList.toggle('active', this.isActive);
-        this.toggleBtn.textContent = this.isActive ? '✓' : '✏️';
-        this.editables.forEach(el => {
-          if (this.isActive) el.setAttribute('contenteditable', 'true');
-          else el.removeAttribute('contenteditable');
-        });
-      }
-      exportFile() {
-        // Strip edit state so the saved file opens cleanly.
-        const editableEls = Array.from(document.querySelectorAll('[contenteditable]'));
-        editableEls.forEach(el => el.removeAttribute('contenteditable'));
-        document.body.classList.remove('edit-active');
-        this.toggleBtn.classList.remove('active', 'show');
-        this.banner.classList.remove('active', 'show');
-        const prevIcon = this.toggleBtn.textContent;
-        this.toggleBtn.textContent = '✏️';
+/* ===== 3D tilt ===== */
+document.querySelectorAll('.tilt').forEach(el=>{
+  el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+    el.style.transform=`perspective(800px) rotateY(${px*8}deg) rotateX(${-py*8}deg) translateY(-4px)`;});
+  el.addEventListener('mouseleave',()=>el.style.transform='');
+});
 
-        const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+/* ===== lightbox ===== */
+(function(){
+  const lb=document.getElementById('lightbox'),img=document.getElementById('lbImg'),cap=document.getElementById('lbCap'),close=document.getElementById('lbClose');
+  document.querySelectorAll('.shot').forEach(s=>{s.addEventListener('click',()=>{const i=s.querySelector('img');img.src=i.src;cap.textContent=s.getAttribute('data-cap')||'';lb.classList.add('on');});});
+  const hide=()=>lb.classList.remove('on');
+  close.onclick=hide;lb.onclick=e=>{if(e.target===lb||e.target===img)hide();};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')hide();});
+})();
 
-        // Restore edit state so the user can keep editing.
-        if (this.isActive) {
-          document.body.classList.add('edit-active');
-          editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
-          this.toggleBtn.classList.add('active');
-          this.banner.classList.add('active');
-          this.toggleBtn.textContent = prevIcon;
-        }
-
-        const blob = new Blob([html], { type: 'text/html' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'presentation.html';
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }
-    }
-
-    const presentation = new SlidePresentation();
-    const editor = new InlineEditor();
-
-    // ---- Inline editing wiring ----
-    document.getElementById('editToggle').addEventListener('click', () => editor.toggleEditMode());
-
-    const hotzone = document.querySelector('.edit-hotzone');
-    const editToggle = document.getElementById('editToggle');
-    let hideTimeout = null;
-    hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
-    hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
-    editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-    editToggle.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
-    hotzone.addEventListener('click', () => editor.toggleEditMode());
-
-    document.addEventListener('keydown', (e) => {
-      if ((e.key === 'e' || e.key === 'E') && !(e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true')) {
-        editor.toggleEditMode();
-      }
-      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
-        e.preventDefault();
-        editor.exportFile();
-      }
-    });
-  </script>
+new Deck();
+</script>
 </body>
 </html>
