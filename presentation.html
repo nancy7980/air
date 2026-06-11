@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>千问 AI 工具 Agent · 产品思维</title>
+
+  <!-- Fonts: Archivo Black (display/numbers) + Space Grotesk (latin body) + Noto Sans SC (Chinese) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" />
+
+  <style>
+    /* ===========================================
+       THEME — Bold Signal (confident, bold, modern)
+       Edit these custom properties to retheme.
+       =========================================== */
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+      --card-bg: #FF5722;            /* signal orange */
+      --card-bg-2: #ff7043;
+      --text-primary: #ffffff;
+      --text-secondary: #b8b3ad;
+      --text-on-card: #1a1a1a;
+      --line: rgba(255,255,255,0.12);
+      --line-strong: rgba(255,255,255,0.22);
+      --qwen: #7c5cff;               /* 千问 accent (purple) */
+      --doubao: #4dd0e1;             /* 豆包 accent (cyan) */
+
+      /* Fonts — Archivo Black for latin/numbers, Noto Sans SC carries Chinese weight */
+      --font-display: "Archivo Black", "Noto Sans SC", sans-serif;
+      --font-body: "Space Grotesk", "Noto Sans SC", sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-normal: 0.6s;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* --- viewport-base.css (verbatim) --- */
+    html, body { height: 100%; overflow-x: hidden; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    .slide {
+      width: 100vw; height: 100vh; height: 100dvh;
+      overflow: hidden; scroll-snap-align: start;
+      display: flex; flex-direction: column; position: relative;
+    }
+    .slide-content {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-height: 100%; overflow: hidden; padding: var(--slide-padding);
+    }
+    :root {
+      --title-size: clamp(1.5rem, 5vw, 4rem);
+      --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+      --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+      --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+      --small-size: clamp(0.65rem, 1vw, 0.875rem);
+      --slide-padding: clamp(1rem, 4vw, 4rem);
+      --content-gap: clamp(0.5rem, 2vw, 2rem);
+      --element-gap: clamp(0.25rem, 1vw, 1rem);
+    }
+    .card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+    .feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+    .feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: clamp(0.5rem, 1.5vw, 1rem); }
+    img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+    @media (max-height: 700px) {
+      :root { --slide-padding: clamp(0.75rem, 3vw, 2rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); }
+    }
+    @media (max-height: 600px) {
+      :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem); --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem); --body-size: clamp(0.7rem, 1.2vw, 0.95rem); }
+      .nav-dots, .keyboard-hint, .decorative { display: none; }
+    }
+    @media (max-height: 500px) {
+      :root { --slide-padding: clamp(0.4rem, 2vw, 1rem); --title-size: clamp(1rem, 3.5vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem); --body-size: clamp(0.65rem, 1vw, 0.85rem); }
+    }
+    @media (max-width: 600px) {
+      :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+      .grid { grid-template-columns: 1fr; }
+      .cols-2, .cols-3 { grid-template-columns: 1fr !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+      html { scroll-behavior: auto; }
+    }
+    /* --- end viewport-base.css --- */
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle structural grid behind everything */
+    .slide::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+
+    /* ===========================================
+       SHARED LAYOUT PIECES
+       =========================================== */
+    .topbar {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; margin-bottom: clamp(0.6rem, 2vh, 1.6rem);
+    }
+    .slide-num {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+      color: var(--card-bg); line-height: 1;
+    }
+    .breadcrumb {
+      display: flex; gap: clamp(0.35rem, 1vw, 0.9rem); flex-wrap: wrap;
+      justify-content: flex-end; font-size: var(--small-size);
+      letter-spacing: 0.04em; text-align: right;
+    }
+    .breadcrumb span { color: var(--text-secondary); opacity: 0.5; }
+    .breadcrumb span.active { color: var(--card-bg); opacity: 1; font-weight: 700; }
+
+    .eyebrow {
+      display: inline-block; font-size: var(--small-size);
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--card-bg); font-weight: 700; margin-bottom: 0.5rem;
+    }
+    h2.slide-title {
+      font-family: var(--font-display);
+      font-size: var(--h2-size); line-height: 1.12;
+      margin-bottom: clamp(0.5rem, 1.6vh, 1.1rem); font-weight: 900;
+    }
+    h2.slide-title .accent { color: var(--card-bg); }
+    .lead { font-size: var(--body-size); color: var(--text-secondary); line-height: 1.5; max-width: 60ch; }
+    .accent { color: var(--card-bg); }
+    strong { color: var(--text-primary); font-weight: 700; }
+
+    .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.6rem, 1.8vw, 1.4rem); }
+    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.5rem, 1.4vw, 1.1rem); }
+
+    /* Cards */
+    .box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: clamp(0.7rem, 1.8vw, 1.3rem);
+    }
+    .box h3 {
+      font-size: var(--h3-size); font-weight: 700; line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+    .box p, .box li { font-size: var(--body-size); color: var(--text-secondary); line-height: 1.45; }
+    .box .tag {
+      display: inline-block; font-size: var(--small-size); font-weight: 700;
+      letter-spacing: 0.06em; padding: 0.18em 0.7em; border-radius: 999px;
+      margin-bottom: 0.5rem;
+    }
+    .tag.orange { background: var(--card-bg); color: var(--text-on-card); }
+    .tag.qwen { background: rgba(124,92,255,0.18); color: #b3a0ff; border: 1px solid rgba(124,92,255,0.4); }
+    .tag.doubao { background: rgba(77,208,225,0.16); color: #8fe6f0; border: 1px solid rgba(77,208,225,0.4); }
+    .box.orange-card { background: var(--card-bg); color: var(--text-on-card); border: none; }
+    .box.orange-card h3, .box.orange-card p, .box.orange-card li { color: var(--text-on-card); }
+
+    ul.clean { list-style: none; display: flex; flex-direction: column; gap: clamp(0.3rem, 1vh, 0.7rem); }
+    ul.clean li { font-size: var(--body-size); line-height: 1.4; padding-left: 1.1em; position: relative; color: var(--text-secondary); }
+    ul.clean li::before { content: "▸"; position: absolute; left: 0; color: var(--card-bg); font-weight: 700; }
+    ul.clean li strong { color: var(--text-primary); }
+
+    /* Mini comparison table */
+    table.mini { width: 100%; border-collapse: collapse; font-size: var(--small-size); }
+    table.mini th, table.mini td { text-align: left; padding: clamp(0.3rem,0.8vh,0.6rem) clamp(0.4rem,1vw,0.8rem); border-bottom: 1px solid var(--line); line-height: 1.35; }
+    table.mini th { color: var(--card-bg); font-weight: 700; letter-spacing: 0.03em; }
+    table.mini td { color: var(--text-secondary); }
+    table.mini td strong { color: var(--text-primary); }
+    table.mini tr:last-child td { border-bottom: none; }
+    .col-qwen { color: #b3a0ff !important; }
+    .col-doubao { color: #8fe6f0 !important; }
+
+    /* Phase timeline */
+    .phases { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(0.35rem, 1vw, 0.8rem); align-items: stretch; }
+    .phase { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-top: 3px solid var(--card-bg); border-radius: 10px; padding: clamp(0.5rem,1.2vw,0.9rem); display: flex; flex-direction: column; gap: 0.35rem; }
+    .phase .pnum { font-family: var(--font-display); font-size: clamp(0.7rem,1.4vw,0.95rem); color: var(--card-bg); }
+    .phase .ph { font-weight: 700; font-size: clamp(0.72rem,1.4vw,1rem); line-height: 1.2; }
+    .phase .pl { font-size: clamp(0.62rem,1vw,0.82rem); color: var(--text-secondary); line-height: 1.35; }
+    .phase .pl b { color: var(--text-primary); font-weight: 700; }
+    @media (max-width: 760px) { .phases { grid-template-columns: 1fr; } .cols-3 { grid-template-columns: 1fr; } }
+
+    /* Score chips */
+    .scorewrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.8rem,2vw,1.6rem); }
+    .scorecard { border-radius: 16px; padding: clamp(0.9rem,2.2vw,1.6rem); border: 1px solid var(--line); }
+    .scorecard .label { font-size: var(--small-size); letter-spacing: 0.06em; color: var(--text-secondary); }
+    .scorecard .vs { display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.4rem; flex-wrap: wrap; }
+    .scorecard .big { font-family: var(--font-display); font-size: clamp(1.6rem,4.5vw,3rem); line-height: 1; }
+    .scorecard .vlabel { font-size: var(--small-size); color: var(--text-secondary); }
+
+    /* Title slide */
+    .title-slide { justify-content: center; align-items: flex-start; padding: var(--slide-padding); }
+    .title-slide .kicker { font-family: var(--font-display); color: var(--card-bg); font-size: clamp(0.8rem,1.6vw,1.1rem); letter-spacing: 0.1em; margin-bottom: clamp(0.6rem,1.6vh,1.2rem); }
+    .title-slide h1 { font-family: var(--font-display); font-size: var(--title-size); line-height: 1.04; font-weight: 900; max-width: 18ch; }
+    .title-slide h1 .accent { color: var(--card-bg); }
+    .title-slide .sub { margin-top: clamp(0.8rem,2vh,1.4rem); font-size: var(--body-size); color: var(--text-secondary); max-width: 52ch; line-height: 1.5; }
+    .title-slide .meta { margin-top: clamp(1rem,2.5vh,1.8rem); font-size: var(--small-size); color: var(--text-secondary); letter-spacing: 0.05em; }
+
+    /* Section divider */
+    .divider { justify-content: center; }
+    .divider .dnum { font-family: var(--font-display); font-size: clamp(4rem, 18vw, 13rem); color: var(--card-bg); line-height: 0.85; }
+    .divider h2 { font-family: var(--font-display); font-size: var(--title-size); margin-top: 0.2rem; font-weight: 900; }
+    .divider .dsub { margin-top: clamp(0.5rem,1.5vh,1rem); font-size: var(--body-size); color: var(--text-secondary); max-width: 48ch; line-height: 1.5; }
+
+    /* Big quote / punchline */
+    .punch { font-family: var(--font-display); font-size: clamp(1.3rem, 3.6vw, 3rem); line-height: 1.18; font-weight: 900; max-width: 22ch; }
+    .punch .accent { color: var(--card-bg); }
+
+    .footnote { margin-top: clamp(0.5rem,1.5vh,1rem); font-size: var(--small-size); color: var(--text-secondary); line-height: 1.45; border-left: 3px solid var(--card-bg); padding-left: 0.8rem; }
+
+    /* ===========================================
+       ENTRANCE ANIMATIONS
+       =========================================== */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+    .slide.visible .reveal:nth-child(1) { transition-delay: 0.06s; }
+    .slide.visible .reveal:nth-child(2) { transition-delay: 0.14s; }
+    .slide.visible .reveal:nth-child(3) { transition-delay: 0.22s; }
+    .slide.visible .reveal:nth-child(4) { transition-delay: 0.30s; }
+    .slide.visible .reveal:nth-child(5) { transition-delay: 0.38s; }
+    .slide.visible .reveal:nth-child(6) { transition-delay: 0.46s; }
+    /* stagger helper for grid children */
+    .slide.visible .stagger > * { opacity: 0; transform: translateY(22px); animation: rise 0.6s var(--ease-out-expo) forwards; }
+    .slide.visible .stagger > *:nth-child(1) { animation-delay: 0.12s; }
+    .slide.visible .stagger > *:nth-child(2) { animation-delay: 0.22s; }
+    .slide.visible .stagger > *:nth-child(3) { animation-delay: 0.32s; }
+    .slide.visible .stagger > *:nth-child(4) { animation-delay: 0.42s; }
+    .slide.visible .stagger > *:nth-child(5) { animation-delay: 0.52s; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    /* ===========================================
+       CHROME: progress bar, nav dots, hint
+       =========================================== */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--card-bg); z-index: 9000; transition: width 0.15s linear; }
+    .nav-dots { position: fixed; right: clamp(0.6rem,1.5vw,1.4rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.55rem; z-index: 9000; }
+    .nav-dots button { width: 9px; height: 9px; border-radius: 50%; border: none; background: rgba(255,255,255,0.25); cursor: pointer; padding: 0; transition: all 0.25s ease; }
+    .nav-dots button.active { background: var(--card-bg); transform: scale(1.5); }
+    .keyboard-hint { position: fixed; bottom: clamp(0.5rem,1.5vh,1rem); left: 50%; transform: translateX(-50%); font-size: var(--small-size); color: var(--text-secondary); opacity: 0.5; z-index: 9000; letter-spacing: 0.05em; }
+
+    /* ===========================================
+       INLINE EDITING
+       =========================================== */
+    .edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+    .edit-toggle { position: fixed; top: 1rem; left: 1rem; width: 44px; height: 44px; border-radius: 50%; border: none; background: var(--card-bg); color: #fff; font-size: 1.1rem; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.2s ease; z-index: 10001; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+    .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+    .edit-toggle.active { background: #2e7d32; }
+    .edit-toggle:hover { transform: scale(1.08); }
+    .edit-banner { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%) translateY(-120%); background: var(--card-bg); color: var(--text-on-card); font-size: var(--small-size); font-weight: 700; padding: 0.5rem 1rem; border-radius: 999px; z-index: 10001; transition: transform 0.3s var(--ease-out-expo); white-space: nowrap; }
+    .edit-banner.active { transform: translateX(-50%) translateY(0); }
+    body.edit-active [contenteditable] { outline: 1px dashed rgba(255,87,34,0.6); outline-offset: 3px; border-radius: 3px; }
+    body.edit-active [contenteditable]:focus { outline: 2px solid var(--card-bg); background: rgba(255,87,34,0.06); }
+  </style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  <nav class="nav-dots" aria-label="幻灯片导航"></nav>
+  <div class="keyboard-hint">← → / 空格 翻页 · 按 E 编辑</div>
+
+  <!-- Inline editing controls -->
+  <div class="edit-hotzone" title="编辑模式"></div>
+  <button class="edit-toggle" id="editToggle" title="编辑模式 (E)">✏️</button>
+  <div class="edit-banner" id="editBanner">编辑模式 · Ctrl+S 导出</div>
+
+  <!-- ============ 01 · TITLE ============ -->
+  <section class="slide title-slide">
+    <div class="kicker reveal">QWEN · AI 工具 AGENT</div>
+    <h1 class="reveal" contenteditable="false">把模型能力，翻译成<span class="accent">用户可感知的完成度</span></h1>
+    <p class="sub reveal" contenteditable="false">一份关于千问 AI 工具 Agent 的产品思维拆解：从生态演进，到竞品评测，到业务方向，再到我对"AI 输出出口层"的判断。</p>
+    <p class="meta reveal" contenteditable="false">产品思维演示 · 2026</p>
+  </section>
+
+  <!-- ============ 02 · 开场立论 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">00</span>
+        <div class="breadcrumb"><span class="active">立论</span><span>生态</span><span>评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">开场立论</div>
+      <p class="punch reveal" contenteditable="false">竞争正从"谁的模型强"，<br/>转向<span class="accent">"谁能把能力变成完成度"</span>。</p>
+      <div class="footnote reveal" contenteditable="false">我对千问的判断：它最该做的不是"又一个 AI 工具"，而是 <strong>AI 输出的出口层</strong>——为每个回答自动匹配最佳的展示形式。这条主线贯穿全篇。</div>
+    </div>
+  </section>
+
+  <!-- ============ 03 · SECTION 01 ============ -->
+  <section class="slide divider">
+    <div class="slide-content">
+      <div class="dnum reveal">01</div>
+      <h2 class="reveal" contenteditable="false">AI 工具产品生态</h2>
+      <p class="dsub reveal" contenteditable="false">演进过程 · 产品分类 · 竞品格局——先看清这条赛道的来路与版图。</p>
+    </div>
+  </section>
+
+  <!-- ============ 04 · 演进过程 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">01</span>
+        <div class="breadcrumb"><span>立论</span><span class="active">生态</span><span>评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">演进过程 · 技术 ↔ 产品 双线</div>
+      <h2 class="slide-title reveal" contenteditable="false">每次产品形态跃迁，<span class="accent">都是一次模型能力解锁</span></h2>
+      <div class="phases stagger reveal">
+        <div class="phase"><span class="pnum">P0</span><span class="ph">功能工具</span><span class="pl"><b>小模型</b>单任务 · AI 是 SaaS 里的一个功能点（抠图/语法）</span></div>
+        <div class="phase"><span class="pnum">P1</span><span class="ph">对话/Copilot</span><span class="pl"><b>LLM 涌现</b> · 形态变成对话框，人在驾驶座做单步生成</span></div>
+        <div class="phase"><span class="pnum">P2</span><span class="ph">垂直工作流</span><span class="pl"><b>多模态/RAG</b> · 把对话封装成"完成一类任务"（AIPPT）</span></div>
+        <div class="phase"><span class="pnum">P3</span><span class="ph">Agent</span><span class="pl"><b>规划+工具+推理</b> · 给目标自主多步执行，从生成→完成任务</span></div>
+        <div class="phase"><span class="pnum">P4</span><span class="ph">多Agent/入口</span><span class="pl"><b>编排+MCP</b> · AI 从"工具"升维成"操作系统/入口"</span></div>
+      </div>
+      <div class="footnote reveal" contenteditable="false">类比自动驾驶：P1 是 L2 辅助（人随时接管）→ P3 Agent 是 L4（划定场景内自主）→ 现在都在冲 L5。<strong>模型能力的边界，决定产品自主性的边界。</strong></div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · 产品分类 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">02</span>
+        <div class="breadcrumb"><span>立论</span><span class="active">生态</span><span>评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">产品分类 · 两个维度看得更清</div>
+      <h2 class="slide-title reveal" contenteditable="false">交付物形态 <span class="accent">×</span> 自主性程度</h2>
+      <div class="cols-2 stagger reveal">
+        <div class="box">
+          <span class="tag orange">维度 A · 按交付物形态</span>
+          <ul class="clean">
+            <li><strong>演示类</strong> AIPPT（Gamma/美图/讯飞/千问）</li>
+            <li><strong>文本/文档</strong> 写作·改写·翻译·文档问答</li>
+            <li><strong>视觉/音视频</strong> 图像·设计·视频·AI 播客</li>
+            <li><strong>数据/代码</strong> BI 分析·AI 编程</li>
+            <li><strong>综合 Agent</strong> 通用任务·深度研究</li>
+          </ul>
+        </div>
+        <div class="box">
+          <span class="tag orange">维度 B · 按自主性程度</span>
+          <ul class="clean">
+            <li><strong>工具</strong> — 人主导，AI 执行单点</li>
+            <li><strong>Copilot</strong> — 人机协作，AI 建议</li>
+            <li><strong>Agent</strong> — AI 主导，自主多步</li>
+          </ul>
+          <p style="margin-top:0.7rem; font-size:var(--small-size); color:var(--text-primary);">同一种交付物（如 PPT），正沿自主性轴从"工具"迁向"Agent"——这就是当下 AIPPT 的真实战场。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 · 竞品生态 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">03</span>
+        <div class="breadcrumb"><span>立论</span><span class="active">生态</span><span>评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">竞品生态格局</div>
+      <h2 class="slide-title reveal" contenteditable="false">大厂打<span class="accent">全家桶</span>，垂直打<span class="accent">场景深度</span></h2>
+      <div class="cols-3 stagger reveal">
+        <div class="box"><h3>国际</h3><p>OpenAI · Gamma · Notion AI · Perplexity · Midjourney · Runway · NotebookLM</p></div>
+        <div class="box"><h3>国内大厂</h3><p>字节（豆包/即梦/扣子）· 阿里（通义千问/夸克）· 百度 · 腾讯 · Kimi · 智谱 · DeepSeek</p></div>
+        <div class="box"><h3>垂直玩家</h3><p>美图（AI 设计）· 讯飞（AIPPT/语音）· 秘塔（AI 搜索/文档）</p></div>
+      </div>
+      <div class="footnote reveal" contenteditable="false">格局洞察：胜负手不在模型分数，而在 <strong>"最后一公里的完成度"</strong>——能不能让普通用户拿到一个"可以直接用"的产物。</div>
+    </div>
+  </section>
+
+  <!-- ============ 07 · SECTION 02 ============ -->
+  <section class="slide divider">
+    <div class="slide-content">
+      <div class="dnum reveal">02</div>
+      <h2 class="reveal" contenteditable="false">竞品评测体验报告</h2>
+      <p class="dsub reveal" contenteditable="false">AIPPT Agent：千问 vs 豆包。两层评测——① Agent 链路（怎么"想"）② 生成结果（做得怎么样）。</p>
+    </div>
+  </section>
+
+  <!-- ============ 08 · Agent 链路评测 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">04</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">① Agent 链路评测 · 看思考过程</div>
+      <h2 class="slide-title reveal" contenteditable="false">同一条带硬约束的 prompt，看 Agent 怎么<span class="accent">拆解与翻译</span></h2>
+      <div class="cols-3 stagger reveal">
+        <div class="box"><span class="tag qwen">千问亮点</span><h3>风格的翻译力</h3><p>"落日飞车"不是换配色，而是拆成夕阳/公路/复古相纸/暖棕/迷幻……<strong>抽象风格词 → 可执行视觉系统</strong>。</p></div>
+        <div class="box"><span class="tag doubao">豆包硬伤</span><h3>硬约束被违反</h3><p>要求 1–10 页却做成 11 页。页数/比例/风格都是<strong>硬约束</strong>，违反直接击穿信任——<strong>可靠 &gt; 惊艳</strong>。</p></div>
+        <div class="box"><span class="tag qwen">千问亮点</span><h3>反推真实目标</h3><p>它知道目标是"提升面试认知"，组织成 概念→拆解→表达→避坑；用建筑师/自动驾驶类比解释——<strong>从任务反推 JTBD</strong>。</p></div>
+      </div>
+      <div class="footnote reveal" contenteditable="false">方法一句话：观察任务拆解、对模糊需求的翻译、对硬约束的处理机制——这些决定了产物的上限与用户的信任。</div>
+    </div>
+  </section>
+
+  <!-- ============ 09 · Agent 架构对比 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">05</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">Agent 架构设计的区别</div>
+      <h2 class="slide-title reveal" contenteditable="false">"快速出结果派" <span class="accent">vs</span> "推理严谨派"</h2>
+      <div class="box reveal" style="overflow:auto;">
+        <table class="mini">
+          <thead><tr><th>维度</th><th class="col-doubao">快速出结果派 · 豆包风格</th><th class="col-qwen">推理严谨派 · 千问风格</th></tr></thead>
+          <tbody>
+            <tr><td><strong>规划方式</strong></td><td>一次性大纲规划</td><td>边做边反思（ReAct 式追问）</td></tr>
+            <tr><td><strong>需求翻译</strong></td><td>字面理解</td><td>抽象词 → 可执行系统</td></tr>
+            <tr><td><strong>约束处理</strong></td><td>弱校验，易越界</td><td>硬约束进入校验环节</td></tr>
+            <tr><td><strong>交互节点</strong></td><td>直出，少回问</td><td>关键节点回问 / 确认大纲</td></tr>
+            <tr><td><strong>底层取向</strong></td><td>速度 / 惊艳优先</td><td>推理 / 完成度优先</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footnote reveal" contenteditable="false">无绝对优劣：<strong>C 端尝鲜场景"惊艳"重要，B 端汇报场景"可靠"重要</strong>。架构哲学差异，本质是底层模型取向 + 产品价值观的差异。</div>
+    </div>
+  </section>
+
+  <!-- ============ 10 · 生成结果评测 ① ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">06</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">② 生成结果评测 · 核心结论</div>
+      <h2 class="slide-title reveal" contenteditable="false">千问赢<span class="accent">内容逻辑</span>，豆包赢<span class="accent">视觉观感</span></h2>
+      <div class="scorewrap stagger reveal">
+        <div class="scorecard" style="border-top:3px solid var(--qwen);">
+          <span class="label">内容文字层（满分 100）</span>
+          <div class="vs"><span class="big col-qwen">76</span><span class="vlabel">千问</span><span class="big" style="color:var(--text-secondary)">66</span><span class="vlabel">豆包</span></div>
+          <p style="margin-top:0.5rem;font-size:var(--small-size);color:var(--text-secondary);">主线立得住、讲稿可用 → 千问领先</p>
+        </div>
+        <div class="scorecard" style="border-top:3px solid var(--doubao);">
+          <span class="label">设计渲染层（满分 100）</span>
+          <div class="vs"><span class="big col-doubao">82</span><span class="vlabel">豆包</span><span class="big" style="color:var(--text-secondary)">62</span><span class="vlabel">千问</span></div>
+          <p style="margin-top:0.5rem;font-size:var(--small-size);color:var(--text-secondary);">视觉统一、情绪完整 → 豆包领先</p>
+        </div>
+      </div>
+      <div class="footnote reveal" contenteditable="false">一句话：<strong>豆包产出像"一份漂亮 PPT"，千问产出像"一份可继续产品化的认知底稿"</strong>。方法：对照成品逐页打分，不看辞藻，看能否直接交付、能否说服观众。</div>
+    </div>
+  </section>
+
+  <!-- ============ 11 · 生成结果评测 ② ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">07</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span class="active">评测</span><span>业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">② 生成结果评测 · 维度拆解</div>
+      <h2 class="slide-title reveal" contenteditable="false">两种"好"，<span class="accent">各有所长与共同短板</span></h2>
+      <div class="cols-2 stagger reveal">
+        <div class="box"><span class="tag qwen">内容文字 · 千问赢</span><ul class="clean"><li>主线立得住：Agent = 意图→架构→视觉转译 闭环</li><li><strong>讲稿可用性 4.5/5</strong>，可直接讲</li><li>豆包：比喻多、论证密度不足（2.8/5）</li></ul></div>
+        <div class="box"><span class="tag doubao">画面/排版/设计 · 豆包赢</span><ul class="clean"><li>视觉层级 4.3 vs 3.2，焦点更清晰</li><li>信息密度/留白/导出质量均领先</li><li>千问偏讲义、正文长，焦点被淹没</li></ul></div>
+      </div>
+      <div class="box reveal" style="margin-top:0.6rem;">
+        <table class="mini">
+          <thead><tr><th>客观事实（PPTX 解析）</th><th class="col-qwen">千问</th><th class="col-doubao">豆包</th><th>解读</th></tr></thead>
+          <tbody>
+            <tr><td>页数</td><td>10</td><td>11</td><td>豆包越界</td></tr>
+            <tr><td>图片对象</td><td>7</td><td>26</td><td>豆包重视觉</td></tr>
+            <tr><td>文本对象</td><td>99</td><td>74</td><td>千问重文字</td></tr>
+            <tr><td>讲稿字数</td><td>~2517</td><td>~1151</td><td>千问像面试讲稿</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footnote reveal" contenteditable="false">共同短板：配图多为装饰、<strong>缺解释型数据图表</strong>。结论：AIPPT 下一战场不是"更漂亮"，而是 <strong>可信 + 可交付 + 可复用</strong>。</div>
+    </div>
+  </section>
+
+  <!-- ============ 12 · SECTION 03 ============ -->
+  <section class="slide divider">
+    <div class="slide-content">
+      <div class="dnum reveal">03</div>
+      <h2 class="reveal" contenteditable="false">千问 × AI 工具业务方向</h2>
+      <p class="dsub reveal" contenteditable="false">护城河不是"某个工具最强"，而是 场景 × 流量 × 数据 × 自研模型 的闭环。</p>
+    </div>
+  </section>
+
+  <!-- ============ 13 · 千问业务优势 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">08</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span>评测</span><span class="active">业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">千问做 AI 工具产品的业务优势</div>
+      <h2 class="slide-title reveal" contenteditable="false">五个别人难复制的<span class="accent">结构性优势</span></h2>
+      <div class="cols-3 stagger reveal">
+        <div class="box"><h3>① 模型自研</h3><p>模型-产品一体化，能针对场景微调、成本可控、端到端可控。</p></div>
+        <div class="box"><h3>② 生态数据</h3><p>电商·钉钉·阿里云·本地生活，海量真实业务场景与高质量数据。</p></div>
+        <div class="box"><h3>③ B/C 双通道</h3><p>钉钉(办公)·阿里云/百炼(开发者)·夸克(C端)·通义App(大众)。</p></div>
+        <div class="box"><h3>④ 基础设施</h3><p>阿里云算力，规模化部署的成本优势。</p></div>
+        <div class="box"><h3>⑤ 开源生态</h3><p>Qwen 全球开源开发者生态，反哺能力迭代与口碑。</p></div>
+        <div class="box orange-card"><h3>护城河</h3><p>不是单点工具最强，而是 <strong>场景×流量×数据×模型</strong> 的闭环。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 14 · 落地场景 ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">09</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span>评测</span><span class="active">业务</span><span>未来</span></div>
+      </div>
+      <div class="eyebrow reveal">具体落地场景 · 在什么场景下如何结合</div>
+      <h2 class="slide-title reveal" contenteditable="false">直接嵌入用户<span class="accent">已有工作流</span></h2>
+      <div class="box reveal" style="overflow:auto;">
+        <table class="mini">
+          <thead><tr><th>场景入口</th><th>用户</th><th>AI 工具如何嵌入</th></tr></thead>
+          <tbody>
+            <tr><td><strong>夸克</strong></td><td>学生/年轻人</td><td>搜索+学习+文档+网盘 → 天然的 AIPPT/AI 写作/AI 学习入口</td></tr>
+            <tr><td><strong>钉钉</strong></td><td>企业办公</td><td>AI 写文档/做汇报 PPT/会议纪要/数据分析——B 端高频刚需</td></tr>
+            <tr><td><strong>淘宝/天猫</strong></td><td>电商商家</td><td>AI 生成商品详情/营销文案/主图/短视频——内容生产工业化</td></tr>
+            <tr><td><strong>阿里云/百炼</strong></td><td>开发者/企业</td><td>把模型能力 API 化，提供 Agent 构建平台</td></tr>
+            <tr><td><strong>通义 App</strong></td><td>C 端大众</td><td>通用助手入口</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footnote reveal" contenteditable="false">结合逻辑：阿里最大的优势是 AI 工具能<strong>不必单独打开</strong>，就嵌进用户已有流程——这正好引出我对未来的判断。</div>
+    </div>
+  </section>
+
+  <!-- ============ 15 · SECTION 04 ============ -->
+  <section class="slide divider">
+    <div class="slide-content">
+      <div class="dnum reveal">04</div>
+      <h2 class="reveal" contenteditable="false">我对未来的看法</h2>
+      <p class="dsub reveal" contenteditable="false">AI 工具的终局，不是一个个孤立的工具，而是 AI 输出的"出口层"。</p>
+    </div>
+  </section>
+
+  <!-- ============ 16 · Content Remix ============ -->
+  <section class="slide">
+    <div class="slide-content">
+      <div class="topbar reveal">
+        <span class="slide-num">10</span>
+        <div class="breadcrumb"><span>立论</span><span>生态</span><span>评测</span><span>业务</span><span class="active">未来</span></div>
+      </div>
+      <div class="eyebrow reveal">Content Remix · 从工具层升维到出口层</div>
+      <h2 class="slide-title reveal" contenteditable="false">一次理解，<span class="accent">多形态输出</span></h2>
+      <div class="cols-2 stagger reveal">
+        <div class="box"><span class="tag" style="background:rgba(255,255,255,0.1);color:#fff;">痛点 · 工具孤岛</span><p>做 PPT 去 A、做播客去 B、写文档换 C。需求与工具靠<strong>手动匹配</strong>，依赖用户"想起来"。<strong>工具是名词，需求是动词——名词永远追不上动词。</strong></p></div>
+        <div class="box orange-card"><span class="tag" style="background:#1a1a1a;color:#fff;">主张 · 出口层</span><p>AI 识别意图 → 自动匹配最佳交付形态：<strong>展示/汇报→PPT·网页；通勤了解→AI 播客；对外传播→海报</strong>。同一内容按场景 remix 成不同形态。</p></div>
+      </div>
+      <div class="cols-3 stagger reveal" style="margin-top:0.6rem;">
+        <div class="box"><h3 style="font-size:var(--body-size);">模型侧</h3><p>多模态成熟，生成新形态的边际成本趋零。</p></div>
+        <div class="box"><h3 style="font-size:var(--body-size);">用户侧</h3><p>要的从不是工具，是"把表达做完"(JTBD)。</p></div>
+        <div class="box"><h3 style="font-size:var(--body-size);">产品侧</h3><p>从"用户找工具"→"AI 主动匹配形态"。</p></div>
+      </div>
+      <div class="footnote reveal" contenteditable="false">对千问的意义：通义有对话入口 + 最全的下游形态能力，最适合做"出口层"——从 <strong>AI 助手 → AI 生产力出口</strong>。边界：警惕"过度主动"，需轻量意图识别 + 一键确认，可解释、可撤销。</div>
+    </div>
+  </section>
+
+  <!-- ============ 17 · 收尾 ============ -->
+  <section class="slide title-slide">
+    <div class="kicker reveal">回到立论</div>
+    <h1 class="reveal" contenteditable="false">让通义回答完问题后，<br/><span class="accent">顺手把"最佳展示物"也给你</span></h1>
+    <p class="sub reveal" contenteditable="false">AI 工具产品的下一步，不是更漂亮，而是可信、可交付、可复用；不是更多孤立工具，而是一个理解意图的输出出口。</p>
+    <p class="meta reveal" contenteditable="false">感谢观看 · Q&amp;A</p>
+  </section>
+
+  <script>
+    /* ===========================================
+       SLIDE PRESENTATION CONTROLLER
+       Handles: scroll-snap nav, keyboard, touch, wheel,
+       progress bar, nav dots, intersection-based reveals.
+       =========================================== */
+    class SlidePresentation {
+      constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.isAnimating = false;
+        this.progressBar = document.querySelector('.progress-bar');
+        this.navDotsContainer = document.querySelector('.nav-dots');
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupNavDots();
+        this.updateProgress();
+      }
+
+      setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              const idx = this.slides.indexOf(entry.target);
+              if (idx !== -1) { this.currentSlide = idx; this.updateProgress(); this.updateDots(); }
+            }
+          });
+        }, { threshold: 0.55 });
+        this.slides.forEach((s) => observer.observe(s));
+      }
+
+      goTo(index) {
+        if (index < 0 || index >= this.slides.length) return;
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+      }
+
+      setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+          // don't hijack keys while editing text
+          if (e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true') return;
+          if (['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)) { e.preventDefault(); this.goTo(this.currentSlide + 1); }
+          else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); this.goTo(this.currentSlide - 1); }
+          else if (e.key === 'Home') { e.preventDefault(); this.goTo(0); }
+          else if (e.key === 'End') { e.preventDefault(); this.goTo(this.slides.length - 1); }
+        });
+      }
+
+      setupTouchNav() {
+        let startY = 0;
+        document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+          const dy = startY - e.changedTouches[0].clientY;
+          if (Math.abs(dy) > 60) this.goTo(this.currentSlide + (dy > 0 ? 1 : -1));
+        }, { passive: true });
+      }
+
+      setupWheelNav() {
+        let lock = false;
+        document.addEventListener('wheel', (e) => {
+          if (lock) return;
+          if (Math.abs(e.deltaY) < 25) return;
+          lock = true;
+          this.goTo(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+          setTimeout(() => { lock = false; }, 800);
+        }, { passive: true });
+      }
+
+      setupNavDots() {
+        // Clear first so re-opening an exported copy never duplicates dots.
+        this.navDotsContainer.innerHTML = '';
+        this.slides.forEach((_, i) => {
+          const b = document.createElement('button');
+          b.setAttribute('aria-label', '跳到第 ' + (i + 1) + ' 页');
+          if (i === 0) b.classList.add('active');
+          b.addEventListener('click', () => this.goTo(i));
+          this.navDotsContainer.appendChild(b);
+        });
+      }
+
+      updateDots() {
+        this.navDotsContainer.querySelectorAll('button').forEach((b, i) => {
+          b.classList.toggle('active', i === this.currentSlide);
+        });
+      }
+
+      updateProgress() {
+        const pct = this.slides.length > 1 ? (this.currentSlide / (this.slides.length - 1)) * 100 : 0;
+        this.progressBar.style.width = pct + '%';
+      }
+    }
+
+    /* ===========================================
+       INLINE EDITOR (opt-in)
+       Toggle with the ✏️ button, the top-left hotzone, or "E".
+       Ctrl/Cmd+S exports a clean copy (edit state stripped).
+       =========================================== */
+    class InlineEditor {
+      constructor() {
+        this.isActive = false;
+        this.editables = Array.from(document.querySelectorAll('h1, h2, h3, p, li, td, th, .punch, .kicker, .eyebrow, .dsub, .sub, .meta, .footnote'))
+          .filter(el => !el.closest('.nav-dots') && !el.closest('.keyboard-hint') && !el.closest('.edit-banner'));
+        this.banner = document.getElementById('editBanner');
+        this.toggleBtn = document.getElementById('editToggle');
+      }
+      toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-active', this.isActive);
+        this.toggleBtn.classList.toggle('active', this.isActive);
+        this.banner.classList.toggle('active', this.isActive);
+        this.toggleBtn.textContent = this.isActive ? '✓' : '✏️';
+        this.editables.forEach(el => {
+          if (this.isActive) el.setAttribute('contenteditable', 'true');
+          else el.removeAttribute('contenteditable');
+        });
+      }
+      exportFile() {
+        // Strip edit state so the saved file opens cleanly.
+        const editableEls = Array.from(document.querySelectorAll('[contenteditable]'));
+        editableEls.forEach(el => el.removeAttribute('contenteditable'));
+        document.body.classList.remove('edit-active');
+        this.toggleBtn.classList.remove('active', 'show');
+        this.banner.classList.remove('active', 'show');
+        const prevIcon = this.toggleBtn.textContent;
+        this.toggleBtn.textContent = '✏️';
+
+        const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+        // Restore edit state so the user can keep editing.
+        if (this.isActive) {
+          document.body.classList.add('edit-active');
+          editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
+          this.toggleBtn.classList.add('active');
+          this.banner.classList.add('active');
+          this.toggleBtn.textContent = prevIcon;
+        }
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'presentation.html';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+    }
+
+    const presentation = new SlidePresentation();
+    const editor = new InlineEditor();
+
+    // ---- Inline editing wiring ----
+    document.getElementById('editToggle').addEventListener('click', () => editor.toggleEditMode());
+
+    const hotzone = document.querySelector('.edit-hotzone');
+    const editToggle = document.getElementById('editToggle');
+    let hideTimeout = null;
+    hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+    hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+    editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    editToggle.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+    hotzone.addEventListener('click', () => editor.toggleEditMode());
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'e' || e.key === 'E') && !(e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true')) {
+        editor.toggleEditMode();
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        editor.exportFile();
+      }
+    });
+  </script>
+</body>
+</html>
