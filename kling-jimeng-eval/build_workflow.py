@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kling vs Jimeng 视频生成评测工作流 —— ComfyUI 工作流生成器
+可灵(Kling) vs 即梦(Seedance) 视频评测工作流 —— ComfyUI 工作流生成器（云端原生版）
+
+设计目标：在【官方 ComfyUI Cloud】上零自定义节点、零外网 HTTP 即可运行。
+全部使用官方 API / 合作节点 + 核心内置节点：
+  - 可灵   : KlingTextToVideoNode / KlingImageToVideoNode          (官方 API 节点)
+  - 即梦   : ByteDance2TextToVideoNode / ByteDanceImageToVideoNode  (官方 Seedance 合作节点)
+            说明：即梦视频由字节 Seedance 模型驱动，官方内置 Seedance 节点评测同源能力。
+  - 评委   : Gemini                                                (Google 官方合作节点，多模态)
+  - 抽帧   : GetVideoComponents                                    (核心内置节点，视频->帧)
+  - 合帧   : ImageBatch                                            (核心内置节点，两批帧合一)
+  - 其他   : SaveVideo / SaveText / LoadImage / PrimitiveNode / Note (核心内置)
 
 为什么用脚本生成而不是手写 JSON：
-ComfyUI 的工作流是 litegraph 格式，节点之间靠一组全局唯一的 link id 串联，
-手写极易出现 id 错位导致导入后连线断裂。用脚本集中管理 id，保证结构合法。
+litegraph 节点靠一组全局唯一 link id 串联，手写极易 id 错位导致连线断裂。
+脚本集中管理 id，保证结构合法。
 
 运行：  python build_workflow.py
 输出：  workflow/kling_jimeng_eval.json
@@ -14,9 +24,7 @@ ComfyUI 的工作流是 litegraph 格式，节点之间靠一组全局唯一的 
 import json
 import os
 
-# ----------------------------------------------------------------------------
-# 轻量级 litegraph 图构建器
-# ----------------------------------------------------------------------------
+
 class Graph:
     def __init__(self):
         self.nodes = []
@@ -29,332 +37,242 @@ class Graph:
                  inputs=None, outputs=None, color=None, bgcolor=None, properties=None):
         self._nid += 1
         node = {
-            "id": self._nid,
-            "type": type_,
-            "pos": list(pos),
-            "size": list(size),
-            "flags": {},
-            "order": self._nid,
-            "mode": 0,
-            "inputs": inputs or [],
-            "outputs": outputs or [],
+            "id": self._nid, "type": type_, "pos": list(pos), "size": list(size),
+            "flags": {}, "order": self._nid, "mode": 0,
+            "inputs": inputs or [], "outputs": outputs or [],
             "properties": properties or {"Node name for S&R": type_},
             "widgets_values": widgets if widgets is not None else [],
         }
-        if title:
-            node["title"] = title
-        if color:
-            node["color"] = color
-        if bgcolor:
-            node["bgcolor"] = bgcolor
+        if title: node["title"] = title
+        if color: node["color"] = color
+        if bgcolor: node["bgcolor"] = bgcolor
         self.nodes.append(node)
         return node
 
     def link(self, from_node, from_slot, to_node, to_slot, type_):
-        """连接 from_node.outputs[from_slot] -> to_node.inputs[to_slot]"""
         self._lid += 1
         lid = self._lid
-        # 写出端
         out = from_node["outputs"][from_slot]
         out.setdefault("links", [])
-        if out["links"] is None:
-            out["links"] = []
+        if out["links"] is None: out["links"] = []
         out["links"].append(lid)
         out["slot_index"] = from_slot
-        # 写入端
-        inp = to_node["inputs"][to_slot]
-        inp["link"] = lid
+        to_node["inputs"][to_slot]["link"] = lid
         self.links.append([lid, from_node["id"], from_slot, to_node["id"], to_slot, type_])
         return lid
 
     def group(self, title, bounding, color="#3f789e"):
-        self.groups.append({
-            "title": title,
-            "bounding": list(bounding),   # [x, y, w, h]
-            "color": color,
-            "font_size": 24,
-            "flags": {},
-        })
+        self.groups.append({"title": title, "bounding": list(bounding),
+                            "color": color, "font_size": 24, "flags": {}})
 
     def to_dict(self):
         return {
-            "last_node_id": self._nid,
-            "last_link_id": self._lid,
-            "nodes": self.nodes,
-            "links": self.links,
-            "groups": self.groups,
-            "config": {},
-            "extra": {
-                "ds": {"scale": 0.6, "offset": [0, 0]},
-                "info": {
-                    "name": "Kling vs Jimeng 视频生成评测工作流",
-                    "author": "PM Portfolio",
-                    "version": "1.0",
-                },
-            },
+            "last_node_id": self._nid, "last_link_id": self._lid,
+            "nodes": self.nodes, "links": self.links, "groups": self.groups,
+            "config": {}, "extra": {"ds": {"scale": 0.55, "offset": [0, 0]},
+                "info": {"name": "Kling vs Seedance(即梦) 视频评测 · 云端原生",
+                         "author": "PM Portfolio", "version": "2.0-cloud"}},
             "version": 0.4,
         }
 
 
-# 端口构造小工具
-def out(name, type_):
-    return {"name": name, "type": type_, "links": [], "slot_index": 0}
-
-def inp(name, type_, link=None):
-    return {"name": name, "type": type_, "link": link}
+def out(name, type_): return {"name": name, "type": type_, "links": [], "slot_index": 0}
+def inp(name, type_, link=None): return {"name": name, "type": type_, "link": link}
 
 
 g = Graph()
 
-# 颜色主题
-KLING_BG = "#1c3a52"      # 蓝 —— 可灵
-JIMENG_BG = "#522c1c"     # 橙 —— 即梦
-JUDGE_BG = "#2c5230"      # 绿 —— 评委
-IO_BG = "#444"            # 灰 —— 输入/输出
+KLING_BG = "#1c3a52"
+SEED_BG  = "#522c1c"
+JUDGE_BG = "#2c5230"
+IO_BG    = "#3a3a3a"
+
+X_IN, X_GEN, X_FRAME, X_SAVE, X_BATCH, X_JUDGE, X_OUT = 40, 660, 1280, 1700, 2120, 2560, 3060
 
 # ============================================================================
-# 列 X 坐标
-# ============================================================================
-X_IN   = 40       # 输入
-X_GEN  = 620      # 生成
-X_MID  = 1240     # 保存 / 抽帧
-X_JUDGE= 1820     # LLM 评委
-X_OUT  = 2440     # 评分输出 / 汇总
-
-# ============================================================================
-# ① 评测输入区
+# ① 评测输入区（受控变量）
 # ============================================================================
 intro_md = (
-    "## 🎬 可灵 vs 即梦 视频生成能力评测工作流\n\n"
-    "**用途**：同一组受控输入下，并排评测可灵(Kling)与即梦(Jimeng)的 T2V / I2V 能力，"
-    "由多模态大模型按统一 rubric 自动打分，并辅以客观指标交叉验证。\n\n"
-    "**控制变量**：左侧共享的 Prompt / 输入图 / 运动描述，两家完全一致，保证公平。\n\n"
-    "**使用顺序**：① 填左侧输入 → ② 在各生成节点填 API Key/模型 → ③ Queue → "
-    "④ 读右侧评委打分 → ⑤ 把视频+评分填入对比看板。\n\n"
-    "> 节点颜色：蓝=可灵，橙=即梦，绿=LLM评委，灰=输入/输出。"
+    "## 🎬 可灵 vs 即梦(Seedance) 视频评测 · 云端原生版\n\n"
+    "**全官方节点，ComfyUI Cloud 零自定义节点即可运行。**\n\n"
+    "- 可灵 = 官方 Kling API 节点\n"
+    "- 即梦 = 官方 ByteDance **Seedance** 节点（即梦视频同源模型）\n"
+    "- 评委 = 官方 **Gemini** 多模态节点，按 5 维 Rubric 打分\n"
+    "- 抽帧 = 核心 **GetVideoComponents** 节点\n\n"
+    "**控制变量**：左侧共享 Prompt / 输入图 / 运动描述，两家完全一致。\n\n"
+    "**用法**：① 填左侧输入 → ② 各生成节点选模型(已配 API 额度) → ③ Queue → "
+    "④ 读 Gemini 评分卡 → ⑤ 填入对比看板。\n\n"
+    "> 颜色：蓝=可灵，橙=即梦/Seedance，绿=评委，灰=输入/输出。"
 )
+g.add_node("Note", (X_IN, -380), (560, 320), title="📖 评测说明 / README",
+           widgets=[intro_md], bgcolor=IO_BG)
 
-n_intro = g.add_node(
-    "Note", (X_IN, -360), (540, 300), title="📖 评测说明 / README",
-    widgets=[intro_md], bgcolor=IO_BG,
-)
+n_prompt = g.add_node("PrimitiveNode", (X_IN, 0), (560, 190),
+    title="① 共享 Prompt（受控变量）",
+    widgets=["A cinematic shot of a red fox running through a snowy forest at sunrise, "
+             "camera slowly tracking, volumetric light, photorealistic, 4k", "fixed"],
+    outputs=[out("STRING", "STRING")], bgcolor=IO_BG)
 
-# 共享正向 Prompt（受控变量，喂给两家的 T2V / I2V）
-n_prompt = g.add_node(
-    "PrimitiveNode", (X_IN, 0), (540, 200), title="① 共享 Prompt（受控变量）",
-    widgets=[
-        "A cinematic shot of a red fox running through a snowy forest at sunrise, "
-        "camera slowly tracking, volumetric light, photorealistic, 4k",
-        "fixed",
-    ],
-    outputs=[out("STRING", "STRING")], bgcolor=IO_BG,
-)
-
-# 共享运动 / 负向描述
-n_motion = g.add_node(
-    "PrimitiveNode", (X_IN, 240), (540, 140), title="① 共享运动/负向描述",
+n_motion = g.add_node("PrimitiveNode", (X_IN, 230), (560, 140),
+    title="① 共享运动/负向描述",
     widgets=["smooth natural motion; avoid: morphing, flicker, extra limbs", "fixed"],
-    outputs=[out("STRING", "STRING")], bgcolor=IO_BG,
-)
+    outputs=[out("STRING", "STRING")], bgcolor=IO_BG)
 
-# I2V 共享输入图
-n_image = g.add_node(
-    "LoadImage", (X_IN, 420), (540, 380), title="① I2V 共享输入图（受控变量）",
-    widgets=["test_input.png", "image"],
-    outputs=[out("IMAGE", "IMAGE"), out("MASK", "MASK")], bgcolor=IO_BG,
-)
+n_image = g.add_node("LoadImage", (X_IN, 410), (560, 380),
+    title="① I2V 共享输入图（受控变量）", widgets=["test_input.png", "image"],
+    outputs=[out("IMAGE", "IMAGE"), out("MASK", "MASK")], bgcolor=IO_BG)
 
-# 评分 Rubric（喂给两个 LLM 评委）
 rubric_text = (
-    "你是资深视频生成质量评测专家。请对【视频A=可灵 / 视频B=即梦】按以下5个维度各打1-10分，"
-    "并给出简短理由，最后输出 JSON：{dimension, kling_score, jimeng_score, reason}。\n"
+    "你是资深视频生成质量评测专家。画面前半部分帧来自【视频A=可灵】，后半部分帧来自【视频B=即梦/Seedance】，"
+    "二者使用完全相同的 prompt。请按以下5个维度各打1-10分并给简短理由，最后输出 JSON："
+    "{results:[{dimension,kling_score,jimeng_score,reason}],weighted_total:{kling,jimeng},winner,summary}。\n"
     "维度与权重：\n"
-    "1. 画面质量 Visual Quality (25%)：清晰度、细节、无伪影\n"
-    "2. 运动合理性 Motion Quality (25%)：运动自然、无闪烁/形变、物理合理\n"
-    "3. 文本一致性 Prompt Adherence (25%)：是否准确还原 prompt 的主体/动作/场景\n"
-    "4. 时序一致性 Temporal Consistency (15%)：主体/背景跨帧稳定，不漂移\n"
-    "5. 美学表现 Aesthetics (10%)：构图、光影、色彩、电影感\n"
-    "评分需中立、可复现；同分时说明区分点。最后给出加权总分与胜出方。"
+    "1. 画面质量(25%)：清晰度/细节/无伪影\n"
+    "2. 运动合理性(25%)：自然/无闪烁形变/物理合理\n"
+    "3. 文本一致性(25%)：准确还原主体/动作/场景\n"
+    "4. 时序一致性(15%)：跨帧稳定不漂移\n"
+    "5. 美学(10%)：构图/光影/色彩/电影感\n"
+    "评分需中立可复现，最后给加权总分与胜出方。"
 )
-n_rubric = g.add_node(
-    "PrimitiveNode", (X_IN, 840), (540, 320), title="① 评分 Rubric（受控标准）",
-    widgets=[rubric_text, "fixed"],
-    outputs=[out("STRING", "STRING")], bgcolor=JUDGE_BG,
-)
+n_rubric = g.add_node("PrimitiveNode", (X_IN, 840), (560, 320),
+    title="① 评分 Rubric（喂给 Gemini 评委）",
+    widgets=[rubric_text, "fixed"], outputs=[out("STRING", "STRING")], bgcolor=JUDGE_BG)
 
 # ============================================================================
-# ② 可灵 Kling 生成（T2V + I2V）
+# ② 可灵生成 / ③ 即梦(Seedance)生成
 # ============================================================================
-# Kling Text-to-Video（ComfyUI 官方 API 节点）
-n_kling_t2v = g.add_node(
-    "KlingTextToVideoNode", (X_GEN, 0), (430, 280), title="② 可灵 文生视频 T2V",
-    widgets=["kling-v1-6", 5, "16:9", "std", 0.5, 12345],  # model, duration, ratio, mode, cfg, seed
+n_k_t2v = g.add_node("KlingTextToVideoNode", (X_GEN, 0), (430, 270),
+    title="② 可灵 文生视频 T2V",
+    widgets=["kling-v1-6", 5, "16:9", "std", 0.5, 12345],
     inputs=[inp("prompt", "STRING"), inp("negative_prompt", "STRING")],
-    outputs=[out("VIDEO", "VIDEO")], bgcolor=KLING_BG,
-)
-# Kling Image-to-Video
-n_kling_i2v = g.add_node(
-    "KlingImageToVideoNode", (X_GEN, 340), (430, 320), title="② 可灵 图生视频 I2V",
+    outputs=[out("VIDEO", "VIDEO")], bgcolor=KLING_BG)
+
+n_k_i2v = g.add_node("KlingImageToVideoNode", (X_GEN, 320), (430, 300),
+    title="② 可灵 图生视频 I2V",
     widgets=["kling-v1-6", 5, "16:9", "std", 0.5, 12345],
     inputs=[inp("start_frame", "IMAGE"), inp("prompt", "STRING"), inp("negative_prompt", "STRING")],
-    outputs=[out("VIDEO", "VIDEO")], bgcolor=KLING_BG,
-)
+    outputs=[out("VIDEO", "VIDEO")], bgcolor=KLING_BG)
+
+n_s_t2v = g.add_node("ByteDance2TextToVideoNode", (X_GEN, 700), (430, 270),
+    title="③ 即梦/Seedance 文生视频 T2V",
+    widgets=["seedance-2.0", "1080p", 5, "16:9", 12345],   # model, resolution, duration, ratio, seed
+    inputs=[inp("prompt", "STRING")],
+    outputs=[out("VIDEO", "VIDEO")], bgcolor=SEED_BG)
+
+n_s_i2v = g.add_node("ByteDanceImageToVideoNode", (X_GEN, 1020), (430, 300),
+    title="③ 即梦/Seedance 图生视频 I2V",
+    widgets=["seedance-1.0-pro", "1080p", 5, 12345],
+    inputs=[inp("image", "IMAGE"), inp("prompt", "STRING")],
+    outputs=[out("VIDEO", "VIDEO")], bgcolor=SEED_BG)
 
 # ============================================================================
-# ③ 即梦 Jimeng 生成（T2V + I2V）
+# ④ 抽帧（GetVideoComponents，核心节点）
 # ============================================================================
-n_jimeng_t2v = g.add_node(
-    "JimengTextToVideoNode", (X_GEN, 720), (430, 280), title="③ 即梦 文生视频 T2V",
-    widgets=["jimeng-video-3.0", 5, "16:9", 12345],  # model, duration, ratio, seed
-    inputs=[inp("prompt", "STRING"), inp("negative_prompt", "STRING")],
-    outputs=[out("VIDEO", "VIDEO")], bgcolor=JIMENG_BG,
-)
-n_jimeng_i2v = g.add_node(
-    "JimengImageToVideoNode", (X_GEN, 1060), (430, 320), title="③ 即梦 图生视频 I2V",
-    widgets=["jimeng-video-3.0", 5, "16:9", 12345],
-    inputs=[inp("start_frame", "IMAGE"), inp("prompt", "STRING"), inp("negative_prompt", "STRING")],
-    outputs=[out("VIDEO", "VIDEO")], bgcolor=JIMENG_BG,
-)
-
-# ============================================================================
-# ④ 保存视频 + 抽帧（喂给 LLM 评委）
-# ============================================================================
-def save_video(node, y, title, bg):
-    return g.add_node(
-        "SaveVideo", (X_MID, y), (360, 150), title=title,
-        widgets=["eval/" + title.split()[0], "mp4", "h264"],
-        inputs=[inp("video", "VIDEO")], outputs=[], bgcolor=bg,
-    )
-
-def sample_frames(node, y, title, bg):
-    # 抽取若干关键帧供视觉 LLM 评判（VideoHelperSuite）
-    return g.add_node(
-        "VHS_VideoToImages", (X_MID, y + 170), (360, 130), title=title,
-        widgets=[8],  # 抽 8 帧
+def frames(y, title, bg):
+    return g.add_node("GetVideoComponents", (X_FRAME, y), (340, 110), title=title,
         inputs=[inp("video", "VIDEO")],
-        outputs=[out("IMAGE", "IMAGE")], bgcolor=bg,
-    )
+        outputs=[out("images", "IMAGE"), out("audio", "AUDIO"), out("fps", "FLOAT")],
+        bgcolor=bg)
 
-n_save_k_t2v = save_video(n_kling_t2v, 0,   "可灵-T2V 保存", KLING_BG)
-n_frames_k_t2v = sample_frames(n_kling_t2v, 0, "可灵-T2V 抽帧", KLING_BG)
+f_k_t2v = frames(0,    "④ 可灵-T2V 抽帧", KLING_BG)
+f_s_t2v = frames(700,  "④ 即梦-T2V 抽帧", SEED_BG)
+f_k_i2v = frames(320,  "④ 可灵-I2V 抽帧", KLING_BG)
+f_s_i2v = frames(1020, "④ 即梦-I2V 抽帧", SEED_BG)
 
-n_save_j_t2v = save_video(n_jimeng_t2v, 720, "即梦-T2V 保存", JIMENG_BG)
-n_frames_j_t2v = sample_frames(n_jimeng_t2v, 720, "即梦-T2V 抽帧", JIMENG_BG)
+# 保存视频
+def savevid(y, title, bg):
+    return g.add_node("SaveVideo", (X_SAVE, y), (320, 120), title=title,
+        widgets=["eval/" + title.split()[1], "mp4", "h264"],
+        inputs=[inp("video", "VIDEO")], outputs=[], bgcolor=bg)
 
-n_save_k_i2v = save_video(n_kling_i2v, 360, "可灵-I2V 保存", KLING_BG)
-n_frames_k_i2v = sample_frames(n_kling_i2v, 360, "可灵-I2V 抽帧", KLING_BG)
-
-n_save_j_i2v = save_video(n_jimeng_i2v, 1080, "即梦-I2V 保存", JIMENG_BG)
-n_frames_j_i2v = sample_frames(n_jimeng_i2v, 1080, "即梦-I2V 抽帧", JIMENG_BG)
-
-# ============================================================================
-# ⑤ LLM 评委：T2V 对比、I2V 对比
-# ============================================================================
-# 多模态评委节点：输入两家关键帧 + prompt + rubric -> 输出结构化评分
-def judge(y, title):
-    return g.add_node(
-        "LLMVideoJudge", (X_JUDGE, y), (440, 320), title=title,
-        widgets=["claude-opus-4-8", 0.0],   # judge_model, temperature
-        inputs=[
-            inp("frames_a", "IMAGE"),   # A = 可灵
-            inp("frames_b", "IMAGE"),   # B = 即梦
-            inp("prompt", "STRING"),
-            inp("rubric", "STRING"),
-        ],
-        outputs=[out("scorecard", "STRING")], bgcolor=JUDGE_BG,
-    )
-
-n_judge_t2v = judge(40,  "④ LLM 评委 · T2V 对比打分")
-n_judge_i2v = judge(720, "④ LLM 评委 · I2V 对比打分")
+sv_k_t2v = savevid(150,  "保存 可灵-T2V", KLING_BG)
+sv_s_t2v = savevid(850,  "保存 即梦-T2V", SEED_BG)
+sv_k_i2v = savevid(470,  "保存 可灵-I2V", KLING_BG)
+sv_s_i2v = savevid(1170, "保存 即梦-I2V", SEED_BG)
 
 # ============================================================================
-# ⑥ 评分输出 + 客观指标 + 汇总
+# ⑤ 合帧（ImageBatch）→ Gemini 评委 → 评分卡
 # ============================================================================
-n_save_t2v = g.add_node(
-    "SaveText", (X_OUT, 40), (380, 180), title="⑤ T2V 评分卡输出（JSON）",
-    widgets=["eval/scorecard_t2v.json", "overwrite"],
-    inputs=[inp("text", "STRING")], outputs=[], bgcolor=IO_BG,
-)
-n_save_i2v = g.add_node(
-    "SaveText", (X_OUT, 260), (380, 180), title="⑤ I2V 评分卡输出（JSON）",
-    widgets=["eval/scorecard_i2v.json", "overwrite"],
-    inputs=[inp("text", "STRING")], outputs=[], bgcolor=IO_BG,
-)
+def imagebatch(y, title):
+    return g.add_node("ImageBatch", (X_BATCH, y), (300, 90), title=title,
+        inputs=[inp("image1", "IMAGE"), inp("image2", "IMAGE")],
+        outputs=[out("IMAGE", "IMAGE")], bgcolor=JUDGE_BG)
+
+b_t2v = imagebatch(180,  "⑤ 合帧 T2V（A可灵+B即梦）")
+b_i2v = imagebatch(880,  "⑤ 合帧 I2V（A可灵+B即梦）")
+
+def gemini(y, title):
+    return g.add_node("Gemini", (X_JUDGE, y), (380, 240), title=title,
+        widgets=["gemini-2.5-pro", 0.0],   # model, temperature
+        inputs=[inp("prompt", "STRING"), inp("images", "IMAGE")],
+        outputs=[out("text", "STRING")], bgcolor=JUDGE_BG)
+
+j_t2v = gemini(120, "⑤ Gemini 评委 · T2V 打分")
+j_i2v = gemini(820, "⑤ Gemini 评委 · I2V 打分")
+
+st_t2v = g.add_node("SaveText", (X_OUT, 140), (360, 150),
+    title="⑤ T2V 评分卡输出(JSON)", widgets=["eval/scorecard_t2v.json", "overwrite"],
+    inputs=[inp("text", "STRING")], outputs=[], bgcolor=IO_BG)
+st_i2v = g.add_node("SaveText", (X_OUT, 320), (360, 150),
+    title="⑤ I2V 评分卡输出(JSON)", widgets=["eval/scorecard_i2v.json", "overwrite"],
+    inputs=[inp("text", "STRING")], outputs=[], bgcolor=IO_BG)
 
 metrics_md = (
-    "## 📊 轻量客观指标（人工/脚本补录，交叉验证）\n\n"
-    "在 LLM 主观打分之外，记录以下可量化、产品化指标：\n\n"
-    "| 指标 | 可灵 | 即梦 |\n"
-    "|---|---|---|\n"
-    "| 生成耗时 (s) |  |  |\n"
-    "| 一次成功率 (%) |  |  |\n"
-    "| 实际分辨率 |  |  |\n"
-    "| 实际时长 (s) |  |  |\n"
-    "| 单条成本 (¥) |  |  |\n"
+    "## 📊 轻量客观指标（手动/脚本补录）\n\n"
+    "| 指标 | 可灵 | 即梦 |\n|---|---|---|\n"
+    "| 生成耗时(s) |  |  |\n| 一次成功率(%) |  |  |\n"
+    "| 实际分辨率 |  |  |\n| 单条成本(¥) |  |  |\n"
     "| 失败/驳回次数 |  |  |\n\n"
-    "> 这些指标不需要复杂模型，却最贴近 PM 关心的「质量×成本×效率」三角。"
+    "> 贴近 PM 关心的「质量×成本×效率」三角。"
 )
-n_metrics = g.add_node(
-    "Note", (X_OUT, 480), (380, 360), title="⑤ 客观指标记录表",
-    widgets=[metrics_md], bgcolor=IO_BG,
-)
+g.add_node("Note", (X_OUT, 520), (360, 340), title="⑤ 客观指标记录表",
+           widgets=[metrics_md], bgcolor=IO_BG)
 
 # ============================================================================
 # 连线
 # ============================================================================
-# 共享 Prompt -> 四个生成节点的 prompt
-g.link(n_prompt, 0, n_kling_t2v, 0, "STRING")
-g.link(n_prompt, 0, n_kling_i2v, 1, "STRING")
-g.link(n_prompt, 0, n_jimeng_t2v, 0, "STRING")
-g.link(n_prompt, 0, n_jimeng_i2v, 1, "STRING")
+# 共享 Prompt -> 四个生成节点
+g.link(n_prompt, 0, n_k_t2v, 0, "STRING")
+g.link(n_prompt, 0, n_k_i2v, 1, "STRING")
+g.link(n_prompt, 0, n_s_t2v, 0, "STRING")
+g.link(n_prompt, 0, n_s_i2v, 1, "STRING")
+# 负向 -> 可灵（Seedance 节点无独立负向输入，写入 prompt 内）
+g.link(n_motion, 0, n_k_t2v, 1, "STRING")
+g.link(n_motion, 0, n_k_i2v, 2, "STRING")
+# 共享输入图 -> 两家 I2V
+g.link(n_image, 0, n_k_i2v, 0, "IMAGE")
+g.link(n_image, 0, n_s_i2v, 0, "IMAGE")
 
-# 共享运动/负向 -> negative_prompt
-g.link(n_motion, 0, n_kling_t2v, 1, "STRING")
-g.link(n_motion, 0, n_kling_i2v, 2, "STRING")
-g.link(n_motion, 0, n_jimeng_t2v, 1, "STRING")
-g.link(n_motion, 0, n_jimeng_i2v, 2, "STRING")
+# 生成视频 -> 抽帧 + 保存
+for vid, fr, sv in [(n_k_t2v, f_k_t2v, sv_k_t2v), (n_s_t2v, f_s_t2v, sv_s_t2v),
+                    (n_k_i2v, f_k_i2v, sv_k_i2v), (n_s_i2v, f_s_i2v, sv_s_i2v)]:
+    g.link(vid, 0, fr, 0, "VIDEO")
+    g.link(vid, 0, sv, 0, "VIDEO")
 
-# 共享输入图 -> 两家 I2V start_frame
-g.link(n_image, 0, n_kling_i2v, 0, "IMAGE")
-g.link(n_image, 0, n_jimeng_i2v, 0, "IMAGE")
+# 抽帧 -> 合帧（A=可灵 image1, B=即梦 image2）
+g.link(f_k_t2v, 0, b_t2v, 0, "IMAGE")
+g.link(f_s_t2v, 0, b_t2v, 1, "IMAGE")
+g.link(f_k_i2v, 0, b_i2v, 0, "IMAGE")
+g.link(f_s_i2v, 0, b_i2v, 1, "IMAGE")
 
-# 生成视频 -> 保存 + 抽帧
-g.link(n_kling_t2v, 0, n_save_k_t2v, 0, "VIDEO")
-g.link(n_kling_t2v, 0, n_frames_k_t2v, 0, "VIDEO")
-g.link(n_jimeng_t2v, 0, n_save_j_t2v, 0, "VIDEO")
-g.link(n_jimeng_t2v, 0, n_frames_j_t2v, 0, "VIDEO")
-g.link(n_kling_i2v, 0, n_save_k_i2v, 0, "VIDEO")
-g.link(n_kling_i2v, 0, n_frames_k_i2v, 0, "VIDEO")
-g.link(n_jimeng_i2v, 0, n_save_j_i2v, 0, "VIDEO")
-g.link(n_jimeng_i2v, 0, n_frames_j_i2v, 0, "VIDEO")
+# 合帧 + Rubric -> Gemini -> 评分卡
+g.link(n_rubric, 0, j_t2v, 0, "STRING")
+g.link(b_t2v, 0, j_t2v, 1, "IMAGE")
+g.link(j_t2v, 0, st_t2v, 0, "STRING")
 
-# 抽帧 -> 评委
-g.link(n_frames_k_t2v, 0, n_judge_t2v, 0, "IMAGE")   # A=可灵
-g.link(n_frames_j_t2v, 0, n_judge_t2v, 1, "IMAGE")   # B=即梦
-g.link(n_prompt, 0, n_judge_t2v, 2, "STRING")
-g.link(n_rubric, 0, n_judge_t2v, 3, "STRING")
-
-g.link(n_frames_k_i2v, 0, n_judge_i2v, 0, "IMAGE")
-g.link(n_frames_j_i2v, 0, n_judge_i2v, 1, "IMAGE")
-g.link(n_prompt, 0, n_judge_i2v, 2, "STRING")
-g.link(n_rubric, 0, n_judge_i2v, 3, "STRING")
-
-# 评委 -> 评分卡输出
-g.link(n_judge_t2v, 0, n_save_t2v, 0, "STRING")
-g.link(n_judge_i2v, 0, n_save_i2v, 0, "STRING")
+g.link(n_rubric, 0, j_i2v, 0, "STRING")
+g.link(b_i2v, 0, j_i2v, 1, "IMAGE")
+g.link(j_i2v, 0, st_i2v, 0, "STRING")
 
 # ============================================================================
 # 分组框
 # ============================================================================
-g.group("① 评测输入（受控变量）", (X_IN - 20, -420, 580, 1620), "#595")
-g.group("② 可灵 Kling 生成", (X_GEN - 20, -60, 470, 760), "#36c")
-g.group("③ 即梦 Jimeng 生成", (X_GEN - 20, 660, 470, 760), "#c63")
-g.group("④ 保存 & 抽帧", (X_MID - 20, -60, 400, 1480), "#777")
-g.group("⑤ LLM 评委 & 评分输出", (X_JUDGE - 20, -20, 1020, 920), "#393")
+g.group("① 评测输入（受控变量）", (X_IN - 20, -440, 600, 1620), "#595")
+g.group("② 可灵 Kling 生成", (X_GEN - 20, -60, 470, 700), "#36c")
+g.group("③ 即梦 Seedance 生成", (X_GEN - 20, 640, 470, 700), "#c63")
+g.group("④ 抽帧 & 保存", (X_FRAME - 20, -60, 800, 1400), "#777")
+g.group("⑤ 合帧 · Gemini 评委 · 评分输出", (X_BATCH - 20, 60, 1380, 1080), "#393")
 
-# ============================================================================
-# 写出
-# ============================================================================
 here = os.path.dirname(os.path.abspath(__file__))
 out_path = os.path.join(here, "workflow", "kling_jimeng_eval.json")
 with open(out_path, "w", encoding="utf-8") as f:
