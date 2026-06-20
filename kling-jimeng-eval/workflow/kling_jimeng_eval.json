@@ -1,17 +1,17 @@
 {
-  "last_node_id": 24,
-  "last_link_id": 26,
+  "last_node_id": 22,
+  "last_link_id": 24,
   "nodes": [
     {
       "id": 1,
       "type": "Note",
       "pos": [
         40,
-        -380
+        -360
       ],
       "size": [
         560,
-        320
+        300
       ],
       "flags": {},
       "order": 1,
@@ -22,9 +22,9 @@
         "Node name for S&R": "Note"
       },
       "widgets_values": [
-        "## 🎬 可灵 vs 即梦(Seedance) 视频评测 · 云端原生版\n\n**全官方节点，ComfyUI Cloud 零自定义节点即可运行。**\n\n- 可灵 = 官方 Kling API 节点\n- 即梦 = 官方 ByteDance **Seedance** 节点（即梦视频同源模型）\n- 评委 = 官方 **Gemini** 多模态节点，按 5 维 Rubric 打分\n- 抽帧 = 核心 **GetVideoComponents** 节点\n\n**控制变量**：左侧共享 Prompt / 输入图 / 运动描述，两家完全一致。\n\n**用法**：① 填左侧输入 → ② 各生成节点选模型(已配 API 额度) → ③ Queue → ④ 读 Gemini 评分卡 → ⑤ 填入对比看板。\n\n> 颜色：蓝=可灵，橙=即梦/Seedance，绿=评委，灰=输入/输出。"
+        "## 🎬 可灵 vs 即梦(Seedance) 视频评测 · 云端原生 v3\n\n**全官方内置节点，ComfyUI Cloud 零自定义节点即可运行。**\n\n- 可灵 = 官方 Kling 节点 / 即梦 = 官方 ByteDance Seedance 节点（即梦同源模型）\n- 评委 = 官方 GeminiNode，直接收视频，按 5 维 Rubric 给每个视频打绝对分\n- 对比在 dashboard/comparison-dashboard.html 看板完成\n\n**控制变量**：左侧共享 Prompt / 输入图 / 运动描述，两家一致。\n**用法**：填输入 → 各生成节点授权额度 → Queue → 读 4 张评分卡 → 填看板。\n\n> ① I2V 输入图记得在 LoadImage 上传选择，否则提示'缺少输入·图像'。"
       ],
-      "title": "📖 评测说明 / README",
+      "title": "📖 评测说明",
       "bgcolor": "#3a3a3a"
     },
     {
@@ -36,7 +36,7 @@
       ],
       "size": [
         560,
-        190
+        180
       ],
       "flags": {},
       "order": 2,
@@ -62,7 +62,7 @@
         "A cinematic shot of a red fox running through a snowy forest at sunrise, camera slowly tracking, volumetric light, photorealistic, 4k",
         "fixed"
       ],
-      "title": "① 共享 Prompt（受控变量）",
+      "title": "① 共享 Prompt（受控）",
       "bgcolor": "#3a3a3a"
     },
     {
@@ -70,11 +70,11 @@
       "type": "PrimitiveNode",
       "pos": [
         40,
-        230
+        220
       ],
       "size": [
         560,
-        140
+        130
       ],
       "flags": {},
       "order": 3,
@@ -95,10 +95,10 @@
         "Node name for S&R": "PrimitiveNode"
       },
       "widgets_values": [
-        "smooth natural motion; avoid: morphing, flicker, extra limbs",
+        "morphing, flicker, extra limbs, distortion",
         "fixed"
       ],
-      "title": "① 共享运动/负向描述",
+      "title": "① 共享负向（仅可灵用）",
       "bgcolor": "#3a3a3a"
     },
     {
@@ -106,7 +106,7 @@
       "type": "LoadImage",
       "pos": [
         40,
-        410
+        390
       ],
       "size": [
         560,
@@ -140,7 +140,7 @@
         "test_input.png",
         "image"
       ],
-      "title": "① I2V 共享输入图（受控变量）",
+      "title": "① I2V 共享输入图（受控）",
       "bgcolor": "#3a3a3a"
     },
     {
@@ -148,7 +148,7 @@
       "type": "PrimitiveNode",
       "pos": [
         40,
-        840
+        800
       ],
       "size": [
         560,
@@ -163,8 +163,10 @@
           "name": "STRING",
           "type": "STRING",
           "links": [
-            21,
-            24
+            11,
+            15,
+            19,
+            23
           ],
           "slot_index": 0
         }
@@ -173,10 +175,10 @@
         "Node name for S&R": "PrimitiveNode"
       },
       "widgets_values": [
-        "你是资深视频生成质量评测专家。画面前半部分帧来自【视频A=可灵】，后半部分帧来自【视频B=即梦/Seedance】，二者使用完全相同的 prompt。请按以下5个维度各打1-10分并给简短理由，最后输出 JSON：{results:[{dimension,kling_score,jimeng_score,reason}],weighted_total:{kling,jimeng},winner,summary}。\n维度与权重：\n1. 画面质量(25%)：清晰度/细节/无伪影\n2. 运动合理性(25%)：自然/无闪烁形变/物理合理\n3. 文本一致性(25%)：准确还原主体/动作/场景\n4. 时序一致性(15%)：跨帧稳定不漂移\n5. 美学(10%)：构图/光影/色彩/电影感\n评分需中立可复现，最后给加权总分与胜出方。",
+        "你是资深视频生成质量评测专家。请只针对【这一个视频】按以下5维各打1-10分并给简短理由，最后输出 JSON：{video_label, scores:[{dimension, score, reason}], weighted_total, comment}。\n该视频对应的 prompt 与另一家完全相同，评分需中立、可复现：\n1. 画面质量(25%)：清晰度/细节/无伪影\n2. 运动合理性(25%)：自然/无闪烁形变/物理合理\n3. 文本一致性(25%)：准确还原 prompt 的主体/动作/场景\n4. 时序一致性(15%)：跨帧稳定不漂移\n5. 美学(10%)：构图/光影/色彩/电影感\nweighted_total = Σ(维度分×权重)，满分10。",
         "fixed"
       ],
-      "title": "① 评分 Rubric（喂给 Gemini 评委）",
+      "title": "① 评分 Rubric（喂 Gemini）",
       "bgcolor": "#2c5230"
     },
     {
@@ -187,8 +189,8 @@
         0
       ],
       "size": [
-        430,
-        270
+        420,
+        260
       ],
       "flags": {},
       "order": 6,
@@ -232,14 +234,14 @@
     },
     {
       "id": 7,
-      "type": "KlingImageToVideoNode",
+      "type": "KlingImage2VideoNode",
       "pos": [
         660,
-        320
+        300
       ],
       "size": [
-        430,
-        300
+        420,
+        290
       ],
       "flags": {},
       "order": 7,
@@ -273,7 +275,7 @@
         }
       ],
       "properties": {
-        "Node name for S&R": "KlingImageToVideoNode"
+        "Node name for S&R": "KlingImage2VideoNode"
       },
       "widgets_values": [
         "kling-v1-6",
@@ -288,14 +290,14 @@
     },
     {
       "id": 8,
-      "type": "ByteDance2TextToVideoNode",
+      "type": "ByteDanceTextToVideoNode",
       "pos": [
         660,
-        700
+        650
       ],
       "size": [
-        430,
-        270
+        420,
+        260
       ],
       "flags": {},
       "order": 8,
@@ -312,23 +314,23 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            11,
-            12
+            17,
+            18
           ],
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "ByteDance2TextToVideoNode"
+        "Node name for S&R": "ByteDanceTextToVideoNode"
       },
       "widgets_values": [
-        "seedance-2.0",
+        "seedance-1-0-pro",
         "1080p",
-        5,
         "16:9",
+        5,
         12345
       ],
-      "title": "③ 即梦/Seedance 文生视频 T2V",
+      "title": "③ 即梦/Seedance 文生 T2V",
       "bgcolor": "#522c1c"
     },
     {
@@ -336,11 +338,11 @@
       "type": "ByteDanceImageToVideoNode",
       "pos": [
         660,
-        1020
+        950
       ],
       "size": [
-        430,
-        300
+        420,
+        290
       ],
       "flags": {},
       "order": 9,
@@ -362,8 +364,8 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            15,
-            16
+            21,
+            22
           ],
           "slot_index": 0
         }
@@ -372,23 +374,23 @@
         "Node name for S&R": "ByteDanceImageToVideoNode"
       },
       "widgets_values": [
-        "seedance-1.0-pro",
+        "seedance-1-0-pro",
         "1080p",
         5,
         12345
       ],
-      "title": "③ 即梦/Seedance 图生视频 I2V",
+      "title": "③ 即梦/Seedance 图生 I2V",
       "bgcolor": "#522c1c"
     },
     {
       "id": 10,
-      "type": "GetVideoComponents",
+      "type": "SaveVideo",
       "pos": [
-        1280,
+        1240,
         0
       ],
       "size": [
-        340,
+        300,
         110
       ],
       "flags": {},
@@ -401,44 +403,27 @@
           "link": 9
         }
       ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            17
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [],
-          "slot_index": 0
-        },
-        {
-          "name": "fps",
-          "type": "FLOAT",
-          "links": [],
-          "slot_index": 0
-        }
-      ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "GetVideoComponents"
+        "Node name for S&R": "SaveVideo"
       },
-      "widgets_values": [],
-      "title": "④ 可灵-T2V 抽帧",
+      "widgets_values": [
+        "eval/kling_t2v",
+        "mp4",
+        "h264"
+      ],
+      "title": "保存 kling_t2v",
       "bgcolor": "#1c3a52"
     },
     {
       "id": 11,
-      "type": "GetVideoComponents",
+      "type": "SaveVideo",
       "pos": [
-        1280,
-        700
+        1240,
+        300
       ],
       "size": [
-        340,
+        300,
         110
       ],
       "flags": {},
@@ -448,47 +433,30 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "link": 11
+          "link": 13
         }
       ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            18
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [],
-          "slot_index": 0
-        },
-        {
-          "name": "fps",
-          "type": "FLOAT",
-          "links": [],
-          "slot_index": 0
-        }
-      ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "GetVideoComponents"
+        "Node name for S&R": "SaveVideo"
       },
-      "widgets_values": [],
-      "title": "④ 即梦-T2V 抽帧",
-      "bgcolor": "#522c1c"
+      "widgets_values": [
+        "eval/kling_i2v",
+        "mp4",
+        "h264"
+      ],
+      "title": "保存 kling_i2v",
+      "bgcolor": "#1c3a52"
     },
     {
       "id": 12,
-      "type": "GetVideoComponents",
+      "type": "SaveVideo",
       "pos": [
-        1280,
-        320
+        1240,
+        650
       ],
       "size": [
-        340,
+        300,
         110
       ],
       "flags": {},
@@ -498,47 +466,30 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "link": 13
+          "link": 17
         }
       ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            19
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [],
-          "slot_index": 0
-        },
-        {
-          "name": "fps",
-          "type": "FLOAT",
-          "links": [],
-          "slot_index": 0
-        }
-      ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "GetVideoComponents"
+        "Node name for S&R": "SaveVideo"
       },
-      "widgets_values": [],
-      "title": "④ 可灵-I2V 抽帧",
-      "bgcolor": "#1c3a52"
+      "widgets_values": [
+        "eval/seedance_t2v",
+        "mp4",
+        "h264"
+      ],
+      "title": "保存 seedance_t2v",
+      "bgcolor": "#522c1c"
     },
     {
       "id": 13,
-      "type": "GetVideoComponents",
+      "type": "SaveVideo",
       "pos": [
-        1280,
-        1020
+        1240,
+        950
       ],
       "size": [
-        340,
+        300,
         110
       ],
       "flags": {},
@@ -548,279 +499,182 @@
         {
           "name": "video",
           "type": "VIDEO",
-          "link": 15
+          "link": 21
         }
       ],
-      "outputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "links": [
-            20
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [],
-          "slot_index": 0
-        },
-        {
-          "name": "fps",
-          "type": "FLOAT",
-          "links": [],
-          "slot_index": 0
-        }
-      ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "GetVideoComponents"
+        "Node name for S&R": "SaveVideo"
       },
-      "widgets_values": [],
-      "title": "④ 即梦-I2V 抽帧",
+      "widgets_values": [
+        "eval/seedance_i2v",
+        "mp4",
+        "h264"
+      ],
+      "title": "保存 seedance_i2v",
       "bgcolor": "#522c1c"
     },
     {
       "id": 14,
-      "type": "SaveVideo",
+      "type": "GeminiNode",
       "pos": [
-        1700,
-        150
+        1620,
+        0
       ],
       "size": [
-        320,
-        120
+        380,
+        220
       ],
       "flags": {},
       "order": 14,
       "mode": 0,
       "inputs": [
         {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 11
+        },
+        {
           "name": "video",
           "type": "VIDEO",
           "link": 10
         }
       ],
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            12
+          ],
+          "slot_index": 0
+        }
+      ],
       "properties": {
-        "Node name for S&R": "SaveVideo"
+        "Node name for S&R": "GeminiNode"
       },
       "widgets_values": [
-        "eval/可灵-T2V",
-        "mp4",
-        "h264"
+        "gemini-2.5-pro",
+        12345
       ],
-      "title": "保存 可灵-T2V",
-      "bgcolor": "#1c3a52"
+      "title": "④ Gemini 评委 · 可灵 T2V",
+      "bgcolor": "#2c5230"
     },
     {
       "id": 15,
-      "type": "SaveVideo",
+      "type": "GeminiNode",
       "pos": [
-        1700,
-        850
+        1620,
+        300
       ],
       "size": [
-        320,
-        120
+        380,
+        220
       ],
       "flags": {},
       "order": 15,
       "mode": 0,
       "inputs": [
         {
-          "name": "video",
-          "type": "VIDEO",
-          "link": 12
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "SaveVideo"
-      },
-      "widgets_values": [
-        "eval/即梦-T2V",
-        "mp4",
-        "h264"
-      ],
-      "title": "保存 即梦-T2V",
-      "bgcolor": "#522c1c"
-    },
-    {
-      "id": 16,
-      "type": "SaveVideo",
-      "pos": [
-        1700,
-        470
-      ],
-      "size": [
-        320,
-        120
-      ],
-      "flags": {},
-      "order": 16,
-      "mode": 0,
-      "inputs": [
+          "name": "prompt",
+          "type": "STRING",
+          "link": 15
+        },
         {
           "name": "video",
           "type": "VIDEO",
           "link": 14
         }
       ],
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            16
+          ],
+          "slot_index": 0
+        }
+      ],
       "properties": {
-        "Node name for S&R": "SaveVideo"
+        "Node name for S&R": "GeminiNode"
       },
       "widgets_values": [
-        "eval/可灵-I2V",
-        "mp4",
-        "h264"
+        "gemini-2.5-pro",
+        12345
       ],
-      "title": "保存 可灵-I2V",
-      "bgcolor": "#1c3a52"
+      "title": "④ Gemini 评委 · 可灵 I2V",
+      "bgcolor": "#2c5230"
+    },
+    {
+      "id": 16,
+      "type": "GeminiNode",
+      "pos": [
+        1620,
+        650
+      ],
+      "size": [
+        380,
+        220
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": 19
+        },
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "links": [
+            20
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "GeminiNode"
+      },
+      "widgets_values": [
+        "gemini-2.5-pro",
+        12345
+      ],
+      "title": "④ Gemini 评委 · 即梦 T2V",
+      "bgcolor": "#2c5230"
     },
     {
       "id": 17,
-      "type": "SaveVideo",
+      "type": "GeminiNode",
       "pos": [
-        1700,
-        1170
+        1620,
+        950
       ],
       "size": [
-        320,
-        120
+        380,
+        220
       ],
       "flags": {},
       "order": 17,
       "mode": 0,
       "inputs": [
         {
-          "name": "video",
-          "type": "VIDEO",
-          "link": 16
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "SaveVideo"
-      },
-      "widgets_values": [
-        "eval/即梦-I2V",
-        "mp4",
-        "h264"
-      ],
-      "title": "保存 即梦-I2V",
-      "bgcolor": "#522c1c"
-    },
-    {
-      "id": 18,
-      "type": "ImageBatch",
-      "pos": [
-        2120,
-        180
-      ],
-      "size": [
-        300,
-        90
-      ],
-      "flags": {},
-      "order": 18,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image1",
-          "type": "IMAGE",
-          "link": 17
-        },
-        {
-          "name": "image2",
-          "type": "IMAGE",
-          "link": 18
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            22
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageBatch"
-      },
-      "widgets_values": [],
-      "title": "⑤ 合帧 T2V（A可灵+B即梦）",
-      "bgcolor": "#2c5230"
-    },
-    {
-      "id": 19,
-      "type": "ImageBatch",
-      "pos": [
-        2120,
-        880
-      ],
-      "size": [
-        300,
-        90
-      ],
-      "flags": {},
-      "order": 19,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image1",
-          "type": "IMAGE",
-          "link": 19
-        },
-        {
-          "name": "image2",
-          "type": "IMAGE",
-          "link": 20
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            25
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageBatch"
-      },
-      "widgets_values": [],
-      "title": "⑤ 合帧 I2V（A可灵+B即梦）",
-      "bgcolor": "#2c5230"
-    },
-    {
-      "id": 20,
-      "type": "Gemini",
-      "pos": [
-        2560,
-        120
-      ],
-      "size": [
-        380,
-        240
-      ],
-      "flags": {},
-      "order": 20,
-      "mode": 0,
-      "inputs": [
-        {
           "name": "prompt",
           "type": "STRING",
-          "link": 21
+          "link": 23
         },
         {
-          "name": "images",
-          "type": "IMAGE",
+          "name": "video",
+          "type": "VIDEO",
           "link": 22
         }
       ],
@@ -829,144 +683,162 @@
           "name": "text",
           "type": "STRING",
           "links": [
-            23
+            24
           ],
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "Gemini"
+        "Node name for S&R": "GeminiNode"
       },
       "widgets_values": [
         "gemini-2.5-pro",
-        0.0
+        12345
       ],
-      "title": "⑤ Gemini 评委 · T2V 打分",
+      "title": "④ Gemini 评委 · 即梦 I2V",
       "bgcolor": "#2c5230"
     },
     {
-      "id": 21,
-      "type": "Gemini",
+      "id": 18,
+      "type": "SaveText",
       "pos": [
-        2560,
-        820
+        2160,
+        0
       ],
       "size": [
-        380,
-        240
+        340,
+        120
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 12
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveText"
+      },
+      "widgets_values": [
+        "eval/scorecard_kling_t2v.json",
+        "overwrite"
+      ],
+      "title": "⑤ 评分卡 kling_t2v",
+      "bgcolor": "#3a3a3a"
+    },
+    {
+      "id": 19,
+      "type": "SaveText",
+      "pos": [
+        2160,
+        300
+      ],
+      "size": [
+        340,
+        120
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 16
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveText"
+      },
+      "widgets_values": [
+        "eval/scorecard_kling_i2v.json",
+        "overwrite"
+      ],
+      "title": "⑤ 评分卡 kling_i2v",
+      "bgcolor": "#3a3a3a"
+    },
+    {
+      "id": 20,
+      "type": "SaveText",
+      "pos": [
+        2160,
+        650
+      ],
+      "size": [
+        340,
+        120
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 20
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveText"
+      },
+      "widgets_values": [
+        "eval/scorecard_seedance_t2v.json",
+        "overwrite"
+      ],
+      "title": "⑤ 评分卡 seedance_t2v",
+      "bgcolor": "#3a3a3a"
+    },
+    {
+      "id": 21,
+      "type": "SaveText",
+      "pos": [
+        2160,
+        950
+      ],
+      "size": [
+        340,
+        120
       ],
       "flags": {},
       "order": 21,
       "mode": 0,
       "inputs": [
         {
-          "name": "prompt",
-          "type": "STRING",
-          "link": 24
-        },
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 25
-        }
-      ],
-      "outputs": [
-        {
           "name": "text",
           "type": "STRING",
-          "links": [
-            26
-          ],
-          "slot_index": 0
+          "link": 24
         }
       ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "Gemini"
+        "Node name for S&R": "SaveText"
       },
       "widgets_values": [
-        "gemini-2.5-pro",
-        0.0
+        "eval/scorecard_seedance_i2v.json",
+        "overwrite"
       ],
-      "title": "⑤ Gemini 评委 · I2V 打分",
-      "bgcolor": "#2c5230"
+      "title": "⑤ 评分卡 seedance_i2v",
+      "bgcolor": "#3a3a3a"
     },
     {
       "id": 22,
-      "type": "SaveText",
+      "type": "Note",
       "pos": [
-        3060,
-        140
+        2160,
+        1150
       ],
       "size": [
-        360,
-        150
+        340,
+        260
       ],
       "flags": {},
       "order": 22,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "text",
-          "type": "STRING",
-          "link": 23
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "SaveText"
-      },
-      "widgets_values": [
-        "eval/scorecard_t2v.json",
-        "overwrite"
-      ],
-      "title": "⑤ T2V 评分卡输出(JSON)",
-      "bgcolor": "#3a3a3a"
-    },
-    {
-      "id": 23,
-      "type": "SaveText",
-      "pos": [
-        3060,
-        320
-      ],
-      "size": [
-        360,
-        150
-      ],
-      "flags": {},
-      "order": 23,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "text",
-          "type": "STRING",
-          "link": 26
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "SaveText"
-      },
-      "widgets_values": [
-        "eval/scorecard_i2v.json",
-        "overwrite"
-      ],
-      "title": "⑤ I2V 评分卡输出(JSON)",
-      "bgcolor": "#3a3a3a"
-    },
-    {
-      "id": 24,
-      "type": "Note",
-      "pos": [
-        3060,
-        520
-      ],
-      "size": [
-        360,
-        340
-      ],
-      "flags": {},
-      "order": 24,
       "mode": 0,
       "inputs": [],
       "outputs": [],
@@ -974,7 +846,7 @@
         "Node name for S&R": "Note"
       },
       "widgets_values": [
-        "## 📊 轻量客观指标（手动/脚本补录）\n\n| 指标 | 可灵 | 即梦 |\n|---|---|---|\n| 生成耗时(s) |  |  |\n| 一次成功率(%) |  |  |\n| 实际分辨率 |  |  |\n| 单条成本(¥) |  |  |\n| 失败/驳回次数 |  |  |\n\n> 贴近 PM 关心的「质量×成本×效率」三角。"
+        "## 📊 客观指标（手动补录）\n\n| 指标 | 可灵 | 即梦 |\n|---|---|---|\n| 生成耗时(s) |  |  |\n| 一次成功率(%) |  |  |\n| 实际分辨率 |  |  |\n| 单条成本(¥) |  |  |\n\n> 质量×成本×效率 三角。"
       ],
       "title": "⑤ 客观指标记录表",
       "bgcolor": "#3a3a3a"
@@ -1058,30 +930,30 @@
       6,
       0,
       14,
-      0,
+      1,
       "VIDEO"
     ],
     [
       11,
-      8,
+      5,
       0,
-      11,
+      14,
       0,
-      "VIDEO"
+      "STRING"
     ],
     [
       12,
-      8,
+      14,
       0,
-      15,
+      18,
       0,
-      "VIDEO"
+      "STRING"
     ],
     [
       13,
       7,
       0,
-      12,
+      11,
       0,
       "VIDEO"
     ],
@@ -1089,103 +961,87 @@
       14,
       7,
       0,
-      16,
-      0,
+      15,
+      1,
       "VIDEO"
     ],
     [
       15,
-      9,
+      5,
       0,
-      13,
+      15,
       0,
-      "VIDEO"
+      "STRING"
     ],
     [
       16,
-      9,
+      15,
       0,
+      19,
+      0,
+      "STRING"
+    ],
+    [
       17,
+      8,
+      0,
+      12,
       0,
       "VIDEO"
     ],
     [
-      17,
-      10,
-      0,
       18,
+      8,
       0,
-      "IMAGE"
-    ],
-    [
-      18,
-      11,
-      0,
-      18,
+      16,
       1,
-      "IMAGE"
+      "VIDEO"
     ],
     [
       19,
-      12,
+      5,
       0,
-      19,
+      16,
       0,
-      "IMAGE"
+      "STRING"
     ],
     [
       20,
-      13,
-      0,
-      19,
-      1,
-      "IMAGE"
-    ],
-    [
-      21,
-      5,
+      16,
       0,
       20,
       0,
       "STRING"
     ],
     [
-      22,
-      18,
+      21,
+      9,
       0,
-      20,
+      13,
+      0,
+      "VIDEO"
+    ],
+    [
+      22,
+      9,
+      0,
+      17,
       1,
-      "IMAGE"
+      "VIDEO"
     ],
     [
       23,
-      20,
+      5,
       0,
-      22,
+      17,
       0,
       "STRING"
     ],
     [
       24,
-      5,
+      17,
       0,
       21,
-      0,
-      "STRING"
-    ],
-    [
-      25,
-      19,
-      0,
-      21,
-      1,
-      "IMAGE"
-    ],
-    [
-      26,
-      21,
-      0,
-      23,
       0,
       "STRING"
     ]
@@ -1195,9 +1051,9 @@
       "title": "① 评测输入（受控变量）",
       "bounding": [
         20,
-        -440,
+        -420,
         600,
-        1620
+        1580
       ],
       "color": "#595",
       "font_size": 24,
@@ -1208,8 +1064,8 @@
       "bounding": [
         640,
         -60,
-        470,
-        700
+        460,
+        650
       ],
       "color": "#36c",
       "font_size": 24,
@@ -1219,35 +1075,35 @@
       "title": "③ 即梦 Seedance 生成",
       "bounding": [
         640,
-        640,
-        470,
-        700
+        590,
+        460,
+        660
       ],
       "color": "#c63",
       "font_size": 24,
       "flags": {}
     },
     {
-      "title": "④ 抽帧 & 保存",
+      "title": "④ Gemini 评委（每视频独立打分）",
       "bounding": [
-        1260,
+        1600,
         -60,
-        800,
-        1400
+        440,
+        1290
       ],
-      "color": "#777",
+      "color": "#393",
       "font_size": 24,
       "flags": {}
     },
     {
-      "title": "⑤ 合帧 · Gemini 评委 · 评分输出",
+      "title": "⑤ 评分卡输出 & 客观指标",
       "bounding": [
-        2100,
-        60,
-        1380,
-        1080
+        2140,
+        -60,
+        380,
+        1480
       ],
-      "color": "#393",
+      "color": "#777",
       "font_size": 24,
       "flags": {}
     }
@@ -1255,16 +1111,15 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.55,
+      "scale": 0.6,
       "offset": [
         0,
         0
       ]
     },
     "info": {
-      "name": "Kling vs Seedance(即梦) 视频评测 · 云端原生",
-      "author": "PM Portfolio",
-      "version": "2.0-cloud"
+      "name": "Kling vs Seedance(即梦) 视频评测 · 云端原生 v3",
+      "version": "3.0-cloud"
     }
   },
   "version": 0.4

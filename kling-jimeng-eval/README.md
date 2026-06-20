@@ -27,27 +27,32 @@ ComfyUI 官方**没有**叫「即梦/Jimeng」的节点，但**即梦的视频�
 
 ---
 
-## 工作流结构（全官方节点）
+## 工作流结构（全官方内置节点）
 
 ```
-① 共享输入(受控)     ② / ③ 生成          ④ 抽帧/保存          ⑤ 合帧→评委→评分卡
-┌─ Prompt ─┐      ┌ 可灵 T2V/I2V ┐    ┌ GetVideoComponents ┐  ┌ ImageBatch ┐  ┌ Gemini ┐  → JSON
-├─ 运动描述 ─┼──────┤              ┼────┤  (核心内置抽帧)     ┼──┤ A可灵+B即梦 ┼──┤ 5维打分 ┤
-├─ 输入图  ─┤      └ 即梦 T2V/I2V ┘    └ SaveVideo          ┘  └────────────┘  └────────┘
-└─ Rubric ─┘
+① 共享输入(受控)        ② / ③ 生成              ④ 评委（直接收视频）      ⑤ 评分卡
+┌─ Prompt ─┐         ┌ 可灵 T2V ┐              ┌ GeminiNode ─5维打分 ┐  → scorecard_kling_t2v.json
+├─ 负向    ─┼─────────┤ 可灵 I2V ┼──video──┬────┤ GeminiNode          ┼  → scorecard_kling_i2v.json
+├─ 输入图  ─┤         ├ 即梦 T2V ┤         │    │ GeminiNode          ┼  → scorecard_seedance_t2v.json
+└─ Rubric ─┘         └ 即梦 I2V ┘         └────┤ GeminiNode          ┘  → scorecard_seedance_i2v.json
+                          └─ SaveVideo（各自保存 mp4）                     对比在看板里完成
 ```
 
-| 角色 | 官方节点 | 是否需安装 |
-|------|---------|-----------|
-| 可灵 T2V / I2V | `KlingTextToVideoNode` / `KlingImageToVideoNode` | ❌ 官方 API 节点，内置 |
-| 即梦 T2V / I2V | `ByteDance2TextToVideoNode` / `ByteDanceImageToVideoNode`（Seedance） | ❌ 官方合作节点，内置 |
-| LLM 评委 | `Gemini`（Google 官方合作节点，多模态收图+文） | ❌ 官方合作节点，内置 |
-| 抽帧 | `GetVideoComponents`（视频→帧序列） | ❌ ComfyUI 核心内置 |
-| 合帧 | `ImageBatch`（两批帧合一） | ❌ 核心内置 |
+每个生成视频**直接喂给一个 GeminiNode**（官方节点自带 `video` 输入），按 Rubric 打绝对分，
+省掉抽帧/合帧节点，云端最稳。
+
+| 角色 | 官方内置节点（已核对 ComfyUI 源码 NODE_CLASS_MAPPINGS） | 是否需安装 |
+|------|------|-----------|
+| 可灵 T2V | `KlingTextToVideoNode` | ❌ 官方内置 |
+| 可灵 I2V | `KlingImage2VideoNode`（注意是 Image**2**Video） | ❌ 官方内置 |
+| 即梦 T2V | `ByteDanceTextToVideoNode`（Seedance） | ❌ 官方内置 |
+| 即梦 I2V | `ByteDanceImageToVideoNode`（Seedance） | ❌ 官方内置 |
+| LLM 评委 | `GeminiNode`（多模态，直接收视频） | ❌ 官方内置 |
 | 输入/输出 | `LoadImage` `PrimitiveNode` `SaveVideo` `SaveText` `Note` | ❌ 核心内置 |
 
-> 节点类名可能随 ComfyUI 版本微调后缀（如 Seedance 1.x / 2.0）。导入后若某节点显示版本不符，
-> 用画布上 **双击搜索** 输入 `Kling` / `Seedance` / `Gemini` 选官方节点替换即可，连线拓扑不变。
+> ⚠️ 这些是**官方内置 API/合作节点的精确类名**——不要用社区同名节点（如 `Gemini`、`ByteDance2*`、
+> `KlingImageToVideoNode`），那些会被 Comfy Cloud 判为"不支持的节点包"。若云端某节点版本更新导致参数变化，
+> 双击画布搜 `Kling` / `Seedance` / `Gemini` 选**官方**节点替换即可，连线拓扑不变。
 
 ---
 
@@ -83,11 +88,12 @@ ComfyUI 官方**没有**叫「即梦/Jimeng」的节点，但**即梦的视频�
 ---
 
 ## 云端注意事项（实测会踩的点）
-- **送入评委的帧数**：`GetVideoComponents` 会抽出整段视频的全部帧，帧数过多可能超出 Gemini 单次上限。
-  建议把生成时长设短（5s）或在评委 prompt 里说明只看代表性帧；如需精确控制可加一个抽样节点。
-- **负向提示**：Seedance 节点通常无独立 negative 输入，已将负向描述并入正向 prompt 的写法处理；
-  可灵节点保留独立 negative。
-- **节点版本**：官方合作节点会迭代，若类名/参数变化，按上文「双击搜索替换」即可。
+- **"缺少输入·图像"不是 bug**：`LoadImage` 需要你先上传一张 I2V 输入图并在节点里选中，否则会报缺图。
+- **评委直接收视频**：`GeminiNode` 自带 `video` 输入，已直接把生成视频接进去，无需抽帧；
+  视频较长时 Gemini 会自动采样，建议生成时长设 5s 控制 token。
+- **负向提示**：Seedance 节点无独立 negative 输入，负向描述请并入正向 prompt；可灵保留独立 negative。
+- **节点版本/参数**：官方节点会迭代，若某节点参数对不上，双击画布搜官方节点重连即可（拓扑不变）。
+- **绝对分 vs 对比分**：本版每个视频独立打绝对分，A/B 对比在看板完成（更少偏见、云端更稳）。
 
 ---
 
